@@ -4,7 +4,7 @@
 
 todo
 
-## ScientistsGallery v0
+## ScientistsGallery v0: components
 
 - [ScientistsGallery 0](https://codesandbox.io/p/sandbox/react-dev-forked-vgj2k2)
 
@@ -51,12 +51,13 @@ function App() {
 
 Quick Tips / Best Practices (2025–2026 style):
 
-- Always use **function components** (class components are legacy now)
-- Almost always **destructure props**: ({ name, age }) => ...
-- **Always** put key when rendering lists from .map()
-- Prefer fragments <></> over unnecessary <div>
+- Always use **function components**
+  - `class` components are legacy now
+- Almost always **destructure props**: `({ name, age }) => ...`
+- **Always** put key when rendering lists from .`map()`
+- Prefer fragments `<></>` over unnecessary <div>
 - Component names **must** start with **Capital Letter**
-- Current community preference (2025+): function Component() {} or const Component = () => {} — both are fine
+- Current community preference (2025+): `function Component() {}` or `const Component = () => {}` — both are fine
 
 Code:
 
@@ -112,7 +113,7 @@ function ListRender(props) {
 }
 ```
 
-## ScientistsGallery v1
+## ScientistsGallery v1: conditional render
 
 - [ScientistsGallery 0](https://codesandbox.io/p/sandbox/react-dev-forked-vgj2k2)
 
@@ -198,8 +199,6 @@ Quick Tips / Best Practices (2025–2026 style):
 - Keep ternaries for simple **show/hide** or **two-state** cases
 - Avoid long ternary chains — they become hard to read/maintain very quickly
 
-
-
 ```jsx
 // Style 4: Object lookup / component map (very clean for many variants)
 const formatComponents = {
@@ -221,4 +220,172 @@ function DefaultFallback() {
 }
 ```
 
-## ScientistsGallery v2
+## ScientistsGallery v2: table and div
+
+- https://codesandbox.io/p/sandbox/scientistsgallery2-myw4rz
+
+
+
+**Table**
+
+![](https://albertprofe.dev/images/ifcd0210-26/ScientistsGallery1.png)
+
+**Div**
+
+![](https://albertprofe.dev/images/ifcd0210-26/ScientistsGallery2.png)
+
+
+
+**This line:**
+
+```jsx
+{person.name} {person.profession} {person.age}
+```
+
+is the **most common and basic way** to display several pieces of data from an object inside JSX.
+
+```jsx
+<div>
+  {person.name}           {/* ← JavaScript expression: gets value of name */}
+  {' '}                   {/* ← just a space (very frequent pattern) */}
+  {person.profession}     {/* ← another value */}
+  {' '}                   {/* ← another space */}
+  {person.age}            {/* ← last value */}
+</div>
+```
+
+Equivalent more readable versions (all do exactly the same thing)
+
+```jsx
+// 1. Classic & most common style (what you see in the code)
+{person.name} {person.profession} {person.age}
+
+// 2. With explicit spaces (very clear)
+{person.name + " " + person.profession + " " + person.age}
+
+// 3. Template literal (many people prefer this today)
+{`${person.name} ${person.profession} ${person.age}`}
+
+// 4. Inside a string with interpolation (also very popular)
+{`${person.name} (${person.profession}, ${person.age} years)`}
+
+// 5. With line breaks for readability (works perfectly)
+{`
+  ${person.name}
+  ${person.profession}
+  ${person.age} years old
+`}
+```
+
+Real-world recommendation (what most experienced React devs do today)
+
+```jsx
+// Preferred modern style in most codebases
+<div className="scientist-card">
+  {person.name} <span className="profession">({person.profession})</span>, {person.age} years
+</div>
+
+// Or even cleaner:
+<div className="scientist-card">
+  {`${person.name} (${person.profession}, ${person.age} y/o)`}
+</div>
+```
+
+**Bottom line:**
+
+```jsx
+{person.name} {person.profession} {person.age}
+```
+
+→ is just a **very short, very common way** of writing:
+
+"Show the name, then a space, then the profession, then a space, then the age"
+
+It's perfectly valid and you will see it **everywhere** in React code — especially in learning examples and quick prototypes.
+
+Code:
+
+```jsx
+import { people } from "./data.js";
+import { getImageUrl } from "./utils.js";
+
+export default function ScientistsGallery() {
+  const profession = "mathematician";
+  const dataFormat = "table";
+  const age = 50;
+
+  return (
+    <>
+      <h1>Gallery of Famous Scientists </h1>
+      <h2> Profession: {profession} </h2>
+
+      <ListRender profession={profession} />
+      <p></p>
+
+      <ScientistVisuals dataFormat={dataFormat} age={age} />
+
+      <MyFooter />
+    </>
+  );
+}
+
+function ScientistVisuals(props) {
+  const condition = props.dataFormat;
+  const age = props.age;
+
+  if (condition === "table") return <TableScientistVisuals />;
+  else return <CardsScientistVisuals />;
+}
+
+function TableScientistVisuals() {
+  const scientistRows = people.map((person) => (
+    <tr>
+      <td> {person.name} </td>
+      <td> {person.profession} </td>
+      <td> {person.age} </td>
+    </tr>
+  ));
+  return (
+    <>
+      <h1> Scientists Table</h1>
+      <table>
+        <tr>
+          <th>Name</th>
+          <th>Profession</th>
+          <th>Age</th>
+        </tr>
+        {scientistRows}
+      </table>
+      <p> </p>
+    </>
+  );
+}
+
+function CardsScientistVisuals() {
+  const scientistCards = people.map((person) => (
+    <div style={{ background: "grey", margin: "6px", padding: "8px" }}>
+      {" "}
+      {person.name} {person.age} {person.profession}
+    </div>
+  ));
+
+  return (
+    <>
+      <h1> Scientists Cards</h1>
+      {scientistCards}
+      <p> </p>
+    </>
+  );
+}
+
+function MyFooter() {
+  ....
+}
+
+function ListRender(props) {
+  ....
+}
+
+```
+
+## ScientistsGallery v3: filter
