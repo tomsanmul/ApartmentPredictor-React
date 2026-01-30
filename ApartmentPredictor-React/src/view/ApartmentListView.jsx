@@ -1,4 +1,21 @@
+
+import { useState } from "react";
+import ApartmentCreateView from "../view/ApartmentCreateView";
+
+
+
 const ApartmentListView = ({ apartments, isLoading, isAxiosError }) => {
+
+  const [showCreateForm, setShowCreateForm] = useState(false);
+
+
+  {showCreateForm && (
+  <ApartmentCreateView
+    onClose={() => setShowCreateForm(false)}
+  />
+)}
+
+
   if (isLoading) {
     return (
       <>
@@ -19,10 +36,12 @@ const ApartmentListView = ({ apartments, isLoading, isAxiosError }) => {
     );
   }
 
-  return (
+    return (
     <>
       <h1>Apartments</h1>
       <p>This is an exercise to test react render</p>
+
+      {/* Lista de apartamentos */}
       <ul className="apartment-list">
         {apartments.map((apartment) => (
           <li key={apartment.id} className="apartment-item">
@@ -57,11 +76,27 @@ const ApartmentListView = ({ apartments, isLoading, isAxiosError }) => {
               {apartment.airconditioning} | Pref Area: {apartment.prefarea} |
               Furnishing: {apartment.furnishingstatus}
             </div>
+
+            <div className="apartment-button-edit">
+              <button className="btn edit-btn" type="submit" name="btnEdit">
+                Edit
+              </button>
+              <button className="btn delete-btn" type="submit" name="btnDelete">
+                Delete
+              </button>
+            </div>
           </li>
         ))}
       </ul>
+
+      <div className="apartment-button-create" style={{ marginTop: "1rem" }}>
+        <button className="btn create-btn" type="submit" name="btnCreate" onClick={() => setShowCreateForm(true)}>
+          Create New Apartment
+        </button>
+      </div>
     </>
   );
 };
+
 
 export default ApartmentListView;

@@ -117,3 +117,49 @@ button:focus-visible {
   opacity: 0.8;
   margin-top: 0.5rem;
 }
+
+
+.btn {
+  font-size: 0.9em;
+  opacity: 0.9;
+  padding: 0.5rem 1rem;
+  margin-right: 0.5rem;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+/* Botón Edit */
+.edit-btn {
+  background-color: orange;
+}
+
+.edit-btn:hover {
+  background-color: darkorange;
+  transform: scale(1.05);
+  opacity: 1;
+}
+
+/* Botón Delete */
+.delete-btn {
+  background-color: red;
+}
+
+.delete-btn:hover {
+  background-color: darkred;
+  transform: scale(1.05);
+  opacity: 1;
+}
+
+/* Botón Create */
+.create-btn {
+  background-color: #007bff; /* azul estándar */
+}
+
+.create-btn:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+  opacity: 1;
+}
