@@ -30,16 +30,23 @@ export const useApartments = () => {
     fetchApartments();
   }, []);
 
-   const deleteApartment = async (id) => {
-    await axios.delete(
-      "http://localhost:8080/api/apartment/deleteById",
-      { params: { id } }
-    );
 
-    setApartments(prev =>
-      prev.filter(apartment => apartment.id !== id)
-    );
-  };
+  const deleteApartment = async (id) => {
+    try {
+        await axios.delete(
+          "http://localhost:8080/api/apartment/deleteById",
+          { params: { id } }
+        );
+
+        setApartments(prev =>
+          prev.filter(apartment => apartment.id !== id)
+        );
+        }catch (error){
+
+          alert("Failed to delete Apartment: " + id + "\n" + error);
+        }
+    }
+
 
   return {
     apartments,
