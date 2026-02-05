@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
+
 export const useApartments = () => {
   const [apartments, setApartments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -29,5 +30,21 @@ export const useApartments = () => {
     fetchApartments();
   }, []);
 
-  return { apartments, isLoading, isAxiosError };
+   const deleteApartment = async (id) => {
+    await axios.delete(
+      "http://localhost:8080/api/apartment/deleteById",
+      { params: { id } }
+    );
+
+    setApartments(prev =>
+      prev.filter(apartment => apartment.id !== id)
+    );
+  };
+
+  return {
+    apartments,
+    isLoading,
+    isAxiosError,
+    deleteApartment
+  };
 };

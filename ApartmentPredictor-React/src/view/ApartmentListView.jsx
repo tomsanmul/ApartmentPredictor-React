@@ -1,11 +1,24 @@
+import { useState } from "react";
 import ApartmentCreateView from "../view/ApartmentCreateView";
 
 const ApartmentListView = ({ apartments, onDelete }) => {
+  
   const [showCreateForm, setShowCreateForm] = useState(false);
-
-  const handleEdit = () => {
-    alert("Editando");
+  
+  const handleEdit = (id) => {
+    alert("Editing apartment \n" + id);
   };
+
+  
+  const handleDelete = (id) => {
+      if (window.confirm("¿Are you sure you want to delete this apartment? \n" + id))
+        {
+            onDelete(id);
+        }
+
+  };
+
+
 
   return (
     <>
@@ -51,8 +64,8 @@ const ApartmentListView = ({ apartments, onDelete }) => {
             </div>
 
             <div className="apartment-button-edit">
-              <button className="btn edit-btn" onClick={handleEdit}>Edit</button>
-              <button className="btn delete-btn" onClick={() => onDelete(apartment.id)}>Delete</button>
+              <button className="btn edit-btn" onClick={() => handleEdit(apartment.id)}>Edit</button>
+              <button className="btn delete-btn" onClick={() => handleDelete(apartment.id)}>Delete</button>
             </div>
           </div>
         ))}
