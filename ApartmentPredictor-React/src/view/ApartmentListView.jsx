@@ -1,11 +1,39 @@
 import { useState } from "react";
 
-const ApartmentListView = ({ apartments, onDelete }) => {
+const ApartmentListView = ({ apartments, onCreate, onUpdate, onDelete }) => {
   
+  //HOOK per controlar / msotrar el formulari pero crear / editar
   const [showCreateForm, setShowCreateForm] = useState(false);
+
+  //HOOK que controla el estado de los campos del formulario, y me servirá para validarlo, pasárlo al Axios para el POST, y resetarlo después
+  const [newApartment, setNewApartment] = useState({
+      price: "",
+      area: "",
+      bedrooms: "",
+      bathrooms: "",
+      basement: "",
+      airconditioning: "",
+      parking: "",
+      furnishingstatus: ""
+  })
+
+  //HOOK per coontrolar si estem editan o crean un nou.  Si es null → estamos creant .Si te id, estem edtan
+  const [editingApartmentId, setEditingApartmentId] = useState(null);
+
   
-  const handleEdit = (id) => {
-    alert("Editing apartment \n" + id);
+  const handleEdit = (apartment) => {
+      setNewApartment({
+      price: apartment.price,
+      area: apartment.area,
+      bedrooms: apartment.bedrooms,
+      bathrooms: apartment.bathrooms,
+      basement: apartment.basement,
+      airconditioning: apartment.airconditioning,
+      parking: apartment.parking,
+      furnishingstatus: apartment.furnishingstatus
+    });
+    setEditingApartmentId(apartment.id);  // Guardamos el ID del que editamos
+    setShowCreateForm(true);               // Abrimos el formulario
   };
 
   
@@ -16,17 +44,44 @@ const ApartmentListView = ({ apartments, onDelete }) => {
         }
 
   };
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    if (editingApartmentId) {
+      // Estamos editando
+      await onUpdate(editingApartmentId, newApartment);
+      alert("Apartment updated!");
+    } else {
+      // Estamos creando
+      const created = await onCreate(newApartment);
+      alert("Apartment created! ID: " + created.id);
+    }
+
+    // Reset
+    setNewApartment({
+      price: "",
+      area: "",
+      bedrooms: "",
+      bathrooms: "",
+      basement: "",
+      airconditioning: "",
+      parking: "",
+      furnishingstatus: ""
+    });
+    setEditingApartmentId(null);
+    setShowCreateForm(false);
+  } catch (error) {
+    alert("Error: " + error);
+  }
+};
+
 
 
 
   return (
     <>
       <h1>Apartments</h1>
-
-      {/* Formulario de creación */}
-      {showCreateForm && (
-        <ApartmentCreateView onClose={() => setShowCreateForm(false)} />
-      )}
 
       {/* Grid de cards */}
       <div className="apartment-cards">
@@ -63,44 +118,123 @@ const ApartmentListView = ({ apartments, onDelete }) => {
             </div>
 
             <div className="apartment-button-edit">
-              <button className="btn edit-btn" onClick={() => handleEdit(apartment.id)}>Edit</button>
+              <button className="btn edit-btn" onClick={() => handleEdit(apartment)}>Edit</button>
               <button className="btn delete-btn" onClick={() => handleDelete(apartment.id)}>Delete</button>
             </div>
           </div>
         ))}
       </div>
 
-      <div className="apartment-button-create" style={{ marginTop: "1rem" }}>
-        <button
-          className="btn create-btn"
-          onClick={() => setShowCreateForm(true)}
-        >
-          Create New Apartment
 
-        </button>
-        <form id="AparmentCreate">
-              <p>Price: <input type="text" id="Price" name="Price" /></p>
-              <p>Area: <input type="text" id="Area" name="Area" /></p>
-              <p>Bedrooms <input type="text" id="Bedrooms" name="Bedrooms" /></p>
-              <p>Bathrooms: <input type="Bathrooms" id="Bathrooms" name="Price" /></p>
-              <p>Stories: <input type="text" id="Stories" name="Stories" /></p>
-              <p>Mainroad <input type="text" id="Mainroad" name="Mainroad" /></p>
-              <p>Guestroom: <input type="text" id="Guestroom" name="Guestroom" /></p>
-              <p>Basement: <input type="text" id="Basement" name="Basement" /></p>
-              <p>Hotwaterheating <input type="text" id="Hotwaterheating" name="Hotwaterheating" /></p>
-              <p>Airconditioning: <input type="text" id="Airconditioning" name="Airconditioning" /></p>
-              <p>Parking <input type="text" id="Parking" name="Parking" /></p>
-              <p>Prefarea: <input type="text" id="Prefarea" name="Prefarea" /></p>
-              <p>Furnishingstatus: <input type="text" id="Furnishingstatus" name="Furnishingstatus" /></p>
-              <p>Reviews <input type="text" id="Reviews" name="Reviews" /></p>
+      {/* Formulario escondido para crear un nuevo apartamento */}  
 
+      {!showCreateForm && (
+        <div className="apartment-button-create" style={{ marginTop: "1rem" }}>
+          <button
+            className="btn create-btn"
+            onClick={() => setShowCreateForm(true)}
+          >
+            Create New Apartment
+          </button>
+        </div>
+        )}
 
-              <button  type="submit" id="btnCreate" name ="btnCreate" >
-        </button>
+       {showCreateForm && (
+        <div className="create-form-overlay">
+          <form id="ApartmentCreate" className="create-form" onSubmit={handleSubmit}>  {/*Evita que el formulario recargue la página*/}
+            <h2>Create Apartment</h2>
 
-        </form>
+            <div className="form-grid">
+              <label>
+                Price
+                <input type="text" name="price" placeholder="Enter price in €" 
+                  onChange={(e) =>
+                    setNewApartment({ ...newApartment, price: e.target.value })
+                  } 
+                />
+              </label>
 
-      </div>
+              <label>
+                Area
+                <input type="text" name="area" placeholder="Square meters" 
+                  onChange={(e) =>
+                    setNewApartment({ ...newApartment, area: e.target.value })
+                  }
+                />
+              </label>
+
+              <label>
+                Bedrooms
+                <input type="text" name="bedrooms" placeholder="Number of bedrooms (Ex: 1,2,3...)" 
+                  onChange={(e) =>
+                    setNewApartment({ ...newApartment, bedrooms: e.target.value })
+                  }
+                />
+              </label>
+
+              <label>
+                Bathrooms
+                <input type="text" name="bathrooms" placeholder="Number of bathrooms (Ex: 1,2,3...)" 
+                  onChange={(e) =>
+                    setNewApartment({ ...newApartment, bathrooms: e.target.value })
+                  }
+                />
+              </label>
+
+              <label>
+                Basement
+                <input type="text" name="basement" placeholder="yes / no" 
+                  onChange={(e) =>
+                    setNewApartment({ ...newApartment, basement: e.target.value })
+                  }
+                />
+              </label>
+
+              <label>
+                Air conditioning
+                <input type="text" name="airconditioning" placeholder="yes / no" 
+                  onChange={(e) =>
+                    setNewApartment({ ...newApartment, airconditioning: e.target.value })
+                  }
+                />
+              </label>
+
+              <label>
+                Parking
+                <input type="text" name="parking" placeholder="Number of parkins (Ex: 1,2,3...)" 
+                  onChange={(e) =>
+                    setNewApartment({ ...newApartment, parking: e.target.value })
+                  }
+                />
+              </label>
+
+              <label>
+                Furnishing status
+                <input type="text" name="furnishingstatus" placeholder="unfurnished / semi-furnished"
+                  onChange={(e) =>
+                    setNewApartment({ ...newApartment, furnishingstatus: e.target.value })
+                  }
+                />
+              </label>
+
+            </div>
+
+            <div className="form-actions">
+              <button className="register-btn" type="submit">
+                    {editingApartmentId ? "Update" : "Register"}
+              </button>
+              <button
+                className="btn cancel-btn"
+                type="button"
+                onClick={() => setShowCreateForm(false)}
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+
     </>
   );
 };

@@ -162,11 +162,109 @@ button:focus-visible {
 
 /* Botón Create */
 .create-btn {
-  background-color: #007bff; /* azul estándar */
+  background-color: #00ccff; 
 }
 
 .create-btn:hover {
-  background-color: #0056b3;
+  background-color: #00ccff;
   transform: scale(1.05);
   opacity: 1;
+}
+
+
+/* Estilos para el formulario CREATE */
+
+/* Fondo semitransparente */
+.create-form-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.35); /* semitransparente */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Card del formulario */
+.create-form {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 600px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+}
+
+.create-form h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+/* Grid de inputs */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem 1.5rem; /* fila x columna */
+}
+
+.form-grid label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.form-grid input {
+  margin-top: 0.3rem;
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+.form-grid input:focus {
+  border-color: #8ccc97;
+  box-shadow: 0 0 5px rgba(140, 204, 151, 0.5);
+  outline: none;
+}
+
+
+/* Botones */
+.form-actions {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.register-btn {
+  background-color: #8ccc97;
+  border: none;
+  padding: 0.6rem 1.3rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.register-btn:hover {
+  background-color: #7abf88;
+}
+
+.cancel-btn {
+  background-color: darkred;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.3rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.cancel-btn:hover {
+  background-color: #8b0000;
 }

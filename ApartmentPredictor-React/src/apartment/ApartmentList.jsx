@@ -4,14 +4,16 @@ import ApartmentListView from "../view/ApartmentListView";
 
 
 const ApartmentList = () => {
-  const { apartments, isLoading, isAxiosError, deleteApartment } = useApartments();
+  const { apartments, isLoading, isAxiosError, createApartment, updateApartment, deleteApartment } = useApartments();
 
   return (
     <ApartmentListView
       apartments={apartments}
       isLoading={isLoading}
       isAxiosError={isAxiosError}
+      onCreate={createApartment}
       onDelete={deleteApartment}
+      onUpdate={updateApartment}
     />
   );
 };

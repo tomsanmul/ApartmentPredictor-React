@@ -31,6 +31,37 @@ export const useApartments = () => {
   }, []);
 
 
+  const createApartment = async (apartment) => {
+  try {
+
+    const response = await axios.post(
+      "http://localhost:8080/api/apartment/create",
+      apartment
+    );
+    setApartments(prev => [...prev, response.data]); // actualizar la lista
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+  const updateApartment = async (apartment) => {
+    try {
+
+      const response = await axios.post(
+        "http://localhost:8080/api/apartment/updateById",
+        apartment
+      );
+      setApartments(prev => [...prev, response.data]); // actualizar la lista
+      return response.data;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+};
+
+
   const deleteApartment = async (id) => {
     try {
         await axios.delete(
@@ -52,6 +83,8 @@ export const useApartments = () => {
     apartments,
     isLoading,
     isAxiosError,
+    updateApartment,
+    createApartment,
     deleteApartment
   };
 };
