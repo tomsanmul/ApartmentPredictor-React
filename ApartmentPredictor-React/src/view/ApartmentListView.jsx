@@ -2,10 +2,11 @@ import { useState } from "react";
 
 const ApartmentListView = ({ apartments, onCreate, onUpdate, onDelete }) => {
   
-  //HOOK per controlar / msotrar el formulari pero crear / editar
+  //HOOK per controlar / mostrar el formulari per crear / editar
   const [showCreateForm, setShowCreateForm] = useState(false);
 
-  //HOOK que controla el estado de los campos del formulario, y me servirá para validarlo, pasárlo al Axios para el POST, y resetarlo después
+  //HOOK que controla l'estat del camps del formulari.
+  // Ens servirà per validar-los, pasar-lo al Axios per fer el POST, i per resetar-los "" después.
   const [newApartment, setNewApartment] = useState({
       price: "",
       area: "",
@@ -17,26 +18,28 @@ const ApartmentListView = ({ apartments, onCreate, onUpdate, onDelete }) => {
       furnishingstatus: ""
   })
 
-  //HOOK per coontrolar si estem editan o crean un nou.  Si es null → estamos creant .Si te id, estem edtan
+  //HOOK per controlar si estem editant o crean un nou Apartment. 
+  // Si id es null, estem creant. Si te id, estem editan
   const [editingApartmentId, setEditingApartmentId] = useState(null);
 
-  
+
+  //Funció que es cridada per el botó EDIT
   const handleEdit = (apartment) => {
       setNewApartment({
-      price: apartment.price,
-      area: apartment.area,
-      bedrooms: apartment.bedrooms,
-      bathrooms: apartment.bathrooms,
-      basement: apartment.basement,
-      airconditioning: apartment.airconditioning,
-      parking: apartment.parking,
-      furnishingstatus: apartment.furnishingstatus
-    });
-    setEditingApartmentId(apartment.id);  // Guardamos el ID del que editamos
-    setShowCreateForm(true);               // Abrimos el formulario
+        price: apartment.price,
+        area: apartment.area,
+        bedrooms: apartment.bedrooms,
+        bathrooms: apartment.bathrooms,
+        basement: apartment.basement,
+        airconditioning: apartment.airconditioning,
+        parking: apartment.parking,
+        furnishingstatus: apartment.furnishingstatus
+      });
+    setEditingApartmentId(apartment.id);  // Guardem el ID que volem editar
+    setShowCreateForm(true);              // Obrim el formulari
   };
 
-  
+  //Funció que es cridada per el botó DELETE
   const handleDelete = (id) => {
       if (window.confirm("¿Are you sure you want to delete this apartment? \n" + id))
         {
@@ -44,40 +47,38 @@ const ApartmentListView = ({ apartments, onCreate, onUpdate, onDelete }) => {
         }
 
   };
-const handleSubmit = async (e) => {
-  e.preventDefault();
 
-  try {
-    if (editingApartmentId) {
-      // Estamos editando
-      await onUpdate(editingApartmentId, newApartment);
-      alert("Apartment updated!");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+      try {
+        if (editingApartmentId) {
+          const apartmentToUpdate = { ...newApartment, id: editingApartmentId };
+          await onUpdate(apartmentToUpdate);
+          alert("Apartment updated!");
     } else {
-      // Estamos creando
-      const created = await onCreate(newApartment);
-      alert("Apartment created! ID: " + created.id);
-    }
+          // Estam creant
+          const created = await onCreate(newApartment);
+          alert("Apartment created! ID: " + created.id);
+        }
 
-    // Reset
-    setNewApartment({
-      price: "",
-      area: "",
-      bedrooms: "",
-      bathrooms: "",
-      basement: "",
-      airconditioning: "",
-      parking: "",
-      furnishingstatus: ""
-    });
-    setEditingApartmentId(null);
-    setShowCreateForm(false);
-  } catch (error) {
-    alert("Error: " + error);
-  }
-};
-
-
-
+        // Reset
+        setNewApartment({
+          price: "",
+          area: "",
+          bedrooms: "",
+          bathrooms: "",
+          basement: "",
+          airconditioning: "",
+          parking: "",
+          furnishingstatus: ""
+        });
+        setEditingApartmentId(null);
+        setShowCreateForm(false);
+      } catch (error) {
+        alert("Error: " + error);
+      }
+  };
 
   return (
     <>
@@ -142,12 +143,12 @@ const handleSubmit = async (e) => {
        {showCreateForm && (
         <div className="create-form-overlay">
           <form id="ApartmentCreate" className="create-form" onSubmit={handleSubmit}>  {/*Evita que el formulario recargue la página*/}
-            <h2>Create Apartment</h2>
+            <h2>{editingApartmentId ? "Edit Apartment" : "Create Apartment"}</h2>
 
             <div className="form-grid">
               <label>
                 Price
-                <input type="text" name="price" placeholder="Enter price in €" 
+                <input type="text" name="price" value={newApartment.price} placeholder="Enter price in €" 
                   onChange={(e) =>
                     setNewApartment({ ...newApartment, price: e.target.value })
                   } 
@@ -156,7 +157,7 @@ const handleSubmit = async (e) => {
 
               <label>
                 Area
-                <input type="text" name="area" placeholder="Square meters" 
+                <input type="text" name="area" value={newApartment.area} placeholder="Square meters" 
                   onChange={(e) =>
                     setNewApartment({ ...newApartment, area: e.target.value })
                   }
@@ -165,7 +166,7 @@ const handleSubmit = async (e) => {
 
               <label>
                 Bedrooms
-                <input type="text" name="bedrooms" placeholder="Number of bedrooms (Ex: 1,2,3...)" 
+                <input type="text" name="bedrooms" value={newApartment.bedrooms} placeholder="Number of bedrooms (Ex: 1,2,3...)" 
                   onChange={(e) =>
                     setNewApartment({ ...newApartment, bedrooms: e.target.value })
                   }
@@ -174,7 +175,7 @@ const handleSubmit = async (e) => {
 
               <label>
                 Bathrooms
-                <input type="text" name="bathrooms" placeholder="Number of bathrooms (Ex: 1,2,3...)" 
+                <input type="text" name="bathrooms" value={newApartment.bathrooms} placeholder="Number of bathrooms (Ex: 1,2,3...)" 
                   onChange={(e) =>
                     setNewApartment({ ...newApartment, bathrooms: e.target.value })
                   }
@@ -183,7 +184,7 @@ const handleSubmit = async (e) => {
 
               <label>
                 Basement
-                <input type="text" name="basement" placeholder="yes / no" 
+                <input type="text" name="basement" value={newApartment.basement} placeholder="yes / no" 
                   onChange={(e) =>
                     setNewApartment({ ...newApartment, basement: e.target.value })
                   }
@@ -192,7 +193,7 @@ const handleSubmit = async (e) => {
 
               <label>
                 Air conditioning
-                <input type="text" name="airconditioning" placeholder="yes / no" 
+                <input type="text" name="airconditioning" value={newApartment.airconditioning} placeholder="yes / no" 
                   onChange={(e) =>
                     setNewApartment({ ...newApartment, airconditioning: e.target.value })
                   }
@@ -201,7 +202,7 @@ const handleSubmit = async (e) => {
 
               <label>
                 Parking
-                <input type="text" name="parking" placeholder="Number of parkins (Ex: 1,2,3...)" 
+                <input type="text" name="parking" value={newApartment.parking} placeholder="Number of parkins (Ex: 1,2,3...)" 
                   onChange={(e) =>
                     setNewApartment({ ...newApartment, parking: e.target.value })
                   }
@@ -210,7 +211,7 @@ const handleSubmit = async (e) => {
 
               <label>
                 Furnishing status
-                <input type="text" name="furnishingstatus" placeholder="unfurnished / semi-furnished"
+                <input type="text" name="furnishingstatus" value={newApartment.furnishingstatus} placeholder="unfurnished / semi-furnished"
                   onChange={(e) =>
                     setNewApartment({ ...newApartment, furnishingstatus: e.target.value })
                   }
