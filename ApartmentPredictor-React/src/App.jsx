@@ -3,10 +3,14 @@ import "./App.css";
 
 export default function App() {
   return (
+
     <div className="App">
-      <h1>Welcome to the Apartment Predictor</h1>
-      <p>Use the navigation to explore available apartments.</p>
+      <header className="app-header">
+        <h1>🏢 Apartment Predictor</h1>
+        <p className="subtitle">Discover, create, and manage your apartments easily!</p>
+      </header>
       <ApartmentList />
     </div>
+    
   );
 }
