@@ -127,13 +127,16 @@ const ApartmentListView = ({ apartments, onCreate, onUpdate, onDelete }) => {
       </div>
 
 
-      {/* Formulario escondido para crear un nuevo apartamento */}  
+      {/* Formulario escondido para crear un nuevo apartamento y/o Updatearlo */}  
 
       {!showCreateForm && (
         <div className="apartment-button-create" style={{ marginTop: "1rem" }}>
           <button
             className="btn create-btn"
-            onClick={() => setShowCreateForm(true)}
+            onClick={() => {
+              setEditingApartmentId(null);
+              setShowCreateForm(true);
+            }}
           >
             Create New Apartment
           </button>
@@ -221,9 +224,9 @@ const ApartmentListView = ({ apartments, onCreate, onUpdate, onDelete }) => {
             </div>
 
             <div className="form-actions">
-              <button className="register-btn" type="submit">
-                    {editingApartmentId ? "Update" : "Register"}
-              </button>
+              <button type="submit" className={editingApartmentId ? "update-btn" : "register-btn"}>
+              {editingApartmentId ? "Update" : "Register"}</button>
+              
               <button
                 className="btn cancel-btn"
                 type="button"
