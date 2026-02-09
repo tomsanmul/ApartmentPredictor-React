@@ -88,6 +88,7 @@ const ApartmentListView = ({ apartments, onCreate, onUpdate, onDelete }) => {
       <div className="apartment-cards">
         {apartments.map((apartment) => (
           <div key={apartment.id} className="apartment-item">
+            <img src="../img/1.jpg" />
             <div className="apartment-header">
               ID: {apartment.id} | ${apartment.price}
             </div>
