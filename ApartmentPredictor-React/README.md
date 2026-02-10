@@ -28,7 +28,7 @@ Proximes FEATURES:  (si arribem!)
     - Mostrar Reviews i Reviewers. 
 
 
-----------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
 
 
 INSTRUCCIONS BÀSIQUES PER FER FUNCIONAR EL  PROJECTE.
@@ -90,10 +90,12 @@ Llista d'EndPoints que s'utilitzant en el Frontend:
 
     "/deleteById" -> Mètode POST que modifica un Apartament. 
    
+
     "/create_apartments" -> Mètode POST que crea una llista d'Apartaments aleatoriament (amb FAKER).
                 Obligatoriament se li ha de pasar un paràemtre integer "quantity" que definirà la quantitat d'apartament a crear.
-                Aquesta funció si existeix en el Backend de Java, però no en Frontend de React. Dubto si s'hauria d'implementar aqui també.
+                Aquesta funció si existeix en el Backend de Java, però no en Frontend de React. 
+                ¿Dubto si s'hauria d'implementar aqui també??
 
 
 
--------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------
