@@ -57,7 +57,7 @@ const ApartmentListView = ({ apartments, onCreate, onUpdate, onDelete }) => {
           await onUpdate(apartmentToUpdate);
           alert("Apartment updated!");
     } else {
-          // Estam creant
+          // Estem creant
           const created = await onCreate(newApartment);
           alert("Apartment created! ID: " + created.id);
         }
