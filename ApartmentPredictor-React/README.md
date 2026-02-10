@@ -6,9 +6,9 @@ UBICACIÓN DEL PROJECTE EN GITHUB:  https://github.com/tomsanmul/ApartmentPredic
 
 DESCRIPCIÓ. ¿QUE ES APARTMENT PREDICTOR? 
 
-ApartmentPredictor es una aplicació per prediure el preu d'un Apartment, depenent d'altres factors i variables típis del mercat.
+ApartmentPredictor es una aplicació per prediure el preu d'un Apartment, depenent d'altres factors i variables típus del mercat.
 En la primera versió, només es una aplicació per crear y gestionar Apartament fàcilment amb operacions CRUD.
-En versions posteriors implementaremt diverses features per prediure els preus, així com llegir opinones dels clients.
+En versions posteriors, implementaremt diverses features per prediure els preus, així com llegir opinons dels clients.
 
 
 
@@ -24,7 +24,7 @@ Proximes FEATURES:  (si arribem!)
     - Quan es crea un apartament, a més, s'ha de poguer pujar un fitxer JPG  (de 300 kb com a màxim) que es la foto i mostrar-la.
     (Ara mateix només tenen foto els Apartaments ja creats), els nous NO tenen foto.
     
-    - PRediure el Preu d'un Apartament
+    - Prediure el Preu d'un Apartament
     - Mostrar Reviews i Reviewers. 
 
 
@@ -46,20 +46,32 @@ INSTRUCCIONS BÀSIQUES PER FER FUNCIONAR EL  PROJECTE.
     Això instarà les dependències.
 
 
-2º: Arrancar el projecte, escribint per la terminal: 
+2º: Arrancar el projecte, primer, ens situem a la branca LOCAL desde la terminal escribim:
+
+    "git checkout local"
+
+    I despres escribim per la terminal: 
 
     "npm run dev"
 
-    Aixecarà el projecte local:   http://localhost:5173/
-    Ja podem obrir el navegador amn aquesta ruta.
+    Aixecarà el projecte local, probablement a:   http://localhost:5173/
+
+    Ja podem obrir el navegador escribint aquesta ruta.
 
 
-3º: ¡¡IMPORTANT!! hem d'aixecar un SPRING BOOT "ApartmentPredictor" , que es el BACKEND del Projecte.
+3º: ¡¡IMPORTANT!! Ara, hem d'aixecar un SPRING BOOT "ApartmentPredictor" , que es el BACKEND del Projecte.
+
 # APARTMENTPREDICTOR  (BACKEND REACT) 
     UBICACIÓN DEL PROJECTE EN GITHUB:  https://github.com/tomsanmul/ApartmentPredictor
 
-    Lo mateix: Un cop descarregat el projecte, instalar les dependències amn "npm install" i executar el projecte. 
-
+    Lo mateix: 
+        1. Descarregar el projecte 
+        2. Obrir-lo en VsCode 
+        3. Instalar les dependències escribint per la Terminal  "npm run install"  
+        4. Canviar la branca escribint per la Terminal  "git checkout local" 
+        5. Exccutar controller/ApartmentRestController
+    
+   
 
 -----------------------------------------------------------------------------------------------------------------------
 
