@@ -135,8 +135,8 @@ const ApartmentListView = ({ apartments, onCreate, onUpdate, onDelete }) => {
           <button
             className="btn create-btn"
             onClick={() => {
-              setEditingApartmentId(null);
-              setShowCreateForm(true);
+              setEditingApartmentId(null);  //IMPORTANTE. AL pulsar el botón CREATE restablecemos el HOOK EditingApartment a NULL. Evitamos asi mezclarlo con el de EDITAR.
+              setShowCreateForm(true); // LLamamos al Formulario para crear un apartamento
             }}
           >
             Create New Apartment
@@ -147,7 +147,7 @@ const ApartmentListView = ({ apartments, onCreate, onUpdate, onDelete }) => {
        {showCreateForm && (
         <div className="create-form-overlay">
           <form id="ApartmentCreate" className="create-form" onSubmit={handleSubmit}>  {/*Evita que el formulario recargue la página*/}
-            <h2>{editingApartmentId ? "Edit Apartment" : "Create Apartment"}</h2>
+            <h2>{editingApartmentId ? "Edit Apartment" : "Create Apartment"}</h2> {/*Esta condición indica el tipo de formulario, si estamos CREANDO o ACTUALIZANDO un Apartamento*/}
 
             <div className="form-grid">
               <label>
@@ -225,8 +225,8 @@ const ApartmentListView = ({ apartments, onCreate, onUpdate, onDelete }) => {
             </div>
 
             <div className="form-actions">
-              <button type="submit" className={editingApartmentId ? "update-btn" : "register-btn"}>
-              {editingApartmentId ? "Update" : "Register"}</button>
+              <button type="submit" className={editingApartmentId ? "update-btn" : "register-btn"}> {/*CONDICIÓN para los estilos del botón: Si estamos creando mostramos el botón de color verde. Si estamos UPDATEANDO msotramos el botón de botón naranja*/}
+              {editingApartmentId ? "Update" : "Register"}</button> {/*Condicion para el texto -> lo mismo: Escribimos la palabra adecuada por si estamos creando o updateando*/}
               
               <button
                 className="btn cancel-btn"
