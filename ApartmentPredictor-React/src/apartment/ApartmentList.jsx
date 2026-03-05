@@ -1,21 +1,28 @@
-// src/apartment/ApartmentList.jsx
-import { useApartments } from "../data/useApartments";
+import { useApartments } from "../hooks/apartmentServiceHook";
 import ApartmentListView from "../view/ApartmentListView";
 
-
 const ApartmentList = () => {
-  const { apartments, isLoading, isAxiosError, createApartment, updateApartment, deleteApartment } = useApartments();
+
+  const {
+    apartments,
+    loading,
+    error,
+    createApartment,
+    updateApartment,
+    deleteApartment
+  } = useApartments();
 
   return (
     <ApartmentListView
       apartments={apartments}
-      isLoading={isLoading}
-      isAxiosError={isAxiosError}
+      isLoading={loading}
+      isAxiosError={error}
       onCreate={createApartment}
       onDelete={deleteApartment}
       onUpdate={updateApartment}
     />
   );
+
 };
 
 export default ApartmentList;
