@@ -1,28 +1,73 @@
-import { useState, useEffect } from "react";
-import { useApartmentService  } from "../services/apartmentServiceContext.jsx";
+import { useState, useEffect, useContext } from "react";
+import { ApartmentServiceContext } from "../services/apartmentServiceContext.jsx";
 
 export const useApartments = () => {
-  const apartmentService = useApartmentService(); // llama al context/service
 
-    const [apartments, setApartments] = useState([]);
+  const apartmentService = useContext(ApartmentServiceContext);
 
-    useEffect(() => {
-        const fetchApartments = async () => {
-            try 
-            {
-                const data = await apartmentService.getAll();
-                setApartments(data);
-            } 
-            catch (error) 
-            {
-                console.error(error);
-                throw error;
-            }
-        };
+  if (!apartmentService) {   //compruebo que NO se utilice el Hook sin el Provider y de error!
+    throw new Error("useApartments must be used inside ApartmentServiceProvider");
+  }
 
-        fetchApartments();
-    }, []);
+  const [apartments, setApartments] = useState([]);
 
-    return { apartments };
+  useEffect(() => {
+    const fetchApartments = async () => {
+      try {
+        const data = await apartmentService.getAll();
+        setApartments(data);
+      } 
+      catch (error) {
+        console.error("Error loading apartments:", error);
+      }
+    };
 
-}
+    fetchApartments();
+
+  }, [apartmentService]);
+
+  const createApartment = async (apartment) => {
+      try
+        {
+          const created = await apartmentService.createApartment(apartment);
+          setApartments((prev) => [...prev, created]);
+          return created;
+        }
+        catch (error){
+          console.log("Error creating apartment:", error);         
+        }
+  }
+
+  const updateApartment = async (apartment) => {
+      try
+        {
+          const updated  = await apartmentService.updateApartment(apartment);
+          setApartments((prev) => prev.map((a) => (a.id ===updated.id ? updated : a)));
+          return updated;
+        }
+        catch (error){
+          console.log("Error updating apartment:", error);      
+        }
+  }
+
+  const deleteApartment = async (id) => {
+      try
+        {
+          await apartmentService.deleteApartment(id);
+          setApartments((prev) => prev.filter((a) => a.id !== id)); 
+          alert("Apartment Deleted!");
+        }
+        catch (error){
+          console.log("Error deleting apartment:", error);      
+        }
+  }
+
+
+  return { 
+    apartments,
+    createApartment,
+    updateApartment,
+    deleteApartment
+  };
+
+};

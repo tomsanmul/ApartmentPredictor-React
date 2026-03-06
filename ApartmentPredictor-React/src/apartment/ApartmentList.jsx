@@ -5,8 +5,6 @@ const ApartmentList = () => {
 
   const {
     apartments,
-    loading,
-    error,
     createApartment,
     updateApartment,
     deleteApartment
@@ -15,8 +13,6 @@ const ApartmentList = () => {
   return (
     <ApartmentListView
       apartments={apartments}
-      isLoading={loading}
-      isAxiosError={error}
       onCreate={createApartment}
       onDelete={deleteApartment}
       onUpdate={updateApartment}
