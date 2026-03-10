@@ -24,17 +24,9 @@ const reducer = (state, action) => {
     case "CREATE_APARTMENT":
       return { ...state, apartments: [...state.apartments, action.payload] };
     case "UPDATE_APARTMENT":
-      return {
-        ...state,
-        apartments: state.apartments.map((a) =>
-          a.id === action.payload.id ? action.payload : a
-        ),
-      };
+      return { ...state, apartments: state.apartments.map((a) => a.id === action.payload.id ? action.payload : a), };
     case "DELETE_APARTMENT":
-      return {
-        ...state,
-        apartments: state.apartments.filter((a) => a.id !== action.payload),
-      };
+      return { ...state, apartments: state.apartments.filter((a) => a.id !== action.payload), };
     default:
       return state;
   }
