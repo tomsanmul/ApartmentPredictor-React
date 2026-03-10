@@ -13,4 +13,6 @@ export const ApartmentServiceContext = createContext(null);
 // Creamos el Context a NULL i asi nos obligamos a que el Provider exista. 
 // Si alguien usa el hook sin Provider, el valor será null y el error será evidente.
 //export const ApartmentServiceContext = createContext(null);
+//
+
 
