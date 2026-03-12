@@ -1,8 +1,19 @@
-import { Drawer, List, ListItem, ListItemText, Toolbar, AppBar, Typography, Box } from "@mui/material";
+import {
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Toolbar,
+  AppBar,
+  Typography,
+  Box,
+  Switch
+} from "@mui/material";
 
 const drawerWidth = 240;
 
-export default function Layout() {
+export default function Layout({ toggleTheme, mode }) {
   return (
     <Box sx={{ display: "flex" }}>
       
@@ -11,9 +22,14 @@ export default function Layout() {
         sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
       >
         <Toolbar>
-          <Typography variant="h6" noWrap>
-            Mi App
+          <Typography variant="h6" noWrap sx={{ flexGrow: 1 }}>
+            Apartment Predictor
           </Typography>
+
+          <Switch
+            checked={mode === "dark"}
+            onChange={toggleTheme}
+          />
         </Toolbar>
       </AppBar>
 
@@ -31,25 +47,28 @@ export default function Layout() {
         <Toolbar />
 
         <List>
-          <ListItem button>
-            <ListItemText primary="Dashboard" />
+          <ListItem disablePadding>
+            <ListItemButton>
+              <ListItemText primary="Dashboard" />
+            </ListItemButton>
           </ListItem>
 
-          <ListItem button>
-            <ListItemText primary="Usuarios" />
+          <ListItem disablePadding>
+            <ListItemButton>
+              <ListItemText primary="Usuarios" />
+            </ListItemButton>
           </ListItem>
 
-          <ListItem button>
-            <ListItemText primary="Configuración" />
+          <ListItem disablePadding>
+            <ListItemButton>
+              <ListItemText primary="Configuración" />
+            </ListItemButton>
           </ListItem>
         </List>
 
       </Drawer>
 
-      <Box
-        component="main"
-        sx={{ flexGrow: 1, p: 3 }}
-      >
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
         <Typography>
           Contenido principal aquí
