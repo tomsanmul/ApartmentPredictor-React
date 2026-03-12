@@ -1,35 +1,19 @@
-import {
-  Drawer,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  Toolbar,
-  AppBar,
-  Typography,
-  Box,
-  Switch
-} from "@mui/material";
+// src/components/Sidebar.jsx
+import ThemeSelector from "./ThemeSelector";
+import { Drawer, List, ListItem, ListItemButton, ListItemText, Toolbar, AppBar, Typography, Box } from "@mui/material";
+import { Link } from "react-router-dom";
 
-const drawerWidth = 240;
+const drawerWidth = 160;
 
-export default function Layout({ toggleTheme, mode }) {
+export default function Sidebar({ toggleTheme, mode }) {
   return (
     <Box sx={{ display: "flex" }}>
-      
-      <AppBar
-        position="fixed"
-        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
-      >
+      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar>
           <Typography variant="h6" noWrap sx={{ flexGrow: 1 }}>
             Apartment Predictor
           </Typography>
-
-          <Switch
-            checked={mode === "dark"}
-            onChange={toggleTheme}
-          />
+          <ThemeSelector mode={mode} toggleTheme={toggleTheme} />
         </Toolbar>
       </AppBar>
 
@@ -40,41 +24,31 @@ export default function Layout({ toggleTheme, mode }) {
           flexShrink: 0,
           "& .MuiDrawer-paper": {
             width: drawerWidth,
-            boxSizing: "border-box"
-          }
+            boxSizing: "border-box",
+          },
         }}
       >
         <Toolbar />
-
         <List>
           <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemText primary="Dashboard" />
+            <ListItemButton component={Link} to="/">
+              <ListItemText primary="Home" />
             </ListItemButton>
           </ListItem>
 
           <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemText primary="Usuarios" />
+            <ListItemButton component={Link} to="/apartments">
+              <ListItemText primary="Apartments" />
             </ListItemButton>
           </ListItem>
 
           <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemText primary="Configuración" />
+            <ListItemButton component={Link} to="/login">
+              <ListItemText primary="Login" />
             </ListItemButton>
           </ListItem>
         </List>
-
       </Drawer>
-
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <Toolbar />
-        <Typography>
-          Contenido principal aquí
-        </Typography>
-      </Box>
-
     </Box>
   );
 }

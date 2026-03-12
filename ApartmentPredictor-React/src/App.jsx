@@ -1,23 +1,21 @@
+// src/App.jsx
 import { useState, useMemo } from "react";
-import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";
+import { ThemeProvider, createTheme, CssBaseline, Box, Toolbar } from "@mui/material";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
+import Sidebar from "./components/Sidebar";
 import ApartmentList from "./apartment/ApartmentList";
 import { ApartmentServiceProvider } from "./services/apartmentServiceProvider";
-import Sidebar from "./components/sidebar";
 
-import "./App.css";
+import Home from "./pages/Home";
+import ApartmentsPage from "./pages/ApartmentsPage";
+import Login from "./pages/Login";
 
 export default function App() {
-
+  // Hooks dentro del componente → correcto
   const [mode, setMode] = useState("light");
 
-  const theme = useMemo(() =>
-    createTheme({
-      palette: {
-        mode: mode
-      }
-    }),
-  [mode]);
+  const theme = useMemo(() => createTheme({ palette: { mode } }), [mode]);
 
   const toggleTheme = () => {
     setMode(prev => (prev === "light" ? "dark" : "light"));
@@ -26,23 +24,20 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-
       <ApartmentServiceProvider>
-        <div className="App">
-          <header className="app-header">
-            <h1>🏢 Apartment Predictor</h1>
-            <p className="subtitle">
-              Discover, create, and manage your apartments easily!
-            </p>
-          </header>
-
+        <Router>
           <Sidebar toggleTheme={toggleTheme} mode={mode} />
 
-          <ApartmentList />
-
-        </div>
+          <Box component="main" sx={{ flexGrow: 1, p: 3, ml: `${160}px` }}>
+            <Toolbar /> {/* para espacio bajo AppBar */}
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/apartments" element={<ApartmentsPage />} />
+              <Route path="/login" element={<Login />} />
+            </Routes>
+          </Box>
+        </Router>
       </ApartmentServiceProvider>
-
     </ThemeProvider>
   );
 }
