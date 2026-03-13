@@ -138,6 +138,17 @@ button:focus-visible {
   transition: transform 0.2s, opacity 0.2s;
 }
 
+/* Botón Detail */
+.detail-btn {
+  background-color: green;
+}
+
+.detail-btn:hover {
+  background-color: darkgreen;
+  transform: scale(1.05);
+  opacity: 1;
+}
+
 /* Botón Edit */
 .edit-btn {
   background-color: orange;
