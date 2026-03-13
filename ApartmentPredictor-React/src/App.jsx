@@ -4,7 +4,6 @@ import { ThemeProvider, createTheme, CssBaseline, Box, Toolbar } from "@mui/mate
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Sidebar from "./components/Sidebar";
-import ApartmentList from "./apartment/ApartmentList";
 import { ApartmentServiceProvider } from "./services/apartmentServiceProvider";
 
 import Home from "./pages/Home";

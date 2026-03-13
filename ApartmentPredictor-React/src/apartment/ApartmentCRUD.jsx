@@ -1,5 +1,5 @@
 import { useApartments } from "../hooks/apartmentServiceHook";
-import ApartmentListView from "../view/ApartmentListView";
+import ApartmentListView from "../apartment/ApartmentListView";
 
 const ApartmentList = () => {
 
