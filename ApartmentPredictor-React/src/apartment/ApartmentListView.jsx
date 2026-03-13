@@ -1,4 +1,5 @@
 import { useState } from "react";
+import ApartmentCreate from "./ApartmentCreate";
 import ApartmentDetail from "./ApartmentDetail";
 
 
@@ -78,6 +79,21 @@ const ApartmentListView = ({ apartments, onCreate, onUpdate, onDelete }) => {
     <>
       <h2>List of Apartments:</h2>
 
+      {!showCreateForm && (
+        <div 
+          className="apartment-button-create">
+          <button
+            className="btn create-btn"
+            onClick={() => {
+              setEditingApartmentId(null);
+              setShowCreateForm(true);
+            }}
+          >
+            Create New Apartment
+          </button>
+        </div>
+      )}
+
       <div className="apartment-cards">
         {apartments.map((apartment) => (
           <div key={apartment.id} className="apartment-item">
@@ -100,44 +116,19 @@ const ApartmentListView = ({ apartments, onCreate, onUpdate, onDelete }) => {
         ))}
       </div>
 
-      {!showCreateForm && (
-        <div className="apartment-button-create" style={{ marginTop: "1rem" }}>
-          <button
-            className="btn create-btn"
-            onClick={() => {
-              setEditingApartmentId(null);
-              setShowCreateForm(true);
-            }}
-          >
-            Create New Apartment
-          </button>
-        </div>
-      )}
 
-      {showCreateForm && (
-        <div className="create-form-overlay">
-          <form id="ApartmentCreate" className="create-form" onSubmit={handleSubmit}>
-            <h2>{editingApartmentId ? "Edit Apartment" : "Create Apartment"}</h2>
-            <div className="form-grid">
-              <label>Price<input type="text" value={newApartment.price} onChange={(e) => setNewApartment({...newApartment, price: e.target.value})} placeholder="Enter price in €" /></label>
-              <label>Area<input type="text" value={newApartment.area} onChange={(e) => setNewApartment({...newApartment, area: e.target.value})} placeholder="Square meters" /></label>
-              <label>Bedrooms<input type="text" value={newApartment.bedrooms} onChange={(e) => setNewApartment({...newApartment, bedrooms: e.target.value})} placeholder="Number of bedrooms" /></label>
-              <label>Bathrooms<input type="text" value={newApartment.bathrooms} onChange={(e) => setNewApartment({...newApartment, bathrooms: e.target.value})} placeholder="Number of bathrooms" /></label>
-              <label>Basement<input type="text" value={newApartment.basement} onChange={(e) => setNewApartment({...newApartment, basement: e.target.value})} placeholder="yes / no" /></label>
-              <label>Air conditioning<input type="text" value={newApartment.airconditioning} onChange={(e) => setNewApartment({...newApartment, airconditioning: e.target.value})} placeholder="yes / no" /></label>
-              <label>Parking<input type="text" value={newApartment.parking} onChange={(e) => setNewApartment({...newApartment, parking: e.target.value})} placeholder="Number of parkings" /></label>
-              <label>Furnishing status<input type="text" value={newApartment.furnishingstatus} onChange={(e) => setNewApartment({...newApartment, furnishingstatus: e.target.value})} placeholder="unfurnished / semi-furnished" /></label>
-            </div>
-            <div className="form-actions">
-              <button type="submit" className={editingApartmentId ? "update-btn" : "register-btn"}>{editingApartmentId ? "Update" : "Register"}</button>
-              <button type="button" className="btn cancel-btn" onClick={() => setShowCreateForm(false)}>Cancel</button>
-            </div>
-          </form>
-        </div>
+         {showCreateForm && (
+        <ApartmentCreate 
+          apartmentData={newApartment}
+          onChange={setNewApartment}
+          onSubmit={handleSubmit}
+          onClose={() => setShowCreateForm(false)}
+          isEditing={!!editingApartmentId}
+        />
       )}
 
       {showDetailForm && selectedApartment && (
-        < ApartmentDetail 
+        <ApartmentDetail 
           apartment={selectedApartment} 
           onClose={() => setShowDetailForm(false)} 
         />

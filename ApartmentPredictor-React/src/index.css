@@ -138,6 +138,30 @@ button:focus-visible {
   transition: transform 0.2s, opacity 0.2s;
 }
 
+
+/* Botón Create New Apartment */
+.apartment-button-create {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0; /* separación arriba y abajo */
+}
+
+.btn.create-btn {
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  background-color: #4caf50; /* verde agradable */
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn.create-btn:hover {
+  background-color: #45a049; /* un poquito más oscuro al pasar el ratón */
+}
+
+
 /* Botón Detail */
 .detail-btn {
   background-color: green;
