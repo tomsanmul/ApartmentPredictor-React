@@ -4,13 +4,11 @@ export default function Home() {
   return (
     <div className="homepage-container">
       <div className="homepage-header">
+        <h2 className="homepage-title">Welcome to Apartment Predictor</h2>
         <img 
           src={apartmentHome} 
           alt="Pretty Apartment!" 
-        />
-        <h1 className="homepage-title">
-          Apartment Predictor
-        </h1>
+        />   
       </div>
     </div>
   );
