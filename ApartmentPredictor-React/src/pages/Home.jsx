@@ -1,4 +1,4 @@
 import { Typography } from "@mui/material";
 export default function Home() { 
-  return <Typography variant="h4">Bienvenido a Home</Typography>; 
+  return <Typography variant="h4">Welcome to Apartment Predictor</Typography>; 
 }

@@ -82,7 +82,7 @@ const ApartmentListView = ({ apartments, onCreate, onUpdate, onDelete }) => {
 
   return (
     <>
-      <h1>Apartments</h1>
+      <h2>List of Apartments:</h2>
 
       {/* Grid de cards */}
       <div className="apartment-cards">
