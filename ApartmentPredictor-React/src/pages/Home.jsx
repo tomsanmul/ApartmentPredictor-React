@@ -1,4 +1,17 @@
-import { Typography } from "@mui/material";
+import apartmentHome from "../assets/apartmentHome.jpg";
+
 export default function Home() { 
-  return <Typography variant="h4">Welcome to Apartment Predictor</Typography>; 
+  return (
+    <div className="homepage-container">
+      <div className="homepage-header">
+        <img 
+          src={apartmentHome} 
+          alt="Pretty Apartment!" 
+        />
+        <h1 className="homepage-title">
+          Apartment Predictor
+        </h1>
+      </div>
+    </div>
+  );
 }

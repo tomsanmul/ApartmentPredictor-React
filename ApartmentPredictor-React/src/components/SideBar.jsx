@@ -32,7 +32,7 @@ export default function Sidebar({ toggleTheme, mode }) {
         <List>
           <ListItem disablePadding>
             <ListItemButton component={Link} to="/">
-              <ListItemText primary="Home" />
+              <ListItemText primary="/Home" />
             </ListItemButton>
           </ListItem>
 
