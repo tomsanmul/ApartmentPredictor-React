@@ -1,6 +1,9 @@
+import React from 'react';
+import ApartmentReviewSummary from './ApartmentReviewSummary';
+
 const ApartmentItem = ({ apartment, onDetail, onUpdate, onDelete, isDeleting }) => {
   return (
-    <li className="apartment-item card">
+    <li className="apartment-item card" style={{ position: 'relative' }}>
       <div className="apartment-header gray-text">
         ID: {apartment.id} | ${apartment.price}
       </div>
@@ -43,6 +46,8 @@ const ApartmentItem = ({ apartment, onDetail, onUpdate, onDelete, isDeleting }) 
           {isDeleting ? "Deleting..." : "Delete"}
         </button>
       </div>
+      
+      <ApartmentReviewSummary apartment={apartment} />
     </li>
   );
 };
