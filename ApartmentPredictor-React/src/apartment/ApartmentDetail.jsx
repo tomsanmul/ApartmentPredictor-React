@@ -30,10 +30,6 @@ const ApartmentDetail = ({ apartment, onClose }) => {
         />
 
         <div className="detail-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem 1rem', marginBottom: '1rem' }}>
-              <p><strong>Price:</strong> ${apartment.price}</p>
-              <p><strong>Area:</strong> {apartment.area}</p>
-              <p><strong>Bedrooms:</strong> {apartment.bedrooms}</p>
-              <p><strong>Bathrooms:</strong> {apartment.bathrooms}</p>
               <p><strong>Parking:</strong> {apartment.parking}</p>
               <p><strong>Basement:</strong> {apartment.basement}</p>
               <p><strong>Air Conditioning: </strong> {apartment.airconditioning}</p>

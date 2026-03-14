@@ -138,6 +138,18 @@ button:focus-visible {
   transition: transform 0.2s, opacity 0.2s;
 }
 
+/* Maquetación para AprtmentCRUD.jsx y ApartmentListView.jsx */
+
+.apartment-img {
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.apartment-img:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
 
 /* Botón Create New Apartment */
 .apartment-button-create {
@@ -150,7 +162,7 @@ button:focus-visible {
   padding: 0.6rem 1.2rem;
   font-size: 1rem;
   border-radius: 6px;
-  background-color: #4caf50; /* verde agradable */
+  background-color: #60b2f0; /* Azul claro */
   color: white;
   border: none;
   cursor: pointer;
@@ -158,7 +170,7 @@ button:focus-visible {
 }
 
 .btn.create-btn:hover {
-  background-color: #45a049; /* un poquito más oscuro al pasar el ratón */
+  background-color: #1e86d0; /* un poquito más oscuro al pasar el ratón */
 }
 
 
@@ -268,7 +280,8 @@ button:focus-visible {
   outline: none;
 }
 
-/* Botones */
+
+/* Botones Formulario  CREATE / EDIT / DELETE Apartment*/
 .form-actions {
   margin-top: 1.5rem;
   display: flex;
@@ -323,6 +336,8 @@ button:focus-visible {
   border-radius: 8px;
   margin-bottom: 10px;
 }
+
+
 
 
 /* Login.css */
