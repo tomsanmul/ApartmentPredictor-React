@@ -1,9 +1,10 @@
 import { useState } from "react";
+import CircularProgress from "@mui/material/CircularProgress";
 import ApartmentCreate from "./ApartmentCreate";
 import ApartmentDetail from "./ApartmentDetail";
 
 
-const ApartmentListView = ({ apartments, onCreate, onUpdate, onDelete }) => {
+const ApartmentListView = ({ apartments, loading, onCreate, onUpdate, onDelete }) => {
 
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [newApartment, setNewApartment] = useState({
@@ -94,27 +95,36 @@ const ApartmentListView = ({ apartments, onCreate, onUpdate, onDelete }) => {
         </div>
       )}
 
-      <div className="apartment-cards">
-        {apartments.map((apartment) => (
-          <div key={apartment.id} className="apartment-item">
-            <img src={`/public/img/${apartment.id}.jpg`} onClick={() => handleDetail(apartment)} className="apartment-img" />
-            <div className="apartment-header">PRICE: ${apartment.price}</div>
+      {loading && (
+        <div className="loading-container">
+          <CircularProgress />
+          <p>Loading apartments...</p>
+        </div>
+      )}
 
-            <div className="apartment-grid">
-              <div><strong>Area:</strong> {apartment.area} sq ft</div>
-              <div><strong>Bedrooms:</strong> {apartment.bedrooms}</div>
-              <div><strong>Bathrooms:</strong> {apartment.bathrooms}</div>
-              <div><strong>Stories:</strong> {apartment.stories}</div>
-            </div>
+      {!loading && (
+        <div className="apartment-cards">
+          {apartments.map((apartment) => (
+            <div key={apartment.id} className="apartment-item">
+              <img src={`/public/img/${apartment.id}.jpg`} onClick={() => handleDetail(apartment)} className="apartment-img" />
+              <div className="apartment-header">PRICE: ${apartment.price}</div>
 
-            <div className="apartment-button-edit">
-              <button className="btn detail-btn" onClick={() => handleDetail(apartment)}>Details</button>
-              <button className="btn edit-btn" onClick={() => handleEdit(apartment)}>Edit</button>
-              <button className="btn delete-btn" onClick={() => handleDelete(apartment.id)}>Delete</button>
+              <div className="apartment-grid">
+                <div><strong>Area:</strong> {apartment.area} sq ft</div>
+                <div><strong>Bedrooms:</strong> {apartment.bedrooms}</div>
+                <div><strong>Bathrooms:</strong> {apartment.bathrooms}</div>
+                <div><strong>Stories:</strong> {apartment.stories}</div>
+              </div>
+
+              <div className="apartment-button-edit">
+                <button className="btn detail-btn" onClick={() => handleDetail(apartment)}>Details</button>
+                <button className="btn edit-btn" onClick={() => handleEdit(apartment)}>Edit</button>
+                <button className="btn delete-btn" onClick={() => handleDelete(apartment.id)}>Delete</button>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
 
 
          {showCreateForm && (

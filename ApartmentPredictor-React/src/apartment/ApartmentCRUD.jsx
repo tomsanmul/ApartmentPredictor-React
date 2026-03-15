@@ -5,6 +5,7 @@ const ApartmentList = () => {
 
   const {
     apartments,
+    loading,
     createApartment,
     updateApartment,
     deleteApartment
@@ -13,6 +14,7 @@ const ApartmentList = () => {
   return (
     <ApartmentListView
       apartments={apartments}
+      loading={loading}
       onCreate={createApartment}
       onDelete={deleteApartment}
       onUpdate={updateApartment}

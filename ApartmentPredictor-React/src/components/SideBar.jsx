@@ -1,7 +1,6 @@
-// src/components/Sidebar.jsx
 import ThemeSelector from "./ThemeSelector";
 import { Drawer, List, ListItem, ListItemButton, ListItemText, Toolbar, AppBar, Typography, Box } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 
 const drawerWidth = 160;
 
@@ -31,19 +30,19 @@ export default function Sidebar({ toggleTheme, mode }) {
         <Toolbar />
         <List>
           <ListItem disablePadding>
-            <ListItemButton component={Link} to="/">
+            <ListItemButton component={RouterLink} to="/">
               <ListItemText primary="Home" />
             </ListItemButton>
           </ListItem>
 
           <ListItem disablePadding>
-            <ListItemButton component={Link} to="/apartments">
+            <ListItemButton component={RouterLink} to="/apartments">
               <ListItemText primary="Apartments" />
             </ListItemButton>
           </ListItem>
 
           <ListItem disablePadding>
-            <ListItemButton component={Link} to="/login">
+            <ListItemButton component={RouterLink} to="/login">
               <ListItemText primary="Login" />
             </ListItemButton>
           </ListItem>

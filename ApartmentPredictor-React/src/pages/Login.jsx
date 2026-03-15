@@ -7,9 +7,11 @@ export default function Login() {
   return (
     <div className="login-page">
       <div className="login-card">
+
         <h1 className="login-title">Login</h1>
 
         <form className="login-form">
+
           <div className="login-field">
             <label>User</label>
             <input
@@ -35,9 +37,10 @@ export default function Login() {
           <button type="button" className="login-button">
             Login
           </button>
+
         </form>
+
       </div>
     </div>
   );
 }
-
