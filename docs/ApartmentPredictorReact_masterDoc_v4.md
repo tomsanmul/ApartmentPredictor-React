@@ -1,22 +1,16 @@
-# ApartmentPredictor-React masterDoc v3
+# ApartmentPredictor-React masterDoc v4
 
 ## Summary
 
 ### Version Goal
 
-In this version we are going to implement a modern <mark>Material-UI navigation architecture</mark> featuring a **responsive sidebar drawer** with collapsible **menu items**, integrated `React Router DOM` for client-side routing between apartment management, dashboard, and several `pages`. 
-
-Apply consistent <mark>theming</mark> using MUI's `sx` props for rapid styling with design tokens, ensuring dark/light mode support and responsive breakpoints. 
-
-The `drawer` will slide in/out with smooth animations, include active route highlighting, and maintain accessibility standards. 
-
-> This foundation will provide scalable navigation patterns for future feature expansion while maintaining clean separation between routing logic and UI components.
+Reviews and Reviewer for all apartments.
 
 ### Product Goal
 
 > The **ApartmentPredictor** project aims to build a modern, intelligent real-estate platform that evolves from a simple apartment listings viewer into a comprehensive property management and prediction system. I
 
-Its goal is to provide users with a seamless experience to browse, manage, and analyze real-estate data through a polished `React` frontend and a robust `Spring Boot` backend. 
+ts goal is to provide users with a seamless experience to browse, manage, and analyze real-estate data through a polished `React` frontend and a robust `Spring Boot` backend. 
 
 As the platform grows, it introduces secure `AWS Cognito authentication`, `Stripe`-powered monetization, and AI-driven predictive analytics for rent and sale pricing. 
 
@@ -91,13 +85,11 @@ $ tree
 
 **Node/Component tree**: product goal
 
-![](https://raw.githubusercontent.com/AlbertProfe/ApartmentPredictor-React/refs/heads/master/docs/diagrams/TREE-ApartmentPredictor_v3-nav.png)
+![](https://raw.githubusercontent.com/AlbertProfe/ApartmentPredictor-React/refs/heads/master/docs/diagrams/TREE-apartmentPredictor-v4.png)
 
 **Project structure**
 
-![](https://raw.githubusercontent.com/AlbertProfe/ApartmentPredictor-React/refs/heads/master/docs/screenshots/PROJECT_apartmentPredictorReact-v3.png)
-
-## Data model
+![](https://raw.githubusercontent.com/AlbertProfe/ApartmentPredictor-React/refs/heads/master/docs/screenshots/PROJECT_apartmentPredictorReact-v4.png)
 
 DATA REST <mark>endpoint</mark>
 
@@ -184,140 +176,9 @@ DATA REST <mark>endpoint</mark>
 }
 ```
 
-## React MUI
-
-todo (how TO install MUI)
-
-## MUI Drawer Navigation
-
-![](https://raw.githubusercontent.com/AlbertProfe/ApartmentPredictor-React/refs/heads/master/docs/screenshots/CODE-material-ui-navigation-drawer.png)
-
-Let's create a Material-UI drawer navigation system with <mark>React Router</mark> for the Apartment Predictor application.
-
-> The implementation provides a modern, user-friendly navigation experience while maintaining clean, maintainable code structure.
-
-**Step-by-Step Implementation**
-
-**1. Navigation Structure Setup**
-
-- Create [src/navigation/](cci:9://file:///home/albert/MyProjects/Sandbox/ApartmentPredictorProject-React/ApartmentPredictor-React/src/navigation:0:0-0:0) directory
-- Build [SideBar.jsx](cci:7://file:///home/albert/MyProjects/Sandbox/ApartmentPredictorProject-React/ApartmentPredictor-React/src/navigation/SideBar.jsx:0:0-0:0) - MUI Drawer component with navigation list
-- Build [NavigationList.jsx](cci:7://file:///home/albert/MyProjects/Sandbox/ApartmentPredictorProject-React/ApartmentPredictor-React/src/navigation/NavigationList.jsx:0:0-0:0) - Menu items with React Router links
-
-**2. Page Components**
-
-- Create [src/pages/HomePage.jsx](cci:7://file:///home/albert/MyProjects/Sandbox/ApartmentPredictorProject-React/ApartmentPredictor-React/src/pages/HomePage.jsx:0:0-0:0) - <mark>Landing</mark> page with apartment image and welcome content
-- Use existing [src/pages/ApartmentPage.jsx](cci:7://file:///home/albert/MyProjects/Sandbox/ApartmentPredictorProject-React/ApartmentPredictor-React/src/pages/ApartmentPage.jsx:0:0-0:0) - `Apartment` management interface
-
-**3. React Router Integration**
-
-- Update [src/App.jsx](cci:7://file:///home/albert/MyProjects/Sandbox/ApartmentPredictorProject-React/ApartmentPredictor-React/src/App.jsx:0:0-0:0) with `BrowserRouter`, `Routes`, and `Route` components
-- Configure two main routes:
-  - `/` → `HomePage`
-  - `/apartments` → `ApartmentPage`
-
-**4. Drawer Functionality**
-
-- Add <mark>hamburger</mark> menu button with fixed positioning (top-left corner)
-  - <mark>toggle</mark> functionality for opening/closing drawer
-  - Integrate drawer close when `navigation` item is selected
-
-**5. Navigation Menu Items**
-
-- `Home` - Links to `/` with HomeIcon
-- `Apartments` - Links to `/apartments` with ApartmentIcon
-
-## Theming
-
-to do (not in this version)
-
 ## Code
 
-**NavigationList.jsx**
-
-```jsx
-function NavigationList({ toggleDrawer }) {
-  const menuItems = [
-    { text: "Home", icon: <HomeIcon />, path: "/" },
-    { text: "Apartments", icon: <ApartmentIcon />, path: "/apartments" },
-  ];
-
-  return (
-    <List>
-      {menuItems.map((item) => (
-        <ListItem key={item.text} disablePadding>
-          <ListItemButton
-            component={Link}
-            to={item.path}
-            onClick={toggleDrawer(false)}
-          >
-            <ListItemIcon>{item.icon}</ListItemIcon>
-            <ListItemText primary={item.text} />
-          </ListItemButton>
-        </ListItem>
-      ))}
-    </List>
-  );
-}
-
-export default NavigationList;
-```
-
-**SideBar.jsx**
-
-```jsx
-import React from "react";
-import Drawer from "@mui/material/Drawer";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
-import NavigationList from "./NavigationList";
-
-function SideBar({ open, toggleDrawer }) {
-  return (
-    <Drawer anchor="left" open={open} onClose={toggleDrawer(false)}>
-      <div style={{ padding: '16px' }}>
-        <Typography variant="h6">
-          Navigation
-        </Typography>
-        <Divider />
-
-        <NavigationList toggleDrawer={toggleDrawer} />
-
-        <Divider />
-      </div>
-    </Drawer>
-  );
-}
-
-export default SideBar;
-```
-
-**App.jsx Structure**
-
-```jsx
-<BrowserRouter>
-  <ApartmentServiceProvider>
-    <div style={containerStyle}>
-      <IconButton style={buttonStyle}> // Fixed hamburger
-      <SideBar open={drawerOpen} toggleDrawer={toggleDrawer} />
-      <main style={mainStyle}>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/apartments" element={<ApartmentPage />} />
-        </Routes>
-      </main>
-    </div>
-  </ApartmentServiceProvider>
-</BrowserRouter>
-```
-
-### Navigation Flow
-
-1. User clicks <mark>hamburger</mark> menu (top-left corner)
-2. <mark>Drawer</mark> slides open from left
-3. User selects navigation item
-4. <mark>Drawer</mark> closes and route changes
-5. <mark>New page renders</mark> in main content area
+todo  
 
 ## package.json
 
@@ -328,7 +189,7 @@ export default SideBar;
 - axios (^1.13.2): HTTP client for making API requests to fetch apartment data
 - `react` (^19.2.0): Core React library for building UI components
 - `react-dom` (^19.2.0): Renders React components to the DOM
-- `@mui` dependendencies
+- `@mui` dependencies
 
 **Development Dependencies:**
 
