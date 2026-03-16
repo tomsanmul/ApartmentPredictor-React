@@ -1,13 +1,13 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:8080/api/v1/apartment/"
+const API_BASE_URL = "http://localhost:8080/api/v1/apartment"
 
 const ApartmentsAPIService = {
 
     getAll: async () => {
         try
         {
-            const response = await axios.get(`${API_BASE_URL}getAll`);
+            const response = await axios.get(`${API_BASE_URL}/getAll`);
             console.log("Apartments loaded:", response.data);
             return response.data;
         } 
@@ -21,7 +21,7 @@ const ApartmentsAPIService = {
     createApartment: async (apartment) => {
         try
         {
-            const response = await axios.post(`${API_BASE_URL}create`, apartment );
+            const response = await axios.post(`${API_BASE_URL}/create`, apartment );
             return response.data;
         } 
         catch (error) 
@@ -35,7 +35,7 @@ const ApartmentsAPIService = {
         try
         {
             console.log("Updating apartment:", apartment);
-            const response = await axios.post(`${API_BASE_URL}update`, apartment );
+            const response = await axios.post(`${API_BASE_URL}/update`, apartment );
             return response.data;
         }
         catch (error) 
@@ -48,7 +48,7 @@ const ApartmentsAPIService = {
     deleteApartment: async (id) => {
         try 
         {
-            const response = await axios.delete(`${API_BASE_URL}deleteById`, { params: { id } });
+            const response = await axios.delete(`${API_BASE_URL}/deleteById`, { params: { id } });
             return response.data;
         }
         
