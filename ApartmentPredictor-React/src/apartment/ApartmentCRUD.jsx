@@ -14,7 +14,7 @@ const ApartmentList = () => {
   } = useApartments();
 
   useEffect(() => {
-    fetchPageApartments(0); // carga la página inicial
+    fetchPageApartments(0); // carga la página inicial de la paginación la 1ª vez (QUE ES LA 0, no la 1!)
   }, [fetchPageApartments]);
 
   return (
@@ -24,7 +24,7 @@ const ApartmentList = () => {
       onCreate={createApartment}
       onDelete={deleteApartment}
       onUpdate={updateApartment}
-      onPageChange={fetchPageApartments}   // 👈 importante
+      onPageChange={fetchPageApartments}
     />
   );
 
