@@ -1,0 +1,41 @@
+
+credentials
+-------------------------------------------------------------------------------------
+
+User pool name
+amplify_backend_manager_d2b4gh12345678
+
+User pool ID
+eu-central-1_12345678
+
+App client name
+web_app_client
+
+
+Client ID
+33ttp93pkgbs9mlu12345678
+
+
+Authentication flows
+Secure remote password (SRP)
+Server-side administrative credentials
+Custom authentication flows from Lambda triggers
+Get user tokens from existing authenticated sessions
+
+
+cli
+---------------------------------------------------------------------------------
+
+aws cognito-idp admin-set-user-password \
+  --user-pool-id YOUR_USER_POOL_ID \
+  --username "tomas" \
+  --password "TempP@ssw0rd123"
+  --permanent
+
+
+aws cognito-idp admin-set-user-password \
+  --user-pool-id "eu-central-12345678" \
+  --username "tomas" \
+  --password "NewP@ssw0rd123" \
+  --permanent
+
