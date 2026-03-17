@@ -4,7 +4,7 @@
 // OBJECTIU: Centralitzar tots el Hoks
 
 
-import { useReducer, useEffect, useContext } from "react";
+import { useReducer, useContext } from "react";
 import { ApartmentServiceContext } from "../services/apartmentServiceContext.jsx";
 
 const initialState = {
@@ -41,20 +41,28 @@ export const useApartments = () => {
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  // GET ALL
-  useEffect(() => {
-    const fetchApartments = async () => {
+    const fetchPageApartments = async (pageNo) => {
+
       dispatch({ type: "FETCH_START" });
       try {
-        const data = await apartmentService.getAll();
-        dispatch({ type: "FETCH_SUCCESS", payload: data });
+        const data = await apartmentService.page(pageNo);
+        console.log("PAGE DATA:", data);
+        dispatch({
+          type: "FETCH_SUCCESS",
+          payload: data.content
+        });
+
       } catch (error) {
-        dispatch({ type: "FETCH_ERROR", payload: error });
+        dispatch({
+          type: "FETCH_ERROR",
+          payload: error
+        });
+
         console.error(error);
       }
+
     };
-    fetchApartments();
-  }, [apartmentService]);
+
 
   // CRUD operations
   const createApartment = async (apartment) => {
@@ -93,6 +101,7 @@ export const useApartments = () => {
     apartments: state.apartments,
     loading: state.loading,
     error: state.error,
+    fetchPageApartments,
     createApartment,
     updateApartment,
     deleteApartment,

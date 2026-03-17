@@ -3,10 +3,21 @@ import CircularProgress from "@mui/material/CircularProgress";
 import ApartmentCreate from "./ApartmentCreate";
 import ApartmentDetail from "./ApartmentDetail";
 
-
-const ApartmentListView = ({ apartments, loading, onCreate, onUpdate, onDelete }) => {
+const ApartmentListView = ({
+  apartments = [],
+  loading,
+  onCreate,
+  onUpdate,
+  onDelete,
+  onPageChange
+}) => {
 
   const [showCreateForm, setShowCreateForm] = useState(false);
+  const [editingApartmentId, setEditingApartmentId] = useState(null);
+
+  const [showDetailForm, setShowDetailForm] = useState(false);
+  const [selectedApartment, setSelectedApartment] = useState(null);
+
   const [newApartment, setNewApartment] = useState({
     price: "",
     area: "",
@@ -17,10 +28,6 @@ const ApartmentListView = ({ apartments, loading, onCreate, onUpdate, onDelete }
     parking: "",
     furnishingstatus: ""
   });
-  const [editingApartmentId, setEditingApartmentId] = useState(null);
-
-  const [showDetailForm, setShowDetailForm] = useState(false);
-  const [selectedApartment, setSelectedApartment] = useState(null);
 
   const handleDetail = (apartment) => {
     setSelectedApartment(apartment);
@@ -38,27 +45,38 @@ const ApartmentListView = ({ apartments, loading, onCreate, onUpdate, onDelete }
       parking: apartment.parking,
       furnishingstatus: apartment.furnishingstatus
     });
+
     setEditingApartmentId(apartment.id);
     setShowCreateForm(true);
   };
 
   const handleDelete = (id) => {
-    if (window.confirm("¿Are you sure you want to delete this apartment? \n" + id)) {
+    if (window.confirm("Are you sure you want to delete this apartment?\n" + id)) {
       onDelete(id);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
       if (editingApartmentId) {
-        const apartmentToUpdate = { ...newApartment, id: editingApartmentId };
+
+        const apartmentToUpdate = {
+          ...newApartment,
+          id: editingApartmentId
+        };
+
         await onUpdate(apartmentToUpdate);
         alert("Apartment updated!");
+
       } else {
+
         const created = await onCreate(newApartment);
         alert("Apartment created! ID: " + created.id);
+
       }
+
       setNewApartment({
         price: "",
         area: "",
@@ -69,8 +87,10 @@ const ApartmentListView = ({ apartments, loading, onCreate, onUpdate, onDelete }
         parking: "",
         furnishingstatus: ""
       });
+
       setEditingApartmentId(null);
       setShowCreateForm(false);
+
     } catch (error) {
       alert("Error: " + error);
     }
@@ -78,11 +98,10 @@ const ApartmentListView = ({ apartments, loading, onCreate, onUpdate, onDelete }
 
   return (
     <>
-      <h2>List of Apartments:</h2>
+      <h2>List of Apartments</h2>
 
       {!showCreateForm && (
-        <div 
-          className="apartment-button-create">
+        <div className="apartment-button-create">
           <button
             className="btn create-btn"
             onClick={() => {
@@ -102,12 +121,27 @@ const ApartmentListView = ({ apartments, loading, onCreate, onUpdate, onDelete }
         </div>
       )}
 
-      {!loading && (
+      {!loading && apartments.length === 0 && (
+        <p>No apartments found.</p>
+      )}
+
+      {!loading && apartments.length > 0 && (
         <div className="apartment-cards">
+
           {apartments.map((apartment) => (
+
             <div key={apartment.id} className="apartment-item">
-              <img src={`/public/img/${apartment.id}.jpg`} onClick={() => handleDetail(apartment)} className="apartment-img" />
-              <div className="apartment-header">PRICE: ${apartment.price}</div>
+
+              <img
+                src={`/img/${apartment.id}.jpg`}
+                alt={`Apartment ${apartment.id}`}
+                className="apartment-img"
+                onClick={() => handleDetail(apartment)}
+              />
+
+              <div className="apartment-header">
+                PRICE: ${apartment.price}
+              </div>
 
               <div className="apartment-grid">
                 <div><strong>Area:</strong> {apartment.area} sq ft</div>
@@ -117,18 +151,47 @@ const ApartmentListView = ({ apartments, loading, onCreate, onUpdate, onDelete }
               </div>
 
               <div className="apartment-button-edit">
-                <button className="btn detail-btn" onClick={() => handleDetail(apartment)}>Details</button>
-                <button className="btn edit-btn" onClick={() => handleEdit(apartment)}>Edit</button>
-                <button className="btn delete-btn" onClick={() => handleDelete(apartment.id)}>Delete</button>
+                <button
+                  className="btn detail-btn"
+                  onClick={() => handleDetail(apartment)}
+                >
+                  Details
+                </button>
+
+                <button
+                  className="btn edit-btn"
+                  onClick={() => handleEdit(apartment)}
+                >
+                  Edit
+                </button>
+
+                <button
+                  className="btn delete-btn"
+                  onClick={() => handleDelete(apartment.id)}
+                >
+                  Delete
+                </button>
               </div>
+
             </div>
+
           ))}
+
         </div>
       )}
 
+      {/* PAGINATION */}
 
-         {showCreateForm && (
-        <ApartmentCreate 
+      {onPageChange && (
+        <div className="pagination">
+          <button onClick={() => onPageChange(1)}>1</button>
+          <button onClick={() => onPageChange(2)}>2</button>
+          <button onClick={() => onPageChange(3)}>3</button>
+        </div>
+      )}
+
+      {showCreateForm && (
+        <ApartmentCreate
           apartmentData={newApartment}
           onChange={setNewApartment}
           onSubmit={handleSubmit}
@@ -138,9 +201,9 @@ const ApartmentListView = ({ apartments, loading, onCreate, onUpdate, onDelete }
       )}
 
       {showDetailForm && selectedApartment && (
-        <ApartmentDetail 
-          apartment={selectedApartment} 
-          onClose={() => setShowDetailForm(false)} 
+        <ApartmentDetail
+          apartment={selectedApartment}
+          onClose={() => setShowDetailForm(false)}
         />
       )}
 
