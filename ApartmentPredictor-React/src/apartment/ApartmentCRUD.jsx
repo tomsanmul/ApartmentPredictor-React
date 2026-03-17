@@ -14,7 +14,7 @@ const ApartmentList = () => {
   } = useApartments();
 
   useEffect(() => {
-    fetchPageApartments(1); // carga la página inicial
+    fetchPageApartments(0); // carga la página inicial
   }, [fetchPageApartments]);
 
   return (

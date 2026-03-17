@@ -2,19 +2,12 @@ import { useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import ApartmentCreate from "./ApartmentCreate";
 import ApartmentDetail from "./ApartmentDetail";
+import Navigation from "../components/NavigationList";
 
-const ApartmentListView = ({
-  apartments = [],
-  loading,
-  onCreate,
-  onUpdate,
-  onDelete,
-  onPageChange
-}) => {
+const ApartmentListView = ({ apartments = [], loading, onCreate, onUpdate, onDelete, onPageChange}) => {
 
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [editingApartmentId, setEditingApartmentId] = useState(null);
-
   const [showDetailForm, setShowDetailForm] = useState(false);
   const [selectedApartment, setSelectedApartment] = useState(null);
 
@@ -151,44 +144,17 @@ const ApartmentListView = ({
               </div>
 
               <div className="apartment-button-edit">
-                <button
-                  className="btn detail-btn"
-                  onClick={() => handleDetail(apartment)}
-                >
-                  Details
-                </button>
-
-                <button
-                  className="btn edit-btn"
-                  onClick={() => handleEdit(apartment)}
-                >
-                  Edit
-                </button>
-
-                <button
-                  className="btn delete-btn"
-                  onClick={() => handleDelete(apartment.id)}
-                >
-                  Delete
-                </button>
+                <button className="btn detail-btn" onClick={() => handleDetail(apartment)}>Details</button>
+                <button className="btn edit-btn" onClick={() => handleEdit(apartment)}>Edit</button>
+                <button className="btn delete-btn" onClick={() => handleDelete(apartment.id)}>Delete</button>
               </div>
-
             </div>
-
           ))}
-
         </div>
       )}
 
       {/* PAGINATION */}
-
-      {onPageChange && (
-        <div className="pagination">
-          <button onClick={() => onPageChange(1)}>1</button>
-          <button onClick={() => onPageChange(2)}>2</button>
-          <button onClick={() => onPageChange(3)}>3</button>
-        </div>
-      )}
+      <Navigation onPageChange={onPageChange} />
 
       {showCreateForm && (
         <ApartmentCreate
