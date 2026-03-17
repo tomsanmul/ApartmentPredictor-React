@@ -18,6 +18,20 @@ const ApartmentsAPIService = {
         }
     },
 
+    page: async (pageNo) => {
+        try
+        {
+            const response = await axios.get(`${API_BASE_URL}/page`, { params: { pageNo } });
+            console.log("Apartments loaded:", response.data);
+            return response.data;
+        } 
+        catch (error) 
+        {
+            console.error("Error fetching apartments:", error);
+            throw error;
+        }
+    },
+
     createApartment: async (apartment) => {
         try
         {
