@@ -8,15 +8,17 @@ We'll protect routes/pages so only logged-in users can access them.
 
 This uses the **low-level** `amazon-cognito-identity-js` library (~6.3.x in 2026) for full control over the login form — no Amplify UI components.
 
-- [GitHub - AlbertProfe/authReactCognitoJS · GitHub](https://github.com/AlbertProfe/authReactCognitoJS)
-
-- [GitHub - AlbertProfe/authReactCognito · GitHub](https://github.com/AlbertProfe/authReactCognito)
-
-- [GitHub - AlbertProfe/authReactCognitoHosted · GitHub](https://github.com/AlbertProfe/authReactCognitoHosted)
+- [AlbertProfe/authReactCognitoJS · GitHub](https://github.com/AlbertProfe/authReactCognitoJS)
+- [AlbertProfe/authReactCognito · GitHub](https://github.com/AlbertProfe/authReactCognito)
+- [AlbertProfe/authReactCognitoHosted · GitHub](https://github.com/AlbertProfe/authReactCognitoHosted)
 
 ## Guide step-by-step
 
-Just 3 steps: Configure AWS Cognito > MockUp + Flow > Project structure + PseudoCode
+Just 3 steps: 
+
+1. Configure `AWS Cognito`
+2. `MockUp` + Flow
+3. `Project structure` + PseudoCode
 
 ### 1. Configure AWS Cognito (create User Pool + App Client)
 
@@ -62,7 +64,7 @@ Go to AWS Console → **Cognito** → **User pools** → **Create user pool**
    - **App Client ID**       e.g. `3f4g5h6j7k8l9m0n1o2p3q4r5s6t`
    - **Region**              e.g. `us-east-1`
 
-3. Create a new user (`verificated`) and at web Cognito CLI to invalidate `Foirce Change Password`:
+3. Create a new user (`verified`) and at web Cognito CLI to invalidate `Foirce Change Password`:
 
 ```tex
 aws cognito-idp admin-set-user-password \
@@ -80,7 +82,7 @@ aws cognito-idp admin-set-user-password \
 
 ![](https://raw.githubusercontent.com/AlbertProfe/ApartmentPredictor-React/refs/heads/master/docs/appends/auth/images/auth-2.png)
 
-That's the minimal custom Cognito login → protected pages setup without registration/signup in the frontend.
+That's the minimal custom `Cognito` login → protected pages setup without registration/signup in the frontend.
 
 ```
 ┌──────────────────────────────┐
@@ -132,6 +134,8 @@ App.jsx
 
 **Install dependencies**
 
+- [AWS SDK for JavaScript v3](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/)
+
 Install the [oidc-client-ts](https://github.com/authts/oidc-client-ts)  and [react-oidc-context](https://github.com/authts/react-oidc-context)  libraries or the or the AWS SDK for JavaScript v3:
 
 ```bash
@@ -141,7 +145,11 @@ npm install oidc-client-ts react-oidc-context --save
 npm install @aws-sdk/client-cognito-identity-provider
 ```
 
-### 4. Code example (jsut a draft)
+### 4. Code
+
+#### Example#1: draft
+
+<mark>It is just a draft</mark>
 
 **Create AuthContext.jsx** (recommended structure)
 
@@ -307,4 +315,77 @@ export default function Dashboard() {
     </div>
   );
 }
+```
+
+#### Example#2: AWS sample
+
+```jsx
+// index.js
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+import { AuthProvider } from "react-oidc-context";
+
+const cognitoAuthConfig = {
+  authority: "https://cognito-idp.eu-central-1.amazonaws.com/eu-central-1_B6ZsT2FGC",
+  client_id: "26unnXXXXXXXXXXXXau6n7",
+  redirect_uri: "<redirect uri>",
+  response_type: "code",
+  scope: "<scopes>",
+};
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+
+// wrap the application with AuthProvider
+root.render(
+  <React.StrictMode>
+    <AuthProvider {...cognitoAuthConfig}>
+      <App />
+    </AuthProvider>
+  </React.StrictMode>
+);
+
+// App.js
+import { useAuth } from "react-oidc-context";
+
+function App() {
+  const auth = useAuth();
+
+  const signOutRedirect = () => {
+    const clientId = "26unnahlf86jXXXXXXXXu6n7";
+    const logoutUri = "<logout uri>";
+    const cognitoDomain = "https://<user pool domain>";
+    window.location.href = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(logoutUri)}`;
+  };
+
+  if (auth.isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (auth.error) {
+    return <div>Encountering error... {auth.error.message}</div>;
+  }
+
+  if (auth.isAuthenticated) {
+    return (
+      <div>
+        <pre> Hello: {auth.user?.profile.email} </pre>
+        <pre> ID Token: {auth.user?.id_token} </pre>
+        <pre> Access Token: {auth.user?.access_token} </pre>
+        <pre> Refresh Token: {auth.user?.refresh_token} </pre>
+
+        <button onClick={() => auth.removeUser()}>Sign out</button>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <button onClick={() => auth.signinRedirect()}>Sign in</button>
+      <button onClick={() => signOutRedirect()}>Sign out</button>
+    </div>
+  );
+}
+
+export default App;
 ```
