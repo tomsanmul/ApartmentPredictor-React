@@ -33,10 +33,13 @@ export default function Login() {
           </div>
 
           <a href="#" className="login-forgot">Forgot?</a>
+          <a href="#" className="login-register">Register</a>
+          
 
           <button type="button" className="login-button">
             Login
           </button>
+          
 
         </form>
 

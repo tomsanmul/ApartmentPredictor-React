@@ -393,3 +393,11 @@ button:focus-visible {
   border-radius: 6px;
   cursor: pointer;
 }
+
+.login-forgot {
+  float: left;
+}
+
+.login-register {
+  float: right;
+}
