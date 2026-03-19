@@ -2,7 +2,10 @@ import { useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import ApartmentCreate from "./ApartmentCreate";
 import ApartmentDetail from "./ApartmentDetail";
+import ApartmentFilter from "./ApartmentFilter";
 import Navigation from "../components/NavigationList";
+
+
 
 const ApartmentListView = ({ apartments = [], loading, onCreate, onUpdate, onDelete, onPageChange}) => {
 
@@ -172,6 +175,9 @@ const ApartmentListView = ({ apartments = [], loading, onCreate, onUpdate, onDel
           onClose={() => setShowDetailForm(false)}
         />
       )}
+
+      {/*FILTER*/}
+      <ApartmentFilter/>
 
     </>
   );
