@@ -12,6 +12,7 @@ function NavigationList({ toggleDrawer }) {
   const menuItems = [
     { text: "Home", icon: <HomeIcon />, path: "/" },
     { text: "Apartments", icon: <ApartmentIcon />, path: "/apartments" },
+    {text: "Apartment Filter", icon: <ApartmentIcon />, path: "/apartmentFilter" }
   ];
 
   return (

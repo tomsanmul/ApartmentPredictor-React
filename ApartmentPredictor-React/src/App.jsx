@@ -6,6 +6,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import SideBar from "./navigation/SideBar";
 import HomePage from "./pages/HomePage";
 import ApartmentPage from "./pages/ApartmentPage";
+import ApartmentFilterPage from "./pages/ApartmentFilterPage";
 import Reviews from "./review/Reviews";
 import "./App.css";
 import { ApartmentServiceProvider } from "./middleware/apartmentService";
@@ -48,7 +49,9 @@ export default function App() {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/apartments" element={<ApartmentPage />} />
+              <Route path="/apartmentFilter" element={<ApartmentFilterPage />} />
               <Route path="/reviews/apartment/:id" element={<Reviews />} />
+
             </Routes>
           </main>
         </div>
