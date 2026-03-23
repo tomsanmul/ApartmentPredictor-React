@@ -7,6 +7,7 @@ import { ApartmentServiceProvider } from "./services/apartmentServiceProvider";
 
 import Home from "./pages/Home";
 import ApartmentsPage from "./pages/ApartmentsPage";
+import ApartmentsFilterPage from "./pages/ApartmentsFilterPage";
 import Login from "./pages/Login";
 
 export default function App() {
@@ -33,6 +34,7 @@ export default function App() {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/apartments" element={<ApartmentsPage />} />
+                <Route path="/apartments Filer" element={<ApartmentsFilterPage />} />
                 <Route path="/login" element={<Login />} />
               </Routes>
             </Box>

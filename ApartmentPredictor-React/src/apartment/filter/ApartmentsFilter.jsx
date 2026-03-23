@@ -1,7 +1,7 @@
 import React from "react";
-import "../index.css";
+import "../../index.css";
 
-const ApartmentFilter = () => {
+export default function ApartmentsFilter() {
   return (
     <div className="filter-container">
       <h2 className="filter-title">Filter Apartments</h2>
@@ -30,5 +30,3 @@ const ApartmentFilter = () => {
     </div>
   );
 };
-
-export default ApartmentFilter;
