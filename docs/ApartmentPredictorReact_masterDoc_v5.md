@@ -1,4 +1,4 @@
-# ApartmentPredictor-React masterDoc v4
+# ApartmentPredictor-React masterDoc v5
 
 ## Summary
 
@@ -49,51 +49,53 @@ The final product integrates geospatial visualization with interactive maps, con
 ## Project Structure
 
 ```textile
-[Thu Mar 12 08:33:33] albert@albert-VirtualBox:~/MyProjects/Sandbox/ApartmentPredictorProject-React/ApartmentPredictor-React/src (master)
+[Fri Mar 20 07:53:49] albert@albert-VirtualBox:~/MyProjects/Sandbox/ApartmentPredictorProject-React/ApartmentPredictor-React/src (master)
 $ tree
 .
 ├── apartment
-│   ├── ApartmentCreate.jsx
-│   ├── ApartmentCRUD.jsx
-│   ├── ApartmentDetail.jsx
-│   ├── ApartmentItem.jsx
-│   ├── ApartmentListContainer.jsx
-│   ├── ApartmentList.jsx
-│   └── ApartmentUpdate.jsx
+│   ├── ApartmentCreate.jsx
+│   ├── ApartmentCRUD.jsx
+│   ├── ApartmentDetail.jsx
+│   ├── ApartmentItem.jsx
+│   ├── ApartmentListContainer.jsx
+│   ├── ApartmentList.jsx
+│   ├── ApartmentReviewSummary.jsx
+│   ├── ApartmentUpdate.jsx
+│   └── filter
+│       └── ApartmentFilter.jsx
 ├── App.css
 ├── App.jsx
 ├── assets
-│   └── apartmentNewYork.jpg
+│   └── apartmentNewYork.jpg
 ├── auth
 ├── components
-│   └── ApartmentForm.jsx
+│   └── ApartmentForm.jsx
 ├── data
-│   └── useApartments.jsx
+│   └── useApartments.jsx
 ├── hooks
 ├── index.css
-├── Init.jsx
 ├── layout
 ├── main.jsx
 ├── middleware
-│   ├── apartmentApiService.js
-│   ├── apartmentServiceHooks.jsx
-│   └── apartmentService.jsx
+│   ├── apartmentApiService.js
+│   ├── apartmentServiceHooks.jsx
+│   └── apartmentService.jsx
 ├── navigation
-└── pages
-    └── ApartmentPage.jsx
+│   ├── NavigationList.jsx
+│   └── SideBar.jsx
+├── pages
+│   ├── ApartmentFilterPage.jsx
+│   ├── ApartmentPage.jsx
+│   └── HomePage.jsx
+└── review
+    └── Reviews.jsx
+
+13 directories, 25 files
+
+.
 ```
 
-**Node/Component tree**: product goal
-
-![](https://raw.githubusercontent.com/AlbertProfe/ApartmentPredictor-React/refs/heads/master/docs/diagrams/TREE-apartmentPredictor-v4.png)
-
-**Project structure**
-
-![](https://raw.githubusercontent.com/AlbertProfe/ApartmentPredictor-React/refs/heads/master/docs/screenshots/PROJECT_apartmentPredictorReact-v4.png)
-
 ## DATA
-
-REST <mark>endpoint</mark>
 
 - [apartmentPredictorCRUD](https://documenter.getpostman.com/view/7473960/2sBXVeFs8L)
 

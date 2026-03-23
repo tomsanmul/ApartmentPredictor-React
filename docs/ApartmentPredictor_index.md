@@ -16,7 +16,8 @@ Quick Evolution Summary
   - [ApartmentPredictor-React/docs/ApartmentPredictorReact_masterDoc_v3](https://github.com/AlbertProfe/ApartmentPredictor-React/blob/master/docs/ApartmentPredictorReact_masterDoc_v3.md)
 - **v4** → Reviews Create/Update and stars at Apartment Card dynamic route
   - [ApartmentPredictor-React/docs/ApartmentPredictorReact_masterDoc_v4](https://github.com/AlbertProfe/ApartmentPredictor-React/blob/master/docs/ApartmentPredictorReact_masterDoc_v4.md)
-- **v5** → Contractual visualization: detailed property/contract views
+- **v5** → FilterApartments ~~Contractual visualization: detailed property/contract views~~
+  - [ApartmentPredictor-React/docs/ApartmentPredictorReact_masterDoc_v5](https://github.com/AlbertProfe/ApartmentPredictor-React/blob/master/docs/ApartmentPredictorReact_masterDoc_v5.md)
 - **v6** → Spatial visualization: maps views
 - **v7** → Intelligence layer: AI prediction (Java-based ML)
 - **v8** → Auth Production readiness: real user management & protection

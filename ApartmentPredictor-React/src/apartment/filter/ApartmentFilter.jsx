@@ -31,6 +31,8 @@ const ApartmentFilter = () => {
     hotwaterheating: "",
     airconditioning: "",
     prefarea: "",
+    minSchools: "",
+    textOnReview: "",
   });
   
   // State to hold the filtered apartments
@@ -212,6 +214,22 @@ const ApartmentFilter = () => {
           <MenuItem value="true">Yes</MenuItem>
           <MenuItem value="false">No</MenuItem>
         </TextField>
+        <TextField
+          label="Min Schools"
+          name="minSchools"
+          type="number"
+          value={filters.minSchools}
+          onChange={handleFilterChange}
+          variant="outlined"
+          inputProps={{ min: 0, max: 100 }}
+        />
+        <TextField
+          label="Text on Review"
+          name="textOnReview"
+          value={filters.textOnReview}
+          onChange={handleFilterChange}
+          variant="outlined"
+        />
       </div>
       
       {/* Apply Filters Button */}

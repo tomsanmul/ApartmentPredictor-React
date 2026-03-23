@@ -61,23 +61,19 @@ const ApartmentApiService = {
 
   filterApartments: async (filters) => {
     try {
-      const params = new URLSearchParams();
-      
-      // Add all non-empty filters to params
-      Object.keys(filters).forEach(key => {
-        const value = filters[key];
-        if (value !== "" && value !== null && value !== undefined) {
-          params.append(key, value);
-        }
-      });
+      // Remove empty/falsy values and use axios params
+      const cleanParams = Object.fromEntries(
+        Object.entries(filters).filter(([value]) => Boolean(value))
+      );
 
-      const response = await axios.get(`${API_BASE_URL}/filter?${params.toString()}`);
+      const response = await axios.get(`${API_BASE_URL}/filter`, { params: cleanParams });
       return response.data;
     } catch (error) {
       console.error("Error filtering apartments:", error);
       throw error;
     }
   },
+
 };
 
 export default ApartmentApiService;
