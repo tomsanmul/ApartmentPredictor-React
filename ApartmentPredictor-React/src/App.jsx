@@ -34,7 +34,7 @@ export default function App() {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/apartments" element={<ApartmentsPage />} />
-                <Route path="/apartments Filer" element={<ApartmentsFilterPage />} />
+                <Route path="/apartments/filter" element={<ApartmentsFilterPage />} />
                 <Route path="/login" element={<Login />} />
               </Routes>
             </Box>

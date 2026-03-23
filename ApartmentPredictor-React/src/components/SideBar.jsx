@@ -42,7 +42,7 @@ export default function Sidebar({ toggleTheme, mode }) {
           </ListItem>
 
           <ListItem disablePadding>
-            <ListItemButton component={RouterLink} to="/apartment/filter/ApartmentsFilter">
+            <ListItemButton component={RouterLink} to="/apartments/filter">
               <ListItemText primary="Apartments Filter" />
             </ListItemButton>
           </ListItem>
