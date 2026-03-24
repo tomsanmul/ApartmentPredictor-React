@@ -1,4 +1,4 @@
-import apartmentHome from "../assets/apartmentHome.jpg";
+import apartmentHome from "../../public/img/apartmentHome.jpg";
 
 export default function Home() { 
   return (
