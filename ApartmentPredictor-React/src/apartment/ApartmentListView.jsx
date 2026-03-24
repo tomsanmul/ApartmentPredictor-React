@@ -2,7 +2,7 @@ import { useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import ApartmentCreate from "./ApartmentCreate";
 import ApartmentDetail from "./ApartmentDetail";
-import ApartmentFilter from "./filter/ApartmentsFilter";
+import ApartmentsFilter from "./ApartmentsFilter";
 import Navigation from "../components/NavigationList";
 
 
@@ -93,23 +93,8 @@ const ApartmentListView = ({ apartments = [], loading, onCreate, onUpdate, onDel
   };
 
   return (
-    <>
-      <h2>List of Apartments</h2>
-
-      {!showCreateForm && (
-        <div className="apartment-button-create">
-          <button
-            className="btn create-btn"
-            onClick={() => {
-              setEditingApartmentId(null);
-              setShowCreateForm(true);
-            }}
-          >
-            Create New Apartment
-          </button>
-        </div>
-      )}
-
+    <>      
+      <ApartmentsFilter />
       {loading && (
         <div className="loading-container">
           <CircularProgress />
@@ -153,6 +138,20 @@ const ApartmentListView = ({ apartments = [], loading, onCreate, onUpdate, onDel
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {!showCreateForm && (
+        <div className="apartment-button-create">
+          <button
+            className="btn create-btn"
+            onClick={() => {
+              setEditingApartmentId(null);
+              setShowCreateForm(true);
+            }}
+          >
+            Create New Apartment
+          </button>
         </div>
       )}
 

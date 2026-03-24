@@ -1,4 +1,4 @@
-import ApartmentsFilter from "../apartment/filter/ApartmentsFilter";
+import ApartmentsFilter from "../apartment/ApartmentsFilter";
 
 export default function ApartmentsFilterPage() { 
   return <ApartmentsFilter />

@@ -1,5 +1,5 @@
 import React from "react";
-import "../../index.css";
+import "../index.css";
 
 export default function ApartmentsFilter() {
   return (
@@ -30,3 +30,4 @@ export default function ApartmentsFilter() {
     </div>
   );
 };
+
