@@ -8,17 +8,18 @@
 
 Quick Evolution Summary
 
-- **v1** → Proof of concept: just apartments list (coupled → decoupled fetch)
+- **v1** → Proof of concept: just apartments list (coupled → <mark>decoupled fetch</mark>)
   - [ApartmentPredictor-React/docs/ApartmentPredictorReact_masterDoc_v1](https://github.com/AlbertProfe/ApartmentPredictor-React/blob/master/docs/ApartmentPredictorReact_masterDoc_v1.md)
-- **v2** → Backend becomes rich domain model with relations and CRUD Apartment
+- **v2** → Backend becomes rich domain model with relations and <mark>CRUD Apartment</mark>
   - [ApartmentPredictor-React/docs/ApartmentPredictorReact_masterDoc_v2](https://github.com/AlbertProfe/ApartmentPredictor-React/blob/master/docs/ApartmentPredictorReact_masterDoc_v2.md)
-- **v3** → UI/UX jump: professional look + shared global state
+- **v3** → UI/UX jump: professional look + <mark>shared global state</mark>
   - [ApartmentPredictor-React/docs/ApartmentPredictorReact_masterDoc_v3](https://github.com/AlbertProfe/ApartmentPredictor-React/blob/master/docs/ApartmentPredictorReact_masterDoc_v3.md)
-- **v4** → Reviews Create/Update and stars at Apartment Card dynamic route
+- **v4** → Reviews Create/Update and stars at Apartment Card <mark>dynamic route</mark>
   - [ApartmentPredictor-React/docs/ApartmentPredictorReact_masterDoc_v4](https://github.com/AlbertProfe/ApartmentPredictor-React/blob/master/docs/ApartmentPredictorReact_masterDoc_v4.md)
-- **v5** → FilterApartments ~~Contractual visualization: detailed property/contract views~~
+- **v5** → <mark>FilterApartments</mark> ~~Contractual visualization: detailed property/contract views~~
   - [ApartmentPredictor-React/docs/ApartmentPredictorReact_masterDoc_v5](https://github.com/AlbertProfe/ApartmentPredictor-React/blob/master/docs/ApartmentPredictorReact_masterDoc_v5.md)
-- **v6** → Spatial visualization: maps views
+- **v6** → Spatial visualization: <mark>maps views</mark>
+  - [ApartmentPredictor-React/docs/ApartmentPredictorReact_masterDoc_v6](https://github.com/AlbertProfe/ApartmentPredictor-React/blob/master/docs/ApartmentPredictorReact_masterDoc_v6.md)
 - **v7** → Intelligence layer: AI prediction (Java-based ML)
 - **v8** → Auth Production readiness: real user management & protection
 - **v9** → Business model: payments / monetization
