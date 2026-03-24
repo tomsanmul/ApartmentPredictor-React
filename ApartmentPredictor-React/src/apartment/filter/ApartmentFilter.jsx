@@ -67,7 +67,7 @@ const ApartmentFilter = () => {
   return (
     <Paper elevation={3} style={{ padding: "20px", margin: "20px" }}>
       {/* Filters Section */}
-      <Typography variant="h4" sx={{ marginBottom: 2 }}>Filter (Plain) Apartments</Typography>
+      <Typography variant="h4" sx={{ marginBottom: 2 }}>Filter (Full) Apartments</Typography>
       <div
         style={{
           display: "grid",

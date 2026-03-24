@@ -7,6 +7,7 @@ import SideBar from "./navigation/SideBar";
 import HomePage from "./pages/HomePage";
 import ApartmentPage from "./pages/ApartmentPage";
 import ApartmentFilterPage from "./pages/ApartmentFilterPage";
+import SchoolMapPage from "./pages/SchoolMapPage";
 import Reviews from "./review/Reviews";
 import "./App.css";
 import { ApartmentServiceProvider } from "./middleware/apartmentService";
@@ -32,8 +33,9 @@ export default function App() {
     display: 'flex',
     flexDirection: 'column',
     flexGrow: 1,
-    padding: '24px',
-    marginLeft: '48px'
+    padding: '8px',
+    marginLeft: '48px',
+    width: '100%'
   };
   
   return (
@@ -51,6 +53,7 @@ export default function App() {
               <Route path="/apartments" element={<ApartmentPage />} />
               <Route path="/apartmentFilter" element={<ApartmentFilterPage />} />
               <Route path="/reviews/apartment/:id" element={<Reviews />} />
+              <Route path="/schoolMap" element={<SchoolMapPage />} />
 
             </Routes>
           </main>
