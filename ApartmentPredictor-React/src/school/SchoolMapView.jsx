@@ -5,7 +5,7 @@ const SchoolMapView = () => {
     const manhattanPosition = [40.7831, -73.9712];
 
     return (
-        <div style={{ height: '480px', width: '100%' }}>
+        <div style={{ height: '680px', width: '80%' }}>
             <p>School Map</p>
             <MapContainer center={manhattanPosition} zoom={13} scrollWheelZoom={false} style={{ height: '100%', width: '100%' }}>
                 <TileLayer
