@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useApartments } from "../hooks/apartmentServiceHook";
-import ApartmentListView from "../apartment/ApartmentListView";
+import ApartmentListContainer from "./ApartmentListContainer";
 
 const ApartmentList = () => {
 
@@ -18,7 +18,7 @@ const ApartmentList = () => {
   }, [fetchPageApartments]);
 
   return (
-    <ApartmentListView
+    <ApartmentListContainer
       apartments={apartments}
       loading={loading}
       onCreate={createApartment}

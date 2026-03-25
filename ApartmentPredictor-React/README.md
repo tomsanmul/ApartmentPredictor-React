@@ -1,5 +1,5 @@
 # APARTMENTPREDICTOR  (FRONTEND REACT) 
-# VERSIÓ ACTUAL: V. 1.0 
+# VERSIÓ ACTUAL: V. 3.0 
 
 UBICACIÓN DEL PROJECTE EN GITHUB:  https://github.com/tomsanmul/ApartmentPredictor-React
 
@@ -7,25 +7,41 @@ UBICACIÓN DEL PROJECTE EN GITHUB:  https://github.com/tomsanmul/ApartmentPredic
 DESCRIPCIÓ. ¿QUE ES APARTMENT PREDICTOR? 
 
 ApartmentPredictor es una aplicació per prediure el preu d'un Apartment, depenent d'altres factors i variables típus del mercat.
-En la primera versió, només es una aplicació per crear y gestionar Apartament fàcilment amb operacions CRUD.
-En versions posteriors, implementaremt diverses features per prediure els preus, així com llegir opinons dels clients.
 
+
+#  V. 4.0
+FEATURES :
+    - Implementació d'una nova feature: ApartmentFilter.jsx
+    - Implementació d'una barra de navegació inferior.
+
+
+#  V. 3.0
+FEATURES :
+    - Més desacoplament d'Apartment en:
+        ApartmentCreate.jsx
+        ApartmentCRUD.jsx
+        ApartmentDetail.jsx -> Nova feature!!
+        ApartmentListContainer.jsx <- Aquest era l'antic ApartmentListView.jsx . Només l'he renombrat.
+    - Implementació d'un "CircularProgress" from "@mui/material/CircularProgress";    
+    - Implementació d'una SideBar.
+    - Implementació d'una pàgina HOME.
+    - Implementació d'un selector mode clar / oscur
+    - Implementació d'un LOGIN (NO FUNCIONAL, només es un mookup Formulari)
+
+
+#  V. 2.0
+FEATURES TÈCNIQUES PER MILLORAR ESCALABILITAT I COMPRENSIÓ  (READABLE) DEL PROJECTE.
+    - Desacoplament d'Apartment en:
+        ApartmentList.jsx
+        ApartmentListView.jsx
+    - Implementació d'un Service, Context i Provider per gestionar les dades.
+    - Centralització amb 1 HOOK, una versió sense Reducer i un altre amb un useReduce.
 
 
 #  V. 1.0
 FEATURES:
     Implementades les funcions bàsiques d'un CRUD mitjançant API REST.
         Llistar, Crear, Modificar i Esborrar un apartment.
-
-
-
-Proximes FEATURES:  (si arribem!)
-
-    - Quan es crea un apartament, a més, s'ha de poguer pujar un fitxer JPG  (de 300 kb com a màxim) que es la foto i mostrar-la.
-    (Ara mateix només tenen foto els Apartaments ja creats), els nous NO tenen foto.
-    
-    - Prediure el Preu d'un Apartament
-    - Mostrar Reviews i Reviewers. 
 
 
 --------------------------------------------------------------------------------------------------------------------------
