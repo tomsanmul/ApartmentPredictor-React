@@ -8,7 +8,7 @@ DESCRIPCIÓ. ¿QUE ES APARTMENT PREDICTOR?
 
 ApartmentPredictor es una aplicació per prediure el preu d'un Apartment, depenent d'altres factors i variables típus del mercat.
 En la primera versió, només es una aplicació per crear y gestionar Apartament fàcilment amb operacions CRUD.
-En versions posteriors, implementaremt diverses features per prediure els preus, així com llegir opinons dels clients.
+En versions posteriors, implementaremt diverses features per prediure els preus, així com llegir opinions dels clients.
 
 
 
@@ -16,16 +16,6 @@ En versions posteriors, implementaremt diverses features per prediure els preus,
 FEATURES:
     Implementades les funcions bàsiques d'un CRUD mitjançant API REST.
         Llistar, Crear, Modificar i Esborrar un apartment.
-
-
-
-Proximes FEATURES:  (si arribem!)
-
-    - Quan es crea un apartament, a més, s'ha de poguer pujar un fitxer JPG  (de 300 kb com a màxim) que es la foto i mostrar-la.
-    (Ara mateix només tenen foto els Apartaments ja creats), els nous NO tenen foto.
-    
-    - Prediure el Preu d'un Apartament
-    - Mostrar Reviews i Reviewers. 
 
 
 --------------------------------------------------------------------------------------------------------------------------
