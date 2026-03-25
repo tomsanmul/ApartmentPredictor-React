@@ -20,6 +20,16 @@ export default function ApartmentsFilter({ onFilter }) {
     furnishingstatus: "none"
   });
 
+
+    // State to hold the filtered apartments
+    const [filteredApartments, setFilteredApartments] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    
+    // Custom hook to access the apartment service
+    const apartmentService = useApartmentService();
+
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
 
@@ -35,10 +45,30 @@ export default function ApartmentsFilter({ onFilter }) {
       }));
     }
   };
+  
+    const handleSubmit = (e) => {
+      const { name, value } = e.target;
+      setFilters((prev) => ({ ...prev, [name]: value }));
+    };
+  
+    
+    const applyFilters = async () => {
+      setLoading(true);
+      setError(null);
+  
+      try {
+        const data = await apartmentService.filterApartments(filters);
+        setFilteredApartments(data);
+      } catch (error) {
+        console.error("Filter error:", error);
+        setError(error.message || "Failed to fetch data");
+        setFilteredApartments([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+  
 
-  const handleSubmit = () => {
-    onFilter(filters);
-  };
 
   return (
     <div className="filter-container">
