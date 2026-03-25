@@ -29,7 +29,7 @@ FEATURES TÈCNIQUES PER MILLORAR ESCALABILITAT I COMPRENSIÓ  (READABLE) DEL PRO
         ApartmentList.jsx
         ApartmentListView.jsx
     - Implementació d'un Service, Context i Provider per gestionar les dades.
-    - Centralització amb 1 HOOK, una versió sense Reducer i un altre amb un useReduce.
+    - Centralització amb 1 HOOK, una versió sense Reducer i un altre amb un useReducer.
 
 
 #  V. 1.0
