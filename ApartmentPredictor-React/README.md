@@ -11,7 +11,9 @@ ApartmentPredictor es una aplicació per prediure el preu d'un Apartment, depene
 
 #  V. 2.0
 FEATURES TÈCNIQUES PER MILLORAR ESCALABILITAT I COMPRENSIÓ  (READABLE) DEL PROJECTE.
-    - Desacoplament d'Apartment
+    - Desacoplament d'Apartment en:
+        ApartmentList.jsx
+        ApartmentListView.jsx
     - Implementació d'un Service, Context i Provider per gestionar les dades.
     - Centralització amb 1 HOOK, una versió sense Reducer i un altre amb un useReduce.
 
@@ -20,7 +22,6 @@ FEATURES TÈCNIQUES PER MILLORAR ESCALABILITAT I COMPRENSIÓ  (READABLE) DEL PRO
 FEATURES:
     Implementades les funcions bàsiques d'un CRUD mitjançant API REST.
         Llistar, Crear, Modificar i Esborrar un apartment.
-
 
 
 --------------------------------------------------------------------------------------------------------------------------
