@@ -100,6 +100,8 @@ const ApartmentListView = ({ apartments = [], loading, onCreate, onUpdate, onDel
   return (
     <>      
       <ApartmentsFilter onFilter={handleFilter} />
+       <br />
+        There are {apartments.length} results.     
 
       {loading && (
         <div className="loading-container">
