@@ -133,6 +133,13 @@ export default function ApartmentsFilter({ onFilter }) {
           </button>
           </div>
       </div>
+
+      <br />
+      <Typography color="success" style={{ marginBottom: "20px" }}>
+        There are {filteredApartments.length} results.
+      </Typography>
+      
     </div>
+    
   );
 }

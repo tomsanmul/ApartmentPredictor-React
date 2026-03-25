@@ -100,6 +100,7 @@ const ApartmentListView = ({ apartments = [], loading, onCreate, onUpdate, onDel
   return (
     <>      
       <ApartmentsFilter onFilter={handleFilter} />
+
       {loading && (
         <div className="loading-container">
           <CircularProgress />
