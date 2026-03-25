@@ -16,6 +16,7 @@ FEATURES :
         ApartmentCRUD.jsx
         ApartmentDetail.jsx -> Nova feature!!
         ApartmentListContainer.jsx <- Aquest era l'antic ApartmentListView.jsx . Només l'he renombrat.
+    - Implementació d'un "CircularProgress" from "@mui/material/CircularProgress";    
     - Implementació d'una SideBar.
     - Implementació d'una pàgina HOME.
     - Implementació d'un selector mode clar / oscur
