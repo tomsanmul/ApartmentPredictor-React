@@ -10,7 +10,7 @@ export const useApartments = () => {
   useEffect(() => {
     const fetchApartments = async () => {
       try {
-        const response = await axios.get("/api/apartment/getAll");
+        const response = await axios.get("/api/v1/apartment/getAll");
         console.log("API Response:", response);
         console.log("Apartments Data:", response.data);
         console.log("First Apartment:", response.data[0]);
