@@ -8,6 +8,7 @@ const ApartmentList = () => {
     apartments,
     loading,
     fetchPageApartments,
+    filterApartments,
     createApartment,
     updateApartment,
     deleteApartment
@@ -21,10 +22,11 @@ const ApartmentList = () => {
     <ApartmentListContainer
       apartments={apartments}
       loading={loading}
-      onCreate={createApartment}
-      onDelete={deleteApartment}
-      onUpdate={updateApartment}
       onPageChange={fetchPageApartments}
+      onFilter={filterApartments} 
+      onCreate={createApartment}
+      onUpdate={updateApartment}
+      onDelete={deleteApartment}
     />
   );
 

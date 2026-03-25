@@ -21,15 +21,6 @@ export default function ApartmentsFilter({ onFilter }) {
   });
 
 
-    // State to hold the filtered apartments
-    const [filteredApartments, setFilteredApartments] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-    
-    // Custom hook to access the apartment service
-    const apartmentService = useApartmentService();
-
-
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
 
@@ -46,28 +37,23 @@ export default function ApartmentsFilter({ onFilter }) {
     }
   };
   
-    const handleSubmit = (e) => {
-      const { name, value } = e.target;
-      setFilters((prev) => ({ ...prev, [name]: value }));
+
+
+  const handleSubmit = () => {
+    const parsedFilters = {
+      ...filters,
+      minPrice: filters.minPrice ? Number(filters.minPrice) : null,
+      maxPrice: filters.maxPrice ? Number(filters.maxPrice) : null,
+      minArea: filters.minArea ? Number(filters.minArea) : null,
+      maxArea: filters.maxArea ? Number(filters.maxArea) : null,
+      bedrooms: filters.bedrooms ? Number(filters.bedrooms) : null,
+      bathrooms: filters.bathrooms ? Number(filters.bathrooms) : null,
+      stories: filters.stories ? Number(filters.stories) : null,
+      parking: filters.parking ? Number(filters.parking) : null,
     };
-  
-    
-    const applyFilters = async () => {
-      setLoading(true);
-      setError(null);
-  
-      try {
-        const data = await apartmentService.filterApartments(filters);
-        setFilteredApartments(data);
-      } catch (error) {
-        console.error("Filter error:", error);
-        setError(error.message || "Failed to fetch data");
-        setFilteredApartments([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-  
+
+  onFilter(parsedFilters);
+};
 
 
   return (
@@ -142,7 +128,7 @@ export default function ApartmentsFilter({ onFilter }) {
 
         {/* BOTÓN AQUÍ */}
           <div className="button-container">
-            <button className="filter-button" onClick={handleSubmit}>
+            <button className="filter-button" onClick={handleSubmit}>   
             FILTER
           </button>
           </div>

@@ -27,6 +27,8 @@ const reducer = (state, action) => {
       return { ...state, apartments: state.apartments.map((a) => a.id === action.payload.id ? action.payload : a), };
     case "DELETE_APARTMENT":
       return { ...state, apartments: state.apartments.filter((a) => a.id !== action.payload), };
+    case "FILTER_APARTMENTS":
+      return { ...state, apartments: action.payload, loading: false };
     default:
       return state;
   }
@@ -61,6 +63,28 @@ export const useApartments = () => {
         console.error(error);
       }
 
+    };
+
+    //FILTER APARTMENTS
+    const filterApartments = async (filters) => {
+      dispatch({ type: "FETCH_START" });
+
+      try {
+        const data = await apartmentService.filterApartments(filters);
+
+        dispatch({
+          type: "FILTER_APARTMENTS",
+          payload: data
+        });
+
+      } catch (error) {
+        dispatch({
+          type: "FETCH_ERROR",
+          payload: error
+        });
+
+        console.error(error);
+      }
     };
 
 
@@ -102,6 +126,7 @@ export const useApartments = () => {
     loading: state.loading,
     error: state.error,
     fetchPageApartments,
+    filterApartments,
     createApartment,
     updateApartment,
     deleteApartment,

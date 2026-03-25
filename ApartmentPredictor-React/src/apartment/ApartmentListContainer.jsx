@@ -7,7 +7,7 @@ import Navigation from "../components/NavigationList";
 
 
 
-const ApartmentListView = ({ apartments = [], loading, onCreate, onUpdate, onDelete, onPageChange}) => {
+const ApartmentListView = ({ apartments = [], loading, onCreate, onUpdate, onDelete, onPageChange, onFilter}) => {
 
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [editingApartmentId, setEditingApartmentId] = useState(null);
@@ -28,6 +28,11 @@ const ApartmentListView = ({ apartments = [], loading, onCreate, onUpdate, onDel
   const handleDetail = (apartment) => {
     setSelectedApartment(apartment);
     setShowDetailForm(true);
+  };
+
+  const handleFilter = (filters) => {
+    console.log("Applying filters:", filters);
+    onFilter(filters);  
   };
 
   const handleEdit = (apartment) => {
@@ -94,7 +99,7 @@ const ApartmentListView = ({ apartments = [], loading, onCreate, onUpdate, onDel
 
   return (
     <>      
-      <ApartmentsFilter />
+      <ApartmentsFilter onFilter={handleFilter} />
       {loading && (
         <div className="loading-container">
           <CircularProgress />
