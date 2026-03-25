@@ -403,7 +403,9 @@ button:focus-visible {
 }
 
 
+
 /* Filter css */
+
 .filter-container {
   width: 100%;
   padding: 20px;
@@ -418,10 +420,17 @@ button:focus-visible {
 /* FILAS */
 .filter-row {
   display: flex;
-  gap: 15px;
+  gap: 10px;
   margin-bottom: 12px;
   flex-wrap: wrap;
   align-items: center;
+}
+
+/* 🔥 GRID PARA FILA 1 */
+.grid-row {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr); /* 6 columnas exactas */
+  gap: 10px;
 }
 
 /* CAMPOS */
@@ -429,13 +438,13 @@ button:focus-visible {
   display: flex;
   align-items: center;
   gap: 6px;
-  min-width: 180px;
+  min-width: 0; /* 🔥 clave para que no rompa el grid */
 }
 
 /* LABEL */
 .filter-field label {
-  min-width: 90px;
-  font-size: 14px;
+  font-size: 13px;
+  white-space: nowrap;
 }
 
 /* INPUTS */
@@ -444,39 +453,65 @@ button:focus-visible {
   padding: 6px;
   border: 1px solid #ccc;
   border-radius: 6px;
-  width: 100%;
+  width: 70%;
 }
 
 /* CHECKBOX GROUP */
 .checkbox-group {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 20px;
   align-items: center;
 }
 
 .checkbox-group label {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
   font-size: 14px;
   white-space: nowrap;
 }
 
 /* SELECT */
 .furnishing {
-  min-width: 200px;
+  margin-left: auto; /* 🔥 lo manda hacia la derecha */
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 /* BOTÓN */
 .filter-button {
-  margin-top: 10px;
-  padding: 10px 20px;
+  height: px;
+  padding: 0 20px;
   border: none;
   background: #007bff;
   color: white;
   border-radius: 6px;
   cursor: pointer;
+  white-space: nowrap;
+}
+
+.filter-button:hover {
+  background: #0056b3;
+}
+
+/* CONTENEDOR DEL BOTÓN */
+.button-container {
+  margin-left: auto; /* 🔥 empuja a la derecha */
+}
+
+/* BOTÓN */
+.filter-button {
+  height: 36px;
+  padding: 0 30px; /* más ancho */
+  min-width: 120px; /* 👈 el doble aprox */
+  border: none;
+  background: #007bff;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
 }
 
 .filter-button:hover {

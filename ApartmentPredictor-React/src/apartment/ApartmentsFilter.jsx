@@ -45,7 +45,7 @@ export default function ApartmentsFilter({ onFilter }) {
       <h2 className="filter-title">Filter Apartments</h2>
 
       {/* FILA 1 */}
-      <div className="filter-row">
+      <div className="filter-row grid-row">
         <div className="filter-field">
           <label>Min Price</label>
           <input type="number" name="minPrice" value={filters.minPrice} onChange={handleChange} />
@@ -78,7 +78,7 @@ export default function ApartmentsFilter({ onFilter }) {
       </div>
 
       {/* FILA 2 */}
-      <div className="filter-row">
+     <div className="filter-row">
         <div className="filter-field">
           <label>Stories</label>
           <input type="number" name="stories" value={filters.stories} onChange={handleChange} />
@@ -90,14 +90,14 @@ export default function ApartmentsFilter({ onFilter }) {
         </div>
 
         {/* CHECKBOXES */}
-        <div className="checkbox-group">
-          <label>Main Road <input type="checkbox" name="mainroad" onChange={handleChange} /></label>
-          <label>Guest Room <input type="checkbox" name="guestroom" onChange={handleChange} /></label>
-          <label>Basement <input type="checkbox" name="basement" onChange={handleChange} /></label>
-          <label>Hot Water <input type="checkbox" name="hotwaterheating" onChange={handleChange} /></label>
-          <label>Air Conditioning <input type="checkbox" name="airconditioning" onChange={handleChange} /></label>
-          <label>Preferred Area <input type="checkbox" name="prefarea" onChange={handleChange} /></label>
-        </div>
+          <div className="checkbox-group">
+            <label>Main Road <input type="checkbox" name="mainroad" onChange={handleChange} /></label>
+            <label>Guest Room <input type="checkbox" name="guestroom" onChange={handleChange} /></label>
+            <label>Basement <input type="checkbox" name="basement" onChange={handleChange} /></label>
+            <label>Hot Water <input type="checkbox" name="hotwaterheating" onChange={handleChange} /></label>
+            <label>Air Conditioning <input type="checkbox" name="airconditioning" onChange={handleChange} /></label>
+            <label>Preferred Area <input type="checkbox" name="prefarea" onChange={handleChange} /></label>
+          </div>
 
         {/* SELECT */}
         <div className="filter-field furnishing">
@@ -109,11 +109,14 @@ export default function ApartmentsFilter({ onFilter }) {
             <option value="semi-furnished">semi-furnished</option>
           </select>
         </div>
-      </div>
 
-      <button className="filter-button" onClick={handleSubmit}>
-        FILTER
-      </button>
+        {/* BOTÓN AQUÍ */}
+          <div className="button-container">
+            <button className="filter-button" onClick={handleSubmit}>
+            FILTER
+          </button>
+          </div>
+      </div>
     </div>
   );
 }
