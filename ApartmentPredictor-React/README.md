@@ -15,7 +15,7 @@ FEATURES :
         ApartmentCreate.jsx
         ApartmentCRUD.jsx
         ApartmentDetail.jsx -> Nova feature!!
-        ApartmentListView.jsx
+        ApartmentListContainer.jsx <- Aquest era l'antic ApartmentListView.jsx . Només l'he renombrat.
     - Implementació d'una SideBar.
     - Implementació d'una pàgina HOME.
     - Implementació d'un selector mode clar / oscur
