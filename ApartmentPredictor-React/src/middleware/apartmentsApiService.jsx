@@ -74,7 +74,7 @@ const ApartmentsAPIService = {
         }
     },
 
-    filter: async (filters) => {
+    filterApartments: async (filters) => {
         try {
             const response = await axios.get(`${API_BASE_URL}/filter`, {
                 params: filters
