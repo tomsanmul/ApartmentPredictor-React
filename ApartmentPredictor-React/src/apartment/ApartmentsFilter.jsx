@@ -11,12 +11,12 @@ export default function ApartmentsFilter({ onFilter }) {
     bathrooms: "",
     stories: "",
     parking: "",
-    mainroad: "no",
-    guestroom: "no",
-    basement: "no",
-    hotwaterheating: "no",
-    airconditioning: "no",
-    prefarea: "no",
+    mainroad: "",
+    guestroom: "",
+    basement: "",
+    hotwaterheating: "",
+    airconditioning: "",
+    prefarea: "",
     furnishingstatus: "none"
   });
 

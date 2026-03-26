@@ -163,8 +163,9 @@ const ApartmentListView = ({ apartments = [], loading, onCreate, onUpdate, onDel
         </div>
       )}
 
+
       {/* PAGINATION */}
-      <Navigation onPageChange={onPageChange} />
+      {<Navigation onPageChange={onPageChange} />}
 
       {showCreateForm && (
         <ApartmentCreate
