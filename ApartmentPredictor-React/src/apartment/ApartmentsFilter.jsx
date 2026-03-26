@@ -11,12 +11,12 @@ export default function ApartmentsFilter({ onFilter }) {
     bathrooms: "",
     stories: "",
     parking: "",
-    mainroad: "",
-    guestroom: "",
-    basement: "",
-    hotwaterheating: "",
-    airconditioning: "",
-    prefarea: "",
+    mainroad: "no",
+    guestroom: "no",
+    basement: "no",
+    hotwaterheating: "no",
+    airconditioning: "no",
+    prefarea: "no",
     furnishingstatus: "none"
   });
 
@@ -50,9 +50,39 @@ export default function ApartmentsFilter({ onFilter }) {
       bathrooms: filters.bathrooms ? Number(filters.bathrooms) : null,
       stories: filters.stories ? Number(filters.stories) : null,
       parking: filters.parking ? Number(filters.parking) : null,
+      mainroad: filters.mainroad || "no",
+      guestroom: filters.guestroom || "no",
+      basement: filters.basement || "no",
+      hotwaterheating: filters.hotwaterheating || "no",
+      airconditioning: filters.airconditioning || "no",
+      prefarea: filters.prefarea || "no",
     };
-
+    console.log(parsedFilters);
   onFilter(parsedFilters);
+  };  
+
+  const resetFilters = () => {
+  const defaultFilters = {
+    minPrice: "",
+    maxPrice: "",
+    minArea: "",
+    maxArea: "",
+    bedrooms: "",
+    bathrooms: "",
+    stories: "",
+    parking: "",
+    mainroad: "no",
+    guestroom: "no",
+    basement: "no",
+    hotwaterheating: "no",
+    airconditioning: "no",
+    prefarea: "no",
+    furnishingstatus: "none"
+  };
+
+  setFilters(defaultFilters);
+
+  onFilter({}); // 👈 quita filtros backend
 };
 
 
@@ -126,12 +156,15 @@ export default function ApartmentsFilter({ onFilter }) {
           </select>
         </div>
 
-        {/* BOTÓN AQUÍ */}
+        {/* BOTONES */}
           <div className="button-container">
-            <button className="filter-button" onClick={handleSubmit}>   
+            <button className="filter-button" onClick={handleSubmit}>
             FILTER
           </button>
-          </div>
+          <button className="reset-button" onClick={resetFilters}>
+            RESET
+          </button>
+        </div>
       </div>
     </div>   
   );

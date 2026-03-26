@@ -501,19 +501,39 @@ button:focus-visible {
   margin-left: auto; /* 🔥 empuja a la derecha */
 }
 
-/* BOTÓN */
+
+.filter-button:hover {
+  background: #0056b3;
+}
+
+.button-container {
+  margin-left: 10px;
+  display: flex;
+  gap: 10px; /* 👈 separación entre botones */
+}
+
+/* FILTER */
 .filter-button {
   height: 36px;
-  padding: 0 30px; /* más ancho */
-  min-width: 120px; /* 👈 el doble aprox */
+  padding: 0 20px;
   border: none;
   background: #007bff;
   color: white;
   border-radius: 6px;
   cursor: pointer;
-  white-space: nowrap;
 }
 
-.filter-button:hover {
-  background: #0056b3;
+/* RESET */
+.reset-button {
+  height: 36px;
+  padding: 0 20px;
+  border: none;
+  background: #6c757d;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.reset-button:hover {
+  background: #5a6268;
 }
