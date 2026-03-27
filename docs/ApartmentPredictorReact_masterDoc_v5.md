@@ -4,7 +4,7 @@
 
 ### Version Goal
 
-Reviews and Reviewer for all apartments.
+> The **Apartment Filter** feature provides a comprehensive search interface that enables users to discover apartments <mark>matching their specific requirements</mark>.
 
 ### Product Goal
 
@@ -45,6 +45,9 @@ The final product integrates geospatial visualization with interactive maps, con
   - Middleware & Navigation:
     - **mathsWeb**: [mathsWeb: repo](https://github.com/AlbertProfe/mathsWeb) /  [mathsWeb: deployed](https://mathswebspace.netlify.app/)
     - **userBorrowBook**: [GitHub - AlbertProfe/userBorrowBookFront](https://github.com/AlbertProfe/userBorrowBookFront/tree/master)
+  - Filter
+    - **userBorrowBook**: [GitHub - AlbertProfe/userBorrowBookFront · GitHub](https://github.com/AlbertProfe/userBorrowBookFront)
+    - [userBorrowBookFront/docs/userBorrowBookFront-v1.0.md](https://github.com/AlbertProfe/userBorrowBookFront/blob/master/docs/userBorrowBookFront-v1.0.md)
 
 ## Project Structure
 
@@ -180,9 +183,476 @@ $ tree
 }
 ```
 
-## Code
+## Filter feature
 
-todo  
+### Hooks
+
+The component leverages React's `useState` hook to manage three primary state objects;
+
+- `filters` (storing 14 <mark> filter criteria</mark>),
+- `filteredApartments` (<mark>results</mark> array), 
+- and UI states (`loading`, `error`). 
+
+The custom `useApartmentService` hook at `.src/apartment/filter/ApartmentFilter.jsx:44` provides access to the apartment service layer, encapsulating API communication logic.
+
+### Data Model & Filters
+
+The filters object at `.rc/apartment/filter/ApartmentFilter.jsx:21-36` defines the complete filter schema with:
+
+- **numeric fields** (maxPrice, minArea, minBedrooms, minBathrooms, minParking, minSchools), 
+- **categorical selects** (furnishingStatus with three options), 
+- **boolean dropdowns** (mainroad, guestroom, basement, hotwaterheating, airconditioning, prefarea), 
+- and **text search** (textOnReview). 
+
+The [handleFilterChange](cci:1://file:///home/albert/MyProjects/Sandbox/ApartmentPredictorProject-React/ApartmentPredictor-React/src/apartment/filter/ApartmentFilter.jsx:45:2-48:4) function <mark>updates filter state reactively</mark>, while [applyFilters](cci:1://file:///home/albert/MyProjects/Sandbox/ApartmentPredictorProject-React/ApartmentPredictor-React/src/apartment/filter/ApartmentFilter.jsx:50:2-64:4) `asynchronously` invokes `apartmentService.filterApartments(filters)` with proper error handling and loading states.
+
+### Render
+
+The UI employs Material-UI components within a responsive grid layout (`gridTemplateColumns: repeat(auto-fit, minmax(200px, 1fr))`). Fourteen `TextField` components render as either number inputs, select dropdowns, or text fields. 
+
+Results populate a `TableContainer` with 13 columns displaying apartment attributes, conditional rendering for empty states, loading indicators, and error messages.
+
+### Code
+
+**Sskeleton:**
+
+```jsx
+const ApartmentFilter = () => {
+  // State to hold the filter values
+  const [filters, setFilters] = useState({maxPrice: "", ....});
+  // State to hold the filtered apartments
+  const [filteredApartments, setFilteredApartments] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  // Custom hook to access the apartment service
+  const apartmentService = useApartmentService();
+  const handleFilterChange = (e) => {....};
+  // send filters to middleware apartmentService
+  const applyFilters = async () => {....};
+
+  return (
+      <Filters />
+      {/* Apply Filters Button */}
+      <Button onClick={applyFilters}>Apply Filters</Button>
+      {/* Results Table */}
+      <FilteredApartmentsTable>          
+};
+
+export default ApartmentFilter;
+```
+
+**Pseudocode/skeleton:**
+
+```jsx
+import {Button, ......, } from "@mui/material";
+import React, { useState } from "react";
+import { useApartmentService } from "../../middleware/apartmentServiceHooks";
+
+const ApartmentFilter = () => {
+  // State to hold the filter values
+  const [filters, setFilters] = useState({maxPrice: "", ....});
+
+  // State to hold the filtered apartments
+  const [filteredApartments, setFilteredApartments] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  // Custom hook to access the apartment service
+  const apartmentService = useApartmentService();
+
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    setFilters((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const applyFilters = async () => {
+      // send filters to middleware apartmentService
+      const data = await apartmentService.filterApartments(filters); 
+  };
+
+  return (
+    <Paper elevation={3} style={{ padding: "20px", margin: "20px" }}>
+      {/* Filters Section */}
+      <Typography variant="h4" sx={{ marginBottom: 2 }}>
+       Filter (Full) Apartments</Typography>
+       {/* Filters render with all options */}
+      <div>
+         {/* ...... */}
+        <TextField      
+          value={filters.textOnReview}
+          onChange={handleFilterChange}
+        />
+        {/* ...... */}
+      </div>
+
+      {/* Apply Filters Button */}
+      <Button onClick={applyFilters}>
+        {loading ? <CircularProgress size={24} /> : "Apply Filters"}
+      </Button>
+
+      {/* Error Message */}
+      {error && (
+        <Typography color="error" style={{ marginBottom: "20px" }}>
+          Error: {error}
+        </Typography>
+      )}
+
+      {/* Results Table */}
+      <br />
+      <Typography color="success" style={{ marginBottom: "20px" }}>
+        There are {filteredApartments.length} results.
+      </Typography>
+      <TableContainer component={Paper}>
+        <Table>
+           {/* ...... */}
+          <TableBody>
+            {filteredApartments.map((apartment) => (
+                  <TableRow key={apartment.id}>
+                    <TableCell>{apartment.id}</TableCell>
+                     {/* ...... */}
+                  </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Paper>
+  );
+};
+
+export default ApartmentFilter;
+```
+
+**Coupled component:**
+
+```jsx
+import {
+  Button,
+  CircularProgress,
+  MenuItem,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TextField,
+  Typography,
+} from "@mui/material";
+import React, { useState } from "react";
+import { useApartmentService } from "../../middleware/apartmentServiceHooks";
+
+const ApartmentFilter = () => {
+  // State to hold the filter values
+  const [filters, setFilters] = useState({
+    maxPrice: "",
+    minArea: "",
+    minBedrooms: "",
+    minBathrooms: "",
+    minParking: "",
+    furnishingStatus: "",
+    mainroad: "",
+    guestroom: "",
+    basement: "",
+    hotwaterheating: "",
+    airconditioning: "",
+    prefarea: "",
+    minSchools: "",
+    textOnReview: "",
+  });
+
+  // State to hold the filtered apartments
+  const [filteredApartments, setFilteredApartments] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  // Custom hook to access the apartment service
+  const apartmentService = useApartmentService();
+
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    setFilters((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const applyFilters = async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const data = await apartmentService.filterApartments(filters);
+      setFilteredApartments(data);
+    } catch (error) {
+      console.error("Filter error:", error);
+      setError(error.message || "Failed to fetch data");
+      setFilteredApartments([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <Paper elevation={3} style={{ padding: "20px", margin: "20px" }}>
+      {/* Filters Section */}
+      <Typography variant="h4" sx={{ marginBottom: 2 }}>Filter (Full) Apartments</Typography>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+          gap: "16px",
+        }}
+      >
+        <TextField
+          label="Max Price"
+          name="maxPrice"
+          type="number"
+          value={filters.maxPrice}
+          onChange={handleFilterChange}
+          variant="outlined"
+        />
+        <TextField
+          label="Min Area"
+          name="minArea"
+          type="number"
+          value={filters.minArea}
+          onChange={handleFilterChange}
+          variant="outlined"
+        />
+        <TextField
+          label="Min Bedrooms"
+          name="minBedrooms"
+          type="number"
+          value={filters.minBedrooms}
+          onChange={handleFilterChange}
+          variant="outlined"
+        />
+        <TextField
+          label="Min Bathrooms"
+          name="minBathrooms"
+          type="number"
+          value={filters.minBathrooms}
+          onChange={handleFilterChange}
+          variant="outlined"
+        />
+        <TextField
+          label="Min Parking"
+          name="minParking"
+          type="number"
+          value={filters.minParking}
+          onChange={handleFilterChange}
+          variant="outlined"
+        />
+        <TextField
+          select
+          label="Furnishing Status"
+          name="furnishingStatus"
+          value={filters.furnishingStatus}
+          onChange={handleFilterChange}
+          variant="outlined"
+        >
+          <MenuItem value="">
+            <em>All</em>
+          </MenuItem>
+          <MenuItem value="furnished">Furnished</MenuItem>
+          <MenuItem value="semi-furnished">Semi-Furnished</MenuItem>
+          <MenuItem value="unfurnished">Unfurnished</MenuItem>
+        </TextField>
+        <TextField
+          select
+          label="Main Road"
+          name="mainroad"
+          value={filters.mainroad}
+          onChange={handleFilterChange}
+          variant="outlined"
+        >
+          <MenuItem value="">
+            <em>All</em>
+          </MenuItem>
+          <MenuItem value="true">Yes</MenuItem>
+          <MenuItem value="false">No</MenuItem>
+        </TextField>
+        <TextField
+          select
+          label="Guest Room"
+          name="guestroom"
+          value={filters.guestroom}
+          onChange={handleFilterChange}
+          variant="outlined"
+        >
+          <MenuItem value="">
+            <em>All</em>
+          </MenuItem>
+          <MenuItem value="true">Yes</MenuItem>
+          <MenuItem value="false">No</MenuItem>
+        </TextField>
+        <TextField
+          select
+          label="Basement"
+          name="basement"
+          value={filters.basement}
+          onChange={handleFilterChange}
+          variant="outlined"
+        >
+          <MenuItem value="">
+            <em>All</em>
+          </MenuItem>
+          <MenuItem value="true">Yes</MenuItem>
+          <MenuItem value="false">No</MenuItem>
+        </TextField>
+        <TextField
+          select
+          label="Hot Water Heating"
+          name="hotwaterheating"
+          value={filters.hotwaterheating}
+          onChange={handleFilterChange}
+          variant="outlined"
+        >
+          <MenuItem value="">
+            <em>All</em>
+          </MenuItem>
+          <MenuItem value="true">Yes</MenuItem>
+          <MenuItem value="false">No</MenuItem>
+        </TextField>
+        <TextField
+          select
+          label="Air Conditioning"
+          name="airconditioning"
+          value={filters.airconditioning}
+          onChange={handleFilterChange}
+          variant="outlined"
+        >
+          <MenuItem value="">
+            <em>All</em>
+          </MenuItem>
+          <MenuItem value="true">Yes</MenuItem>
+          <MenuItem value="false">No</MenuItem>
+        </TextField>
+        <TextField
+          select
+          label="Preferred Area"
+          name="prefarea"
+          value={filters.prefarea}
+          onChange={handleFilterChange}
+          variant="outlined"
+        >
+          <MenuItem value="">
+            <em>All</em>
+          </MenuItem>
+          <MenuItem value="true">Yes</MenuItem>
+          <MenuItem value="false">No</MenuItem>
+        </TextField>
+        <TextField
+          label="Min Schools"
+          name="minSchools"
+          type="number"
+          value={filters.minSchools}
+          onChange={handleFilterChange}
+          variant="outlined"
+          inputProps={{ min: 0, max: 100 }}
+        />
+        <TextField
+          label="Text on Review"
+          name="textOnReview"
+          value={filters.textOnReview}
+          onChange={handleFilterChange}
+          variant="outlined"
+        />
+      </div>
+
+      {/* Apply Filters Button */}
+      <Button
+        variant="outlined"
+        color="primary"
+        onClick={applyFilters}
+        disabled={loading}
+        style={{ margin: "20px 0" }}
+      >
+        {loading ? <CircularProgress size={24} /> : "Apply Filters"}
+      </Button>
+
+      {/* Error Message */}
+      {error && (
+        <Typography color="error" style={{ marginBottom: "20px" }}>
+          Error: {error}
+        </Typography>
+      )}
+
+      {/* Results Table */}
+      <br />
+      <Typography color="success" style={{ marginBottom: "20px" }}>
+        There are {filteredApartments.length} results.
+      </Typography>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>ID</TableCell>
+              <TableCell>Price</TableCell>
+              <TableCell>Area</TableCell>
+              <TableCell>Bedrooms</TableCell>
+              <TableCell>Bathrooms</TableCell>
+              <TableCell>Parking</TableCell>
+              <TableCell>Furnishing</TableCell>
+              <TableCell>Main Road</TableCell>
+              <TableCell>Guest Room</TableCell>
+              <TableCell>Basement</TableCell>
+              <TableCell>Hot Water</TableCell>
+              <TableCell>AC</TableCell>
+              <TableCell>Preferred Area</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {filteredApartments.length > 0
+              ? filteredApartments.map((apartment) => (
+                  <TableRow key={apartment.id}>
+                    <TableCell>{apartment.id}</TableCell>
+                    <TableCell>${apartment.price}</TableCell>
+                    <TableCell>{apartment.area} sq ft</TableCell>
+                    <TableCell>{apartment.bedrooms}</TableCell>
+                    <TableCell>{apartment.bathrooms}</TableCell>
+                    <TableCell>{apartment.parking}</TableCell>
+                    <TableCell>{apartment.furnishingStatus || "N/A"}</TableCell>
+                    <TableCell>{apartment.mainroad ? "Yes" : "No"}</TableCell>
+                    <TableCell>{apartment.guestroom ? "Yes" : "No"}</TableCell>
+                    <TableCell>{apartment.basement ? "Yes" : "No"}</TableCell>
+                    <TableCell>{apartment.hotwaterheating ? "Yes" : "No"}</TableCell>
+                    <TableCell>{apartment.airconditioning ? "Yes" : "No"}</TableCell>
+                    <TableCell>{apartment.prefarea ? "Yes" : "No"}</TableCell>
+                  </TableRow>
+                ))
+              : !loading && (
+                  <TableRow>
+                    <TableCell colSpan={14} style={{ textAlign: "center" }}>
+                      No matching records found.
+                    </TableCell>
+                  </TableRow>
+                )}
+            {loading && (
+              <TableRow>
+                <TableCell colSpan={14} style={{ textAlign: "center" }}>
+                  Loading...
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Paper>
+  );
+};
+
+export default ApartmentFilter;
+```
+
+## screenshots
+
+![](https://raw.githubusercontent.com/AlbertProfe/ApartmentPredictor-React/refs/heads/master/docs/screenshots/RENDER-filter-1.png)  
+
+![](https://raw.githubusercontent.com/AlbertProfe/ApartmentPredictor-React/refs/heads/master/docs/screenshots/RENDER-filter-2.png)
+
+![](https://raw.githubusercontent.com/AlbertProfe/ApartmentPredictor-React/refs/heads/master/docs/screenshots/RENDER-filter-3.png)
+
+![](https://raw.githubusercontent.com/AlbertProfe/ApartmentPredictor-React/refs/heads/master/docs/screenshots/RENDER-filter-4.png)
 
 ## package.json
 
@@ -251,4 +721,4 @@ todo
   - https://vite.dev/ / [Getting Started | Vite](https://vite.dev/guide/)
   - `npm create vite@latest`
 - `axios` library
-- <mark>MUI</mark> components library
+- <mark>MUI</mark> components librar

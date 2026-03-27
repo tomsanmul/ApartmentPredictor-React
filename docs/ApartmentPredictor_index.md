@@ -20,6 +20,8 @@ Quick Evolution Summary
   - [ApartmentPredictor-React/docs/ApartmentPredictorReact_masterDoc_v5](https://github.com/AlbertProfe/ApartmentPredictor-React/blob/master/docs/ApartmentPredictorReact_masterDoc_v5.md)
 - **v6** → Spatial visualization: <mark>maps views</mark>
   - [ApartmentPredictor-React/docs/ApartmentPredictorReact_masterDoc_v6](https://github.com/AlbertProfe/ApartmentPredictor-React/blob/master/docs/ApartmentPredictorReact_masterDoc_v6.md)
+  - [ApartmentPredictor-React/docs/ApartmentPredictorReact_masterDoc_v6.1](https://github.com/AlbertProfe/ApartmentPredictor-React/blob/master/docs/ApartmentPredictorReact_masterDoc_v6.1.md)
+  - [ApartmentPredictor-React/docs/ApartmentPredictorReact_masterDoc_v6.2](https://github.com/AlbertProfe/ApartmentPredictor-React/blob/master/docs/ApartmentPredictorReact_masterDoc_v6.2.md)
 - **v7** → Intelligence layer: AI prediction (Java-based ML)
 - **v8** → Auth Production readiness: real user management & protection
 - **v9** → Business model: payments / monetization

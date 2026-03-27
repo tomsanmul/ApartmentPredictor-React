@@ -1,27 +1,348 @@
-# REFACTOR IMPLEMENTATION PLAN: OPTION C (Split Contexts)
+# REFACTOR IMPLEMENTATION PLAN: SPLIT CONTEXTS ARCHITECTURE
 
 ## OVERVIEW
 
 **Goal:** Migrate from hook-based data layer to context-based split architecture  
-**Pattern:** One context provider per entity  
-**Entities:** Apartment, School, Reviewer, Owner, Contract, Property  
+**Pattern:** One context provider per entity (4-layer architecture)  
+**Entities:** Apartment, School, Reviewer, Owner  
 **Approach:** Incremental migration, phase by phase
 
 ---
 
-## PHASE 1: APARTMENT CONTEXT (Foundation)
+## COMMON RULES (ALL PHASES)
+
+### 🎯 Architecture Pattern (MANDATORY)
+
+Each entity follows the **4-layer pattern**:
+
+```
+API → Hook → Service → Context
+```
+
+**Layer 1: API Service** - Direct axios calls to backend  
+**Layer 2: Service Hooks** - Context for API access  
+**Layer 3: Service Provider** - Wraps API in React provider  
+**Layer 4: Data Context** - Frontend state management + refetch()
+
+---
+
+### 📁 Folder Structure (MANDATORY)
+
+```
+src/
+├── middleware/
+│   ├── config/
+│   │   └── endpoints.js          # Centralized API endpoints
+│   ├── apartment/
+│   │   ├── apartmentApiService.js
+│   │   ├── apartmentServiceHooks.jsx
+│   │   └── apartmentService.jsx
+│   ├── school/
+│   │   ├── schoolApiService.js
+│   │   ├── schoolServiceHooks.jsx
+│   │   └── schoolService.jsx
+│   ├── reviewer/
+│   │   ├── reviewerApiService.js
+│   │   ├── reviewerServiceHooks.jsx
+│   │   └── reviewerService.jsx
+│   └── owner/
+│       ├── ownerApiService.js
+│       ├── ownerServiceHooks.jsx
+│       └── ownerService.jsx
+├── data/
+│   ├── ApartmentDataContext.jsx
+│   ├── SchoolDataContext.jsx
+│   ├── ReviewerDataContext.jsx
+│   └── OwnerDataContext.jsx
+└── providers/
+    └── AppProviders.jsx             # Provider composition
+```
+
+---
+
+### 🔒 Global Rules (MANDATORY)
+
+#### Rule 1: All operations go through API first
+- API calls backend
+- Backend returns updated state
+- Context reflects backend response
+- **Never mutate state locally**
+
+#### Rule 2: No hardcoded endpoints
+- All endpoints in `middleware/config/endpoints.js`
+- Import from centralized config
+- Easy to change backend URLs
+
+#### Rule 3: Remove refreshTrigger pattern
+```js
+// ❌ OLD
+const [refreshTrigger, setRefreshTrigger] = useState(0);
+const { apartments } = useApartments(refreshTrigger);
+setRefreshTrigger(prev => prev + 1);
+
+// ✅ NEW
+const { apartments, refetch } = useApartmentData();
+await refetch();
+```
+
+#### Rule 4: Consistent naming convention
+- API Service: `<entity>ApiService.js`
+- Service Hooks: `<entity>ServiceHooks.jsx`
+- Service Provider: `<entity>Service.jsx`
+- Data Context: `<Entity>DataContext.jsx`
+- Hook: `use<Entity>Service()` and `use<Entity>Data()`
+
+#### Rule 5: Error handling pattern
+```js
+try {
+  const data = await service.getAll();
+  setData(data);
+  setIsLoading(false);
+} catch (error) {
+  console.error("Error:", error);
+  setIsAxiosError(error.isAxiosError || false);
+  setIsLoading(false);
+}
+```
+
+#### Rule 6: Context value structure
+```js
+const value = {
+  <entities>,      // Array of entities
+  isLoading,       // Boolean
+  isAxiosError,    // Boolean
+  refetch          // Function
+};
+```
+
+---
+
+### 🧪 Testing Requirements (EVERY PHASE)
+
+Each phase must include:
+- ✅ API service tests (mock axios)
+- ✅ Context provider tests
+- ✅ Component integration tests
+- ✅ No duplicate API calls
+- ✅ No stale state
+- ✅ Refetch behavior works
+
+---
+
+### 📋 Phase Completion Checklist
+
+Before moving to next phase:
+- [ ] All files created following structure
+- [ ] Endpoints in centralized config
+- [ ] No hardcoded URLs
+- [ ] Components updated
+- [ ] refreshTrigger removed
+- [ ] Tests passing
+- [ ] No console errors
+- [ ] No regressions
+
+---
+
+## PHASE 0: CENTRALIZED ENDPOINTS CONFIGURATION
 
 ### Objective
-Convert existing `useApartments` hook to `ApartmentDataContext` pattern
+Create centralized endpoint configuration before implementing any entity
 
-### Steps
+### File: `src/middleware/config/endpoints.js`
 
-#### 1.1 Create ApartmentDataContext.jsx
+```js
+// Base API URL
+const API_BASE = "/api/v1";
+
+// Entity-specific base URLs
+const APARTMENT_BASE = `${API_BASE}/apartment`;
+const SCHOOL_BASE = `${API_BASE}/school`;
+const REVIEWER_BASE = `${API_BASE}/reviewer`;
+const OWNER_BASE = `${API_BASE}/owner`;
+
+export const ENDPOINTS = {
+  apartment: {
+    base: APARTMENT_BASE,
+    getAll: `${APARTMENT_BASE}/getAll`,
+    getById: (id) => `${APARTMENT_BASE}/${id}`,
+    create: `${APARTMENT_BASE}/create`,
+    update: `${APARTMENT_BASE}/update`,
+    deleteById: (id) => `${APARTMENT_BASE}/deleteById?id=${id}`,
+    filter: `${APARTMENT_BASE}/filter`,
+  },
+  school: {
+    base: SCHOOL_BASE,
+    getAll: `${SCHOOL_BASE}/getAll`,
+    getById: (id) => `${SCHOOL_BASE}/${id}`,
+    create: `${SCHOOL_BASE}/create`,
+    update: `${SCHOOL_BASE}/update`,
+    deleteById: (id) => `${SCHOOL_BASE}/deleteById?id=${id}`,
+    filter: `${SCHOOL_BASE}/filter`,
+  },
+  reviewer: {
+    base: REVIEWER_BASE,
+    getAll: `${REVIEWER_BASE}/getAll`,
+    getById: (id) => `${REVIEWER_BASE}/${id}`,
+    create: `${REVIEWER_BASE}/create`,
+    update: `${REVIEWER_BASE}/update`,
+    deleteById: (id) => `${REVIEWER_BASE}/deleteById?id=${id}`,
+  },
+  owner: {
+    base: OWNER_BASE,
+    getAll: `${OWNER_BASE}/getAll`,
+    getById: (id) => `${OWNER_BASE}/${id}`,
+    create: `${OWNER_BASE}/create`,
+    update: `${OWNER_BASE}/update`,
+    deleteById: (id) => `${OWNER_BASE}/deleteById?id=${id}`,
+  },
+};
+
+export default ENDPOINTS;
+```
+
+### Tasks
+1. Create `src/middleware/config/` folder
+2. Create `endpoints.js` file
+3. Define all endpoints for 4 entities
+4. Export as default and named export
+
+**Time estimate:** 30 minutes
+
+---
+
+## PHASE 1: APARTMENT (Foundation)
+
+### Objective
+Refactor existing Apartment implementation to follow new 4-layer architecture with centralized endpoints
+
+### Tasks
+
+#### 1.1 Reorganize Middleware Structure
+
+**Move existing files:**
+```
+OLD: src/middleware/apartmentApiService.js
+NEW: src/middleware/apartment/apartmentApiService.js
+
+OLD: src/middleware/apartmentServiceHooks.jsx
+NEW: src/middleware/apartment/apartmentServiceHooks.jsx
+
+OLD: src/middleware/apartmentService.jsx
+NEW: src/middleware/apartment/apartmentService.jsx
+```
+
+#### 1.2 Update apartmentApiService.js
+
+**File:** `src/middleware/apartment/apartmentApiService.js`
+
+```js
+import axios from "axios";
+import ENDPOINTS from "../config/endpoints";
+
+const ApartmentApiService = {
+  getAllApartments: async () => {
+    try {
+      const response = await axios.get(ENDPOINTS.apartment.getAll);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching apartments:", error);
+      throw error;
+    }
+  },
+
+  getApartmentById: async (apartmentId) => {
+    try {
+      const response = await axios.get(ENDPOINTS.apartment.getById(apartmentId));
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching apartment ${apartmentId}:`, error);
+      throw error;
+    }
+  },
+
+  createApartment: async (apartment) => {
+    try {
+      const response = await axios.post(ENDPOINTS.apartment.create, apartment);
+      return response.data;
+    } catch (error) {
+      console.error("Error creating apartment:", error);
+      throw error;
+    }
+  },
+
+  updateApartment: async (apartment) => {
+    try {
+      const response = await axios.post(ENDPOINTS.apartment.update, apartment);
+      return response.data;
+    } catch (error) {
+      console.error(`Error updating apartment ${apartment.id}:`, error);
+      throw error;
+    }
+  },
+
+  deleteApartment: async (apartmentId) => {
+    try {
+      const response = await axios.delete(ENDPOINTS.apartment.deleteById(apartmentId));
+      return response.data;
+    } catch (error) {
+      console.error(`Error deleting apartment ${apartmentId}:`, error);
+      throw error;
+    }
+  },
+
+  filterApartments: async (filters) => {
+    try {
+      const cleanParams = Object.fromEntries(
+        Object.entries(filters).filter(([, value]) => Boolean(value))
+      );
+      const response = await axios.get(ENDPOINTS.apartment.filter, { params: cleanParams });
+      return response.data;
+    } catch (error) {
+      console.error("Error filtering apartments:", error);
+      throw error;
+    }
+  },
+};
+
+export default ApartmentApiService;
+```
+
+#### 1.3 Update apartmentServiceHooks.jsx
+
+**File:** `src/middleware/apartment/apartmentServiceHooks.jsx`
+
+```js
+import { createContext, useContext } from "react";
+import ApartmentApiService from "./apartmentApiService";
+
+export const ApartmentServiceContext = createContext(ApartmentApiService);
+
+export const useApartmentService = () => useContext(ApartmentServiceContext);
+```
+
+#### 1.4 Update apartmentService.jsx
+
+**File:** `src/middleware/apartment/apartmentService.jsx`
+
+```js
+import React from "react";
+import ApartmentApiService from "./apartmentApiService";
+import { ApartmentServiceContext } from "./apartmentServiceHooks";
+
+export const ApartmentServiceProvider = ({ children }) => (
+  <ApartmentServiceContext.Provider value={ApartmentApiService}>
+    {children}
+  </ApartmentServiceContext.Provider>
+);
+```
+
+#### 1.5 Create ApartmentDataContext.jsx
+
 **File:** `src/data/ApartmentDataContext.jsx`
 
 ```js
 import { createContext, useContext, useState, useEffect } from 'react';
-import { useApartmentService } from '../middleware/apartmentServiceHooks';
+import { useApartmentService } from '../middleware/apartment/apartmentServiceHooks';
 
 const ApartmentDataContext = createContext();
 
@@ -73,12 +394,13 @@ export const useApartmentData = () => {
 };
 ```
 
-#### 1.2 Update App.jsx
+#### 1.6 Update App.jsx
+
 **File:** `src/App.jsx`
 
 ```js
 import { ApartmentDataProvider } from "./data/ApartmentDataContext";
-import { ApartmentServiceProvider } from "./middleware/apartmentService";
+import { ApartmentServiceProvider } from "./middleware/apartment/apartmentService";
 
 export default function App() {
   return (
@@ -93,11 +415,12 @@ export default function App() {
 }
 ```
 
-#### 1.3 Update Components Using useApartments
+#### 1.7 Update Components - Remove refreshTrigger Pattern
+
 **Files to update:**
 - `src/apartment/ApartmentList.jsx`
-- `src/apartment/ApartmentFilterPage.jsx` (if exists)
-- Any other components using `useApartments`
+- `src/apartment/ApartmentCRUD.jsx`
+- `src/pages/ApartmentFilterPage.jsx`
 
 **Change:**
 ```js
@@ -108,56 +431,51 @@ const { apartments, isLoading, isAxiosError, refetch } = useApartments(refreshTr
 // NEW
 import { useApartmentData } from '../data/ApartmentDataContext';
 const { apartments, isLoading, isAxiosError, refetch } = useApartmentData();
-// Note: refreshTrigger no longer needed, use refetch() instead
 ```
 
-#### 1.4 Handle RefreshTrigger Pattern
-Components using `refreshTrigger` need adjustment:
-
+**In ApartmentCRUD.jsx:**
 ```js
-// OLD pattern in ApartmentCRUD.jsx
+// OLD
 const [refreshTrigger, setRefreshTrigger] = useState(0);
-const { apartments } = useApartments(refreshTrigger);
-setRefreshTrigger(prev => prev + 1); // to refresh
+setRefreshTrigger(prev => prev + 1);
 
-// NEW pattern
-const { apartments, refetch } = useApartmentData();
-await refetch(); // to refresh
+// NEW
+await refetch();
 ```
 
-#### 1.5 Deprecate useApartments.jsx
+#### 1.8 Deprecate useApartments.jsx
 - Rename to `useApartments.jsx.deprecated`
 - Add comment: "Deprecated - use ApartmentDataContext instead"
-- Keep temporarily for reference
 
-#### 1.6 Testing
-- Test all apartment CRUD operations
-- Test apartment list rendering
-- Test apartment filtering
-- Verify no console errors
-- Check network tab for duplicate requests
+#### 1.9 Testing
+- ✅ All apartment CRUD operations work
+- ✅ No duplicate API calls
+- ✅ No console errors
+- ✅ Refetch behavior correct
+
+**Time estimate:** 4-6 hours
 
 ---
 
-## PHASE 2: SCHOOL CONTEXT + API LAYER
+## PHASE 2: SCHOOL
 
 ### Objective
-Create complete School data layer from scratch
+Create complete School data layer following Apartment pattern
 
-### Steps
+### Tasks
 
 #### 2.1 Create School API Service
-**File:** `src/middleware/schoolApiService.js`
+
+**File:** `src/middleware/school/schoolApiService.js`
 
 ```js
 import axios from "axios";
-
-const API_BASE_URL = "/api/v1/school";
+import ENDPOINTS from "../config/endpoints";
 
 const SchoolApiService = {
   getAllSchools: async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/getAll`);
+      const response = await axios.get(ENDPOINTS.school.getAll);
       return response.data;
     } catch (error) {
       console.error("Error fetching schools:", error);
@@ -167,7 +485,7 @@ const SchoolApiService = {
 
   getSchoolById: async (schoolId) => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/${schoolId}`);
+      const response = await axios.get(ENDPOINTS.school.getById(schoolId));
       return response.data;
     } catch (error) {
       console.error(`Error fetching school ${schoolId}:`, error);
@@ -177,7 +495,7 @@ const SchoolApiService = {
 
   createSchool: async (school) => {
     try {
-      const response = await axios.post(`${API_BASE_URL}/create`, school);
+      const response = await axios.post(ENDPOINTS.school.create, school);
       return response.data;
     } catch (error) {
       console.error("Error creating school:", error);
@@ -187,7 +505,7 @@ const SchoolApiService = {
 
   updateSchool: async (school) => {
     try {
-      const response = await axios.post(`${API_BASE_URL}/update`, school);
+      const response = await axios.post(ENDPOINTS.school.update, school);
       return response.data;
     } catch (error) {
       console.error(`Error updating school ${school.id}:`, error);
@@ -197,7 +515,7 @@ const SchoolApiService = {
 
   deleteSchool: async (schoolId) => {
     try {
-      const response = await axios.delete(`${API_BASE_URL}/deleteById?id=${schoolId}`);
+      const response = await axios.delete(ENDPOINTS.school.deleteById(schoolId));
       return response.data;
     } catch (error) {
       console.error(`Error deleting school ${schoolId}:`, error);
@@ -210,7 +528,7 @@ const SchoolApiService = {
       const cleanParams = Object.fromEntries(
         Object.entries(filters).filter(([, value]) => Boolean(value))
       );
-      const response = await axios.get(`${API_BASE_URL}/filter`, { params: cleanParams });
+      const response = await axios.get(ENDPOINTS.school.filter, { params: cleanParams });
       return response.data;
     } catch (error) {
       console.error("Error filtering schools:", error);
@@ -223,7 +541,8 @@ export default SchoolApiService;
 ```
 
 #### 2.2 Create School Service Hooks
-**File:** `src/middleware/schoolServiceHooks.jsx`
+
+**File:** `src/middleware/school/schoolServiceHooks.jsx`
 
 ```js
 import { createContext, useContext } from "react";
@@ -235,7 +554,8 @@ export const useSchoolService = () => useContext(SchoolServiceContext);
 ```
 
 #### 2.3 Create School Service Provider
-**File:** `src/middleware/schoolService.jsx`
+
+**File:** `src/middleware/school/schoolService.jsx`
 
 ```js
 import React from "react";
@@ -250,11 +570,12 @@ export const SchoolServiceProvider = ({ children }) => (
 ```
 
 #### 2.4 Create SchoolDataContext
+
 **File:** `src/data/SchoolDataContext.jsx`
 
 ```js
 import { createContext, useContext, useState, useEffect } from 'react';
-import { useSchoolService } from '../middleware/schoolServiceHooks';
+import { useSchoolService } from '../middleware/school/schoolServiceHooks';
 
 const SchoolDataContext = createContext();
 
@@ -307,8 +628,9 @@ export const useSchoolData = () => {
 ```
 
 #### 2.5 Update App.jsx
+
 ```js
-import { SchoolServiceProvider } from "./middleware/schoolService";
+import { SchoolServiceProvider } from "./middleware/school/schoolService";
 import { SchoolDataProvider } from "./data/SchoolDataContext";
 
 export default function App() {
@@ -329,6 +651,7 @@ export default function App() {
 ```
 
 #### 2.6 Update School Components
+
 **Files to update:**
 - `src/school/SchoolMapView.jsx`
 - `src/school/SchoolMap.jsx`
@@ -351,32 +674,34 @@ const SchoolComponent = () => {
 ```
 
 #### 2.7 Testing
-- Test school list rendering
-- Test school CRUD operations
-- Verify map markers use real data
-- Check no interference with apartment context
+- ✅ School list rendering
+- ✅ School CRUD operations
+- ✅ Map markers use real data
+- ✅ No interference with apartment context
+
+**Time estimate:** 3-4 hours
 
 ---
 
-## PHASE 3: REVIEWER CONTEXT + API LAYER
+## PHASE 3: REVIEWER
 
 ### Objective
-Create Reviewer data layer and integrate with Review system
+Create Reviewer data layer (minimal UI integration)
 
-### Steps
+### Tasks
 
 #### 3.1 Create Reviewer API Service
-**File:** `src/middleware/reviewerApiService.js`
+
+**File:** `src/middleware/reviewer/reviewerApiService.js`
 
 ```js
 import axios from "axios";
-
-const API_BASE_URL = "/api/v1/reviewer";
+import ENDPOINTS from "../config/endpoints";
 
 const ReviewerApiService = {
   getAllReviewers: async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/getAll`);
+      const response = await axios.get(ENDPOINTS.reviewer.getAll);
       return response.data;
     } catch (error) {
       console.error("Error fetching reviewers:", error);
@@ -386,7 +711,7 @@ const ReviewerApiService = {
 
   getReviewerById: async (reviewerId) => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/${reviewerId}`);
+      const response = await axios.get(ENDPOINTS.reviewer.getById(reviewerId));
       return response.data;
     } catch (error) {
       console.error(`Error fetching reviewer ${reviewerId}:`, error);
@@ -396,7 +721,7 @@ const ReviewerApiService = {
 
   createReviewer: async (reviewer) => {
     try {
-      const response = await axios.post(`${API_BASE_URL}/create`, reviewer);
+      const response = await axios.post(ENDPOINTS.reviewer.create, reviewer);
       return response.data;
     } catch (error) {
       console.error("Error creating reviewer:", error);
@@ -406,7 +731,7 @@ const ReviewerApiService = {
 
   updateReviewer: async (reviewer) => {
     try {
-      const response = await axios.post(`${API_BASE_URL}/update`, reviewer);
+      const response = await axios.post(ENDPOINTS.reviewer.update, reviewer);
       return response.data;
     } catch (error) {
       console.error(`Error updating reviewer ${reviewer.id}:`, error);
@@ -416,7 +741,7 @@ const ReviewerApiService = {
 
   deleteReviewer: async (reviewerId) => {
     try {
-      const response = await axios.delete(`${API_BASE_URL}/deleteById?id=${reviewerId}`);
+      const response = await axios.delete(ENDPOINTS.reviewer.deleteById(reviewerId));
       return response.data;
     } catch (error) {
       console.error(`Error deleting reviewer ${reviewerId}:`, error);
@@ -429,7 +754,8 @@ export default ReviewerApiService;
 ```
 
 #### 3.2 Create Reviewer Service Hooks
-**File:** `src/middleware/reviewerServiceHooks.jsx`
+
+**File:** `src/middleware/reviewer/reviewerServiceHooks.jsx`
 
 ```js
 import { createContext, useContext } from "react";
@@ -441,7 +767,8 @@ export const useReviewerService = () => useContext(ReviewerServiceContext);
 ```
 
 #### 3.3 Create Reviewer Service Provider
-**File:** `src/middleware/reviewerService.jsx`
+
+**File:** `src/middleware/reviewer/reviewerService.jsx`
 
 ```js
 import React from "react";
@@ -456,11 +783,12 @@ export const ReviewerServiceProvider = ({ children }) => (
 ```
 
 #### 3.4 Create ReviewerDataContext
+
 **File:** `src/data/ReviewerDataContext.jsx`
 
 ```js
 import { createContext, useContext, useState, useEffect } from 'react';
-import { useReviewerService } from '../middleware/reviewerServiceHooks';
+import { useReviewerService } from '../middleware/reviewer/reviewerServiceHooks';
 
 const ReviewerDataContext = createContext();
 
@@ -512,62 +840,10 @@ export const useReviewerData = () => {
 };
 ```
 
-#### 3.5 Create Review API Service (if needed)
-**File:** `src/middleware/reviewApiService.js`
+#### 3.5 Update App.jsx
 
 ```js
-import axios from "axios";
-
-const API_BASE_URL = "/api/v1/review";
-
-const ReviewApiService = {
-  getReviewsByApartmentId: async (apartmentId) => {
-    try {
-      const response = await axios.get(`${API_BASE_URL}/apartment/${apartmentId}`);
-      return response.data;
-    } catch (error) {
-      console.error(`Error fetching reviews for apartment ${apartmentId}:`, error);
-      throw error;
-    }
-  },
-
-  createReview: async (review) => {
-    try {
-      const response = await axios.post(`${API_BASE_URL}/create`, review);
-      return response.data;
-    } catch (error) {
-      console.error("Error creating review:", error);
-      throw error;
-    }
-  },
-
-  updateReview: async (review) => {
-    try {
-      const response = await axios.post(`${API_BASE_URL}/update`, review);
-      return response.data;
-    } catch (error) {
-      console.error(`Error updating review ${review.id}:`, error);
-      throw error;
-    }
-  },
-
-  deleteReview: async (reviewId) => {
-    try {
-      const response = await axios.delete(`${API_BASE_URL}/deleteById?id=${reviewId}`);
-      return response.data;
-    } catch (error) {
-      console.error(`Error deleting review ${reviewId}:`, error);
-      throw error;
-    }
-  },
-};
-
-export default ReviewApiService;
-```
-
-#### 3.6 Update App.jsx
-```js
-import { ReviewerServiceProvider } from "./middleware/reviewerService";
+import { ReviewerServiceProvider } from "./middleware/reviewer/reviewerService";
 import { ReviewerDataProvider } from "./data/ReviewerDataContext";
 
 export default function App() {
@@ -591,97 +867,177 @@ export default function App() {
 }
 ```
 
-#### 3.7 Update Reviews Component
-**File:** `src/review/Reviews.jsx`
+#### 3.6 Testing
+- ✅ Reviewer CRUD operations
+- ✅ Data available in context
+- ✅ No interference with other contexts
 
-Replace mock data generation with real API calls:
-
-```js
-import { useReviewerData } from '../data/ReviewerDataContext';
-import { useEffect, useState } from 'react';
-import ReviewApiService from '../middleware/reviewApiService';
-
-const Reviews = () => {
-  const { id } = useParams();
-  const { reviewers } = useReviewerData();
-  const [reviews, setReviews] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchReviews = async () => {
-      try {
-        const reviewsData = await ReviewApiService.getReviewsByApartmentId(id);
-        setReviews(reviewsData);
-      } catch (error) {
-        console.error("Error fetching reviews:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchReviews();
-  }, [id]);
-
-  // Rest of component
-};
-```
-
-#### 3.8 Testing
-- Test reviewer list
-- Test review display with real data
-- Verify reviewer names populate correctly
-- Test review CRUD operations
+**Time estimate:** 2-3 hours
 
 ---
 
-## PHASE 4: REMAINING ENTITIES (Owner, Contract, Property)
+## PHASE 4: OWNER
 
 ### Objective
-Complete the data layer for all remaining entities
+Complete the last required entity following the established pattern
 
-### Steps for Each Entity (Owner, Contract, Property)
+### Tasks
 
-#### 4.1 Owner Entity
+#### 4.1 Create Owner API Service
 
-**Files to create:**
-- `src/middleware/ownerApiService.js`
-- `src/middleware/ownerServiceHooks.jsx`
-- `src/middleware/ownerService.jsx`
-- `src/data/OwnerDataContext.jsx`
-
-**Pattern:** Follow exact same structure as Apartment/School/Reviewer
-
-#### 4.2 Contract Entity
-
-**Files to create:**
-- `src/middleware/contractApiService.js`
-- `src/middleware/contractServiceHooks.jsx`
-- `src/middleware/contractService.jsx`
-- `src/data/ContractDataContext.jsx`
-
-#### 4.3 Property Entity
-
-**Files to create:**
-- `src/middleware/propertyApiService.js`
-- `src/middleware/propertyServiceHooks.jsx`
-- `src/middleware/propertyService.jsx`
-- `src/data/PropertyDataContext.jsx`
-
-#### 4.4 Final App.jsx Structure
+**File:** `src/middleware/owner/ownerApiService.js`
 
 ```js
-import { ApartmentServiceProvider } from "./middleware/apartmentService";
-import { SchoolServiceProvider } from "./middleware/schoolService";
-import { ReviewerServiceProvider } from "./middleware/reviewerService";
-import { OwnerServiceProvider } from "./middleware/ownerService";
-import { ContractServiceProvider } from "./middleware/contractService";
-import { PropertyServiceProvider } from "./middleware/propertyService";
+import axios from "axios";
+import ENDPOINTS from "../config/endpoints";
 
-import { ApartmentDataProvider } from "./data/ApartmentDataContext";
-import { SchoolDataProvider } from "./data/SchoolDataContext";
-import { ReviewerDataProvider } from "./data/ReviewerDataContext";
+const OwnerApiService = {
+  getAllOwners: async () => {
+    try {
+      const response = await axios.get(ENDPOINTS.owner.getAll);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching owners:", error);
+      throw error;
+    }
+  },
+
+  getOwnerById: async (ownerId) => {
+    try {
+      const response = await axios.get(ENDPOINTS.owner.getById(ownerId));
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching owner ${ownerId}:`, error);
+      throw error;
+    }
+  },
+
+  createOwner: async (owner) => {
+    try {
+      const response = await axios.post(ENDPOINTS.owner.create, owner);
+      return response.data;
+    } catch (error) {
+      console.error("Error creating owner:", error);
+      throw error;
+    }
+  },
+
+  updateOwner: async (owner) => {
+    try {
+      const response = await axios.post(ENDPOINTS.owner.update, owner);
+      return response.data;
+    } catch (error) {
+      console.error(`Error updating owner ${owner.id}:`, error);
+      throw error;
+    }
+  },
+
+  deleteOwner: async (ownerId) => {
+    try {
+      const response = await axios.delete(ENDPOINTS.owner.deleteById(ownerId));
+      return response.data;
+    } catch (error) {
+      console.error(`Error deleting owner ${ownerId}:`, error);
+      throw error;
+    }
+  },
+};
+
+export default OwnerApiService;
+```
+
+#### 4.2 Create Owner Service Hooks
+
+**File:** `src/middleware/owner/ownerServiceHooks.jsx`
+
+```js
+import { createContext, useContext } from "react";
+import OwnerApiService from "./ownerApiService";
+
+export const OwnerServiceContext = createContext(OwnerApiService);
+
+export const useOwnerService = () => useContext(OwnerServiceContext);
+```
+
+#### 4.3 Create Owner Service Provider
+
+**File:** `src/middleware/owner/ownerService.jsx`
+
+```js
+import React from "react";
+import OwnerApiService from "./ownerApiService";
+import { OwnerServiceContext } from "./ownerServiceHooks";
+
+export const OwnerServiceProvider = ({ children }) => (
+  <OwnerServiceContext.Provider value={OwnerApiService}>
+    {children}
+  </OwnerServiceContext.Provider>
+);
+```
+
+#### 4.4 Create OwnerDataContext
+
+**File:** `src/data/OwnerDataContext.jsx`
+
+```js
+import { createContext, useContext, useState, useEffect } from 'react';
+import { useOwnerService } from '../middleware/owner/ownerServiceHooks';
+
+const OwnerDataContext = createContext();
+
+export const OwnerDataProvider = ({ children }) => {
+  const [owners, setOwners] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isAxiosError, setIsAxiosError] = useState(false);
+  
+  const ownerService = useOwnerService();
+
+  const fetchOwners = async () => {
+    setIsLoading(true);
+    try {
+      const ownersData = await ownerService.getAllOwners();
+      setOwners(ownersData);
+      setIsLoading(false);
+      setIsAxiosError(false);
+    } catch (error) {
+      console.error("Error fetching owners:", error);
+      setIsAxiosError(error.isAxiosError || false);
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchOwners();
+  }, []);
+
+  const value = {
+    owners,
+    isLoading,
+    isAxiosError,
+    refetch: fetchOwners
+  };
+
+  return (
+    <OwnerDataContext.Provider value={value}>
+      {children}
+    </OwnerDataContext.Provider>
+  );
+};
+
+export const useOwnerData = () => {
+  const context = useContext(OwnerDataContext);
+  if (!context) {
+    throw new Error('useOwnerData must be used within OwnerDataProvider');
+  }
+  return context;
+};
+```
+
+#### 4.5 Update App.jsx
+
+```js
+import { OwnerServiceProvider } from "./middleware/owner/ownerService";
 import { OwnerDataProvider } from "./data/OwnerDataContext";
-import { ContractDataProvider } from "./data/ContractDataContext";
-import { PropertyDataProvider } from "./data/PropertyDataContext";
 
 export default function App() {
   return (
@@ -690,23 +1046,15 @@ export default function App() {
         <SchoolServiceProvider>
           <ReviewerServiceProvider>
             <OwnerServiceProvider>
-              <ContractServiceProvider>
-                <PropertyServiceProvider>
-                  <ApartmentDataProvider>
-                    <SchoolDataProvider>
-                      <ReviewerDataProvider>
-                        <OwnerDataProvider>
-                          <ContractDataProvider>
-                            <PropertyDataProvider>
-                              {/* existing content */}
-                            </PropertyDataProvider>
-                          </ContractDataProvider>
-                        </OwnerDataProvider>
-                      </ReviewerDataProvider>
-                    </SchoolDataProvider>
-                  </ApartmentDataProvider>
-                </PropertyServiceProvider>
-              </ContractServiceProvider>
+              <ApartmentDataProvider>
+                <SchoolDataProvider>
+                  <ReviewerDataProvider>
+                    <OwnerDataProvider>
+                      {/* existing content */}
+                    </OwnerDataProvider>
+                  </ReviewerDataProvider>
+                </SchoolDataProvider>
+              </ApartmentDataProvider>
             </OwnerServiceProvider>
           </ReviewerServiceProvider>
         </SchoolServiceProvider>
@@ -716,74 +1064,37 @@ export default function App() {
 }
 ```
 
----
+#### 4.6 Testing
+- ✅ Owner CRUD operations
+- ✅ Data available in context
+- ✅ All 4 entities working independently
 
-## PHASE 5: CENTRALIZED SERVICES EXPORT
-
-### Objective
-Create centralized service export for easier access
-
-### Steps
-
-#### 5.1 Create Services Index
-**File:** `src/middleware/services.js`
-
-```js
-import ApartmentApiService from './apartmentApiService';
-import SchoolApiService from './schoolApiService';
-import ReviewerApiService from './reviewerApiService';
-import OwnerApiService from './ownerApiService';
-import ContractApiService from './contractApiService';
-import PropertyApiService from './propertyApiService';
-
-const Services = {
-  apartment: ApartmentApiService,
-  school: SchoolApiService,
-  reviewer: ReviewerApiService,
-  owner: OwnerApiService,
-  contract: ContractApiService,
-  property: PropertyApiService,
-};
-
-export default Services;
-```
-
-#### 5.2 Optional: Use Services in Contexts
-Components can now import services directly if needed:
-
-```js
-import Services from '../middleware/services';
-
-// Direct access
-const apartments = await Services.apartment.getAllApartments();
-```
+**Time estimate:** 2-3 hours
 
 ---
 
-## OPTIMIZATION: PROVIDER COMPOSITION
+## PHASE 5: PROVIDER COMPOSITION & CLEANUP
 
 ### Objective
-Reduce provider nesting with composition pattern
+Optimize provider nesting and clean up deprecated code
 
-### Implementation
+### Tasks
+
+#### 5.1 Create Provider Composition
 
 **File:** `src/providers/AppProviders.jsx`
 
 ```js
 import React from 'react';
-import { ApartmentServiceProvider } from "../middleware/apartmentService";
-import { SchoolServiceProvider } from "../middleware/schoolService";
-import { ReviewerServiceProvider } from "../middleware/reviewerService";
-import { OwnerServiceProvider } from "../middleware/ownerService";
-import { ContractServiceProvider } from "../middleware/contractService";
-import { PropertyServiceProvider } from "../middleware/propertyService";
+import { ApartmentServiceProvider } from "../middleware/apartment/apartmentService";
+import { SchoolServiceProvider } from "../middleware/school/schoolService";
+import { ReviewerServiceProvider } from "../middleware/reviewer/reviewerService";
+import { OwnerServiceProvider } from "../middleware/owner/ownerService";
 
 import { ApartmentDataProvider } from "../data/ApartmentDataContext";
 import { SchoolDataProvider } from "../data/SchoolDataContext";
 import { ReviewerDataProvider } from "../data/ReviewerDataContext";
 import { OwnerDataProvider } from "../data/OwnerDataContext";
-import { ContractDataProvider } from "../data/ContractDataContext";
-import { PropertyDataProvider } from "../data/PropertyDataContext";
 
 const composeProviders = (...providers) => {
   return providers.reduce(
@@ -800,18 +1111,14 @@ const ServiceProviders = composeProviders(
   ApartmentServiceProvider,
   SchoolServiceProvider,
   ReviewerServiceProvider,
-  OwnerServiceProvider,
-  ContractServiceProvider,
-  PropertyServiceProvider
+  OwnerServiceProvider
 );
 
 const DataProviders = composeProviders(
   ApartmentDataProvider,
   SchoolDataProvider,
   ReviewerDataProvider,
-  OwnerDataProvider,
-  ContractDataProvider,
-  PropertyDataProvider
+  OwnerDataProvider
 );
 
 export const AppProviders = ({ children }) => (
@@ -823,186 +1130,189 @@ export const AppProviders = ({ children }) => (
 );
 ```
 
-**Updated App.jsx:**
+#### 5.2 Update App.jsx
+
+**File:** `src/App.jsx`
 
 ```js
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useState } from "react";
+import { IconButton, Box } from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import SideBar from "./navigation/SideBar";
+import HomePage from "./pages/HomePage";
+import ApartmentPage from "./pages/ApartmentPage";
+import ApartmentFilterPage from "./pages/ApartmentFilterPage";
+import SchoolMapPage from "./pages/SchoolMapPage";
+import "./App.css";
 import { AppProviders } from "./providers/AppProviders";
 
 export default function App() {
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  
+  const toggleDrawer = (open) => () => setDrawerOpen(open);
+  
   return (
     <BrowserRouter>
       <AppProviders>
-        {/* existing content */}
+        <div style={{ display: 'flex', minHeight: '100vh' }}>
+          <IconButton onClick={toggleDrawer(true)} style={{ position: 'fixed', top: '16px', left: '16px', zIndex: 1000 }}>
+            <MenuIcon />
+          </IconButton>
+          <SideBar open={drawerOpen} toggleDrawer={toggleDrawer} />
+          
+          <main style={{ display: 'flex', flexDirection: 'column', flexGrow: 1, padding: '8px', marginLeft: '48px', width: '100%' }}>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/apartments" element={<ApartmentPage />} />
+              <Route path="/apartmentFilter" element={<ApartmentFilterPage />} />
+              <Route path="/schoolMap" element={<SchoolMapPage />} />
+            </Routes>
+          </main>
+        </div>
       </AppProviders>
     </BrowserRouter>
   );
 }
 ```
 
----
+#### 5.3 Cleanup Deprecated Files
 
-## TESTING STRATEGY
+- Delete `src/data/useApartments.jsx.deprecated`
+- Remove any unused imports
+- Clean up console.log statements
 
-### Unit Tests
+#### 5.4 Final Testing
 
-#### Test Context Providers
-```js
-import { render, screen } from '@testing-library/react';
-import { ApartmentDataProvider, useApartmentData } from './ApartmentDataContext';
+- ✅ All 4 entities CRUD working
+- ✅ No prop drilling
+- ✅ No duplicate API calls
+- ✅ Clean provider composition
+- ✅ No console errors
+- ✅ Performance check (no regressions)
 
-test('provides apartment data to consumers', async () => {
-  const TestComponent = () => {
-    const { apartments, isLoading } = useApartmentData();
-    return <div>{isLoading ? 'Loading' : apartments.length}</div>;
-  };
-
-  render(
-    <ApartmentDataProvider>
-      <TestComponent />
-    </ApartmentDataProvider>
-  );
-
-  expect(screen.getByText('Loading')).toBeInTheDocument();
-});
-```
-
-#### Test API Services
-```js
-import ApartmentApiService from './apartmentApiService';
-import axios from 'axios';
-
-jest.mock('axios');
-
-test('fetches all apartments', async () => {
-  const mockData = [{ id: 1, price: 100000 }];
-  axios.get.mockResolvedValue({ data: mockData });
-
-  const result = await ApartmentApiService.getAllApartments();
-  
-  expect(result).toEqual(mockData);
-  expect(axios.get).toHaveBeenCalledWith('/api/v1/apartment/getAll');
-});
-```
-
-### Integration Tests
-
-Test full data flow from component → context → service → API
-
-### E2E Tests
-
-Test complete user workflows with real data
+**Time estimate:** 2-3 hours
 
 ---
 
-## ROLLBACK PLAN
+## TIMELINE SUMMARY
 
-### If Issues Arise
-
-1. **Phase 1 rollback:**
-   - Restore `useApartments.jsx`
-   - Remove `ApartmentDataContext.jsx`
-   - Revert App.jsx changes
-   - Revert component changes
-
-2. **Phase 2+ rollback:**
-   - Remove new entity contexts
-   - Remove new API services
-   - Keep Phase 1 changes (apartment context)
-
-3. **Emergency rollback:**
-   - Git revert to pre-refactor commit
-   - Deploy previous version
-
----
-
-## PERFORMANCE MONITORING
-
-### Metrics to Track
-
-- Initial load time
-- Time to interactive
-- API request count
-- Bundle size
-- Re-render count (React DevTools Profiler)
-
-### Optimization Checkpoints
-
-After each phase:
-- Run Lighthouse audit
-- Check bundle size with `npm run build`
-- Profile with React DevTools
-- Monitor network requests
-
----
-
-## COMPLETION CHECKLIST
-
-### Phase 1: Apartment
-- [ ] Create ApartmentDataContext.jsx
-- [ ] Update App.jsx with provider
-- [ ] Update all components using useApartments
-- [ ] Remove refreshTrigger pattern
-- [ ] Deprecate useApartments.jsx
-- [ ] Test all apartment CRUD operations
-- [ ] Verify no regressions
-
-### Phase 2: School
-- [ ] Create schoolApiService.js
-- [ ] Create schoolServiceHooks.jsx
-- [ ] Create schoolService.jsx
-- [ ] Create SchoolDataContext.jsx
-- [ ] Update App.jsx with providers
-- [ ] Update school components
-- [ ] Test school functionality
-
-### Phase 3: Reviewer
-- [ ] Create reviewerApiService.js
-- [ ] Create reviewerServiceHooks.jsx
-- [ ] Create reviewerService.jsx
-- [ ] Create ReviewerDataContext.jsx
-- [ ] Create reviewApiService.js (optional)
-- [ ] Update App.jsx with providers
-- [ ] Update Reviews.jsx
-- [ ] Test reviewer/review functionality
-
-### Phase 4: Remaining Entities
-- [ ] Create Owner API + Context
-- [ ] Create Contract API + Context
-- [ ] Create Property API + Context
-- [ ] Update App.jsx with all providers
-- [ ] Test all entities
-
-### Phase 5: Optimization
-- [ ] Create centralized services.js
-- [ ] Create AppProviders.jsx composition
-- [ ] Update App.jsx to use composition
-- [ ] Run performance audit
-- [ ] Document final architecture
-
----
-
-## TIMELINE ESTIMATE
-
-- **Phase 1 (Apartment):** 4-6 hours
-- **Phase 2 (School):** 3-4 hours
-- **Phase 3 (Reviewer):** 3-4 hours
-- **Phase 4 (Owner, Contract, Property):** 6-8 hours
-- **Phase 5 (Optimization):** 2-3 hours
-- **Testing & Bug Fixes:** 4-6 hours
-
-**Total:** 22-31 hours (3-4 days)
+| Phase | Entity | Time Estimate |
+|-------|--------|---------------|
+| Phase 0 | Endpoints Config | 30 min |
+| Phase 1 | Apartment | 4-6 hours |
+| Phase 2 | School | 3-4 hours |
+| Phase 3 | Reviewer | 2-3 hours |
+| Phase 4 | Owner | 2-3 hours |
+| Phase 5 | Composition & Cleanup | 2-3 hours |
+| **TOTAL** | | **14-20 hours** |
 
 ---
 
 ## SUCCESS CRITERIA
 
-✅ All entities use context-based data layer  
-✅ No prop drilling for data access  
-✅ Independent entity refresh capabilities  
-✅ No performance regressions  
+✅ All 4 entities (Apartment, School, Reviewer, Owner) implemented  
+✅ Each entity follows 4-layer architecture (API → Hook → Service → Context)  
+✅ All endpoints centralized in `middleware/config/endpoints.js`  
+✅ No hardcoded URLs anywhere  
+✅ No `refreshTrigger` pattern  
+✅ Components use `refetch()` for data refresh  
+✅ Clean provider composition in `AppProviders.jsx`  
 ✅ All tests passing  
-✅ Clean provider composition  
-✅ Centralized service exports  
-✅ Documentation updated  
-✅ Code review approved  
-✅ Production deployment successful
+✅ No console errors  
+✅ No performance regressions  
+✅ Code follows consistent naming conventions  
+✅ Deprecated files removed
+
+---
+
+## COMPLETION CHECKLIST
+
+### Phase 0
+- [ ] Create `middleware/config/` folder
+- [ ] Create `endpoints.js` with all 4 entities
+
+### Phase 1 (Apartment)
+- [ ] Move files to `middleware/apartment/`
+- [ ] Update API service to use ENDPOINTS
+- [ ] Create ApartmentDataContext
+- [ ] Update App.jsx with providers
+- [ ] Update components (remove refreshTrigger)
+- [ ] Deprecate useApartments.jsx
+- [ ] Tests passing
+
+### Phase 2 (School)
+- [ ] Create `middleware/school/` folder
+- [ ] Create schoolApiService.js
+- [ ] Create schoolServiceHooks.jsx
+- [ ] Create schoolService.jsx
+- [ ] Create SchoolDataContext.jsx
+- [ ] Update App.jsx
+- [ ] Update school components
+- [ ] Tests passing
+
+### Phase 3 (Reviewer)
+- [ ] Create `middleware/reviewer/` folder
+- [ ] Create reviewerApiService.js
+- [ ] Create reviewerServiceHooks.jsx
+- [ ] Create reviewerService.jsx
+- [ ] Create ReviewerDataContext.jsx
+- [ ] Update App.jsx
+- [ ] Tests passing
+
+### Phase 4 (Owner)
+- [ ] Create `middleware/owner/` folder
+- [ ] Create ownerApiService.js
+- [ ] Create ownerServiceHooks.jsx
+- [ ] Create ownerService.jsx
+- [ ] Create OwnerDataContext.jsx
+- [ ] Update App.jsx
+- [ ] Tests passing
+
+### Phase 5 (Composition)
+- [ ] Create `providers/` folder
+- [ ] Create AppProviders.jsx
+- [ ] Update App.jsx to use AppProviders
+- [ ] Delete deprecated files
+- [ ] Final testing
+- [ ] Performance audit
+- [ ] Documentation updated
+
+---
+
+## FINAL STRUCTURE
+
+```
+src/
+├── middleware/
+│   ├── config/
+│   │   └── endpoints.js
+│   ├── apartment/
+│   │   ├── apartmentApiService.js
+│   │   ├── apartmentServiceHooks.jsx
+│   │   └── apartmentService.jsx
+│   ├── school/
+│   │   ├── schoolApiService.js
+│   │   ├── schoolServiceHooks.jsx
+│   │   └── schoolService.jsx
+│   ├── reviewer/
+│   │   ├── reviewerApiService.js
+│   │   ├── reviewerServiceHooks.jsx
+│   │   └── reviewerService.jsx
+│   └── owner/
+│       ├── ownerApiService.js
+│       ├── ownerServiceHooks.jsx
+│       └── ownerService.jsx
+├── data/
+│   ├── ApartmentDataContext.jsx
+│   ├── SchoolDataContext.jsx
+│   ├── ReviewerDataContext.jsx
+│   └── OwnerDataContext.jsx
+├── providers/
+│   └── AppProviders.jsx
+└── App.jsx
+```
+
+---
+
+**END OF REFACTOR PLAN**

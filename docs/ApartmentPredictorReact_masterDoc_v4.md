@@ -4,7 +4,9 @@
 
 ### Version Goal
 
-Reviews and Reviewer for all apartments.
+Create individual <mark>review pages for each apartment</mark> using the <mark>dynamic route</mark> `/reviews/apartment/:id`. 
+
+When users click a "**View Reviews**" `link/button` on an apartment card, navigate to `/reviews/apartment/123` (where 123 is the apartment's ID). The `Reviews` component extracts the ID via `useParams()` and fetches/displays that apartment's specific reviews.
 
 ### Product Goal
 
@@ -178,9 +180,141 @@ REST <mark>endpoint</mark>
 }
 ```
 
+## Dynamic Routes in React Router
+
+> Dynamic routes use **URL parameters** to create flexible paths that can match multiple URLs with a single route definition.
+
+How It Works in our routes:
+
+```jsx
+<Route path="/reviews/apartment/:id" element={<Reviews />} />
+```
+
+The `:id` is a **URL parameter placeholder**. When a user navigates to `/reviews/apartment/42`, React Router:
+
+1. **Matches** the pattern and renders the `<Reviews />` component
+2. **Extracts** `42` as the `id` parameter
+3. **Provides** access via the `useParams()` hook
+
+Inside the `Reviews` component:
+
+```jsx
+import { useParams } from 'react-router-dom';
+
+const Reviews = () => {
+  const { id } = useParams(); // id = "42"
+  // Fetch apartment data using this id
+};
+```
+
+In `ApartmentItem`, when clicking "Detail", you likely navigate to the review page:
+
+```jsx
+navigate(`/reviews/apartment/${apartment.id}`)
+```
+
+This creates URLs like `/reviews/apartment/123`, `/reviews/apartment/456`, etc., all handled by the same route component but displaying different apartment data based on the extracted `id`.
+
 ## Code
 
-todo  
+- [ApartmentPredictor-React/src/apartment/ApartmentItem.jsx](https://github.com/AlbertProfe/ApartmentPredictor-React/blob/35be1221486b07c95b57abb46422b3d45b174fa4/ApartmentPredictor-React/src/apartment/ApartmentItem.jsx)
+
+```jsx
+import React from 'react';
+import ApartmentReviewSummary from './ApartmentReviewSummary';
+
+const ApartmentItem = ({ apartment, onDetail, onUpdate, onDelete, isDeleting }) => {
+  return (
+    <li className="apartment-item card" style={{ position: 'relative' }}>
+      <div className="apartment-header gray-text">
+        ID: {apartment.id} | ${apartment.price}
+      </div>
+
+      <div className="apartment-grid">
+        <div>
+          <strong>Area:</strong> {apartment.area} sq ft
+        </div>
+        <div>
+          <strong>Bedrooms:</strong> {apartment.bedrooms}
+        </div>
+        <div>
+          <strong>Bathrooms:</strong> {apartment.bathrooms}
+        </div>
+        <div>
+          <strong>Stories:</strong> {apartment.stories}
+        </div>
+      </div>
+
+      <div className="apartment-actions">
+        <button 
+          onClick={() => onDetail(apartment)} 
+          className="detail-btn"
+          disabled={isDeleting}
+        >
+          Detail
+        </button>
+        <button 
+          onClick={() => onUpdate(apartment)} 
+          className="update-btn"
+          disabled={isDeleting}
+        >
+          Update
+        </button>
+        <button 
+          onClick={() => onDelete(apartment.id)} 
+          className="delete-btn"
+          disabled={isDeleting}
+        >
+          {isDeleting ? "Deleting..." : "Delete"}
+        </button>
+      </div>
+
+      <ApartmentReviewSummary apartment={apartment} />
+    </li>
+  );
+};
+
+export default ApartmentItem;
+```
+
+- [ApartmentPredictor-React/src/apartment/ApartmentReviewSummary.jsx](https://github.com/AlbertProfe/ApartmentPredictor-React/blob/35be1221486b07c95b57abb46422b3d45b174fa4/ApartmentPredictor-React/src/apartment/ApartmentReviewSummary.jsx)
+
+```jsx
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+
+const ApartmentReviewSummary = ({ apartment }) => {
+  const navigate = useNavigate();
+
+  if (!apartment || !apartment.reviews || apartment.reviews.length === 0) {
+    return null;
+  }
+
+  const reviews = apartment.reviews;
+  const totalReviews = reviews.length;
+  const averageRating = reviews.reduce((sum, review) => sum + review.rating, 0) / totalReviews;
+
+  const handleClick = () => {
+    navigate(`/reviews/apartment/${apartment.id}`);
+  };
+
+  return (
+    <div className="apartment-review-summary" onClick={handleClick}>
+      <span className="star-icon">⭐</span>
+      <span>{averageRating.toFixed(1)} ({totalReviews} review{totalReviews > 1 ? 's' : ''})</span>
+      <a href="#" onClick={(e) => { e.preventDefault(); handleClick(); }}>View all</a>
+    </div>
+  );
+};
+
+export default ApartmentReviewSummary;
+```
+
+## screenshots
+
+![](https://raw.githubusercontent.com/AlbertProfe/ApartmentPredictor-React/refs/heads/master/docs/screenshots/RENDER-react-ApartmentsReview.png)
+
+![](https://raw.githubusercontent.com/AlbertProfe/ApartmentPredictor-React/refs/heads/master/docs/screenshots/RENDER-react-ApartmentsReview-2.png)
 
 ## package.json
 
