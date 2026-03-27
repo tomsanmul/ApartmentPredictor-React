@@ -9,6 +9,7 @@ const ApartmentList = () => {
   const {
     apartments,
     totalPages,
+    totalElements,
     currentPage,
     loading,
     fetchPageApartments,
@@ -44,7 +45,9 @@ const ApartmentList = () => {
     <ApartmentListContainer
       apartments={apartments}
       totalPages={totalPages}
+      totalItems={totalElements}
       currentPage={currentPage}
+      itemsPerPage={40}
       isFiltering={isFiltering}
       loading={loading}
       onPageChange={handlePageChange}

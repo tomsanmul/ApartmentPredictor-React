@@ -7,12 +7,14 @@ import Navigation from "../components/NavigationList";
 
 
 
-const ApartmentListView = ({ apartments = [], totalPages, currentPage, isFiltering, loading, onCreate, onUpdate, onDelete, onPageChange, onFilter}) => {
+const ApartmentListView = ({ apartments = [], totalPages, itemsPerPage, totalItems, currentPage, isFiltering, loading, onCreate, onUpdate, onDelete, onPageChange, onFilter}) => {
 
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [editingApartmentId, setEditingApartmentId] = useState(null);
   const [showDetailForm, setShowDetailForm] = useState(false);
   const [selectedApartment, setSelectedApartment] = useState(null);
+  const start = currentPage * itemsPerPage + 1;
+  const end = Math.min((currentPage + 1) * itemsPerPage, totalItems);
 
   const [newApartment, setNewApartment] = useState({
     price: "",
@@ -98,12 +100,14 @@ const ApartmentListView = ({ apartments = [], totalPages, currentPage, isFilteri
     }
   };
 
+
+
   return (
     <>      
       <ApartmentsFilter onFilter={handleFilter} />
-       <br/>
-        There are <b>{apartments.length}</b> apartments.    
-       <br/> <br/> 
+      <p>
+        Showing <b>{start}</b>–<b>{end}</b> of <b>{totalItems}</b> apartments
+      </p>
 
       {loading && (
         <div className="loading-container">
