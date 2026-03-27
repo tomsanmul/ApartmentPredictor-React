@@ -7,7 +7,7 @@ import Navigation from "../components/NavigationList";
 
 
 
-const ApartmentListView = ({ apartments = [], loading, onCreate, onUpdate, onDelete, onPageChange, onFilter}) => {
+const ApartmentListView = ({ apartments = [], totalPages, currentPage, isFiltering, loading, onCreate, onUpdate, onDelete, onPageChange, onFilter}) => {
 
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [editingApartmentId, setEditingApartmentId] = useState(null);
@@ -56,6 +56,7 @@ const ApartmentListView = ({ apartments = [], loading, onCreate, onUpdate, onDel
       onDelete(id);
     }
   };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -166,7 +167,13 @@ const ApartmentListView = ({ apartments = [], loading, onCreate, onUpdate, onDel
 
 
       {/* PAGINATION */}
-      {<Navigation onPageChange={onPageChange} />}
+      {!isFiltering && (
+        <Navigation
+          totalPages={totalPages}
+          currentPage={currentPage}
+          onPageChange={onPageChange}
+        />
+      )}
 
       {showCreateForm && (
         <ApartmentCreate

@@ -61,30 +61,30 @@ export default function ApartmentsFilter({ onFilter }) {
   onFilter(parsedFilters);
   };  
 
-  const resetFilters = () => {
-  const defaultFilters = {
-    minPrice: "",
-    maxPrice: "",
-    minArea: "",
-    maxArea: "",
-    bedrooms: "",
-    bathrooms: "",
-    stories: "",
-    parking: "",
-    mainroad: "no",
-    guestroom: "no",
-    basement: "no",
-    hotwaterheating: "no",
-    airconditioning: "no",
-    prefarea: "no",
-    furnishingstatus: "none"
+    const resetFilters = () => {
+    const defaultFilters = {
+      minPrice: "",
+      maxPrice: "",
+      minArea: "",
+      maxArea: "",
+      bedrooms: "",
+      bathrooms: "",
+      stories: "",
+      parking: "",
+      mainroad: "no",
+      guestroom: "no",
+      basement: "no",
+      hotwaterheating: "no",
+      airconditioning: "no",
+      prefarea: "no",
+      furnishingstatus: "none"
+    };
+
+    setFilters(defaultFilters);
+
+    // 🔥 solo esto
+    onFilter(null);
   };
-
-  setFilters(defaultFilters);
-
-  onFilter({}); // 👈 quita filtros backend
-};
-
 
   return (
     <div className="filter-container">

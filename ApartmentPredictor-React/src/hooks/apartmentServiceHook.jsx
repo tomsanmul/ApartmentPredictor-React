@@ -9,6 +9,9 @@ import { ApartmentServiceContext } from "../services/apartmentServiceContext.jsx
 
 const initialState = {
   apartments: [],
+  totalPages: 0,
+  totalElements: 0,
+  currentPage: 0,
   loading: false,
   error: null,
 };
@@ -18,7 +21,8 @@ const reducer = (state, action) => {
     case "FETCH_START":
       return { ...state, loading: true, error: null };
     case "FETCH_SUCCESS":
-      return { ...state, apartments: action.payload, loading: false };
+      return {  ...state, apartments: action.payload.apartments, totalPages: action.payload.totalPages, totalElements: action.payload.totalElements, 
+                currentPage: action.payload.currentPage, loading: false};
     case "FETCH_ERROR":
       return { ...state, loading: false, error: action.payload };
     case "CREATE_APARTMENT":
@@ -51,8 +55,13 @@ export const useApartments = () => {
         console.log("PAGE DATA:", data);
         dispatch({
           type: "FETCH_SUCCESS",
-          payload: data.content
-        });
+          payload: {
+            apartments: data.content,
+            totalPages: data.totalPages,
+            totalElements: data.totalElements,
+            currentPage: data.number
+          }
+      });
 
       } catch (error) {
         dispatch({
@@ -123,6 +132,8 @@ export const useApartments = () => {
 
   return {
     apartments: state.apartments,
+    totalPages: state.totalPages,
+    currentPage: state.currentPage,
     loading: state.loading,
     error: state.error,
     fetchPageApartments,
