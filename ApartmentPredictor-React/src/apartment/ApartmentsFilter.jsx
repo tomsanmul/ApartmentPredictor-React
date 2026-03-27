@@ -88,7 +88,7 @@ export default function ApartmentsFilter({ onFilter }) {
 
   return (
     <div className="filter-container">
-      <h2 className="filter-title">Filter Apartments</h2>
+      <h3 className="filter-title">Filter Apartments</h3>
 
       {/* FILA 1 */}
       <div className="filter-row grid-row">

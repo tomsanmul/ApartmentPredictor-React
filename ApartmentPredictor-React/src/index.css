@@ -68,6 +68,30 @@ button:focus-visible {
 }
 
 
+/* ---------------------------------- HOME CSS ------------------------------------- */
+
+/* CONTENEDOR (importante para el efecto) */
+.image-card {
+  display: inline-block;
+}
+
+.image-card img {
+  width: 100%;
+  max-width: 100%;
+  border-radius: 12px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transform: scale(1);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+/* HOVER MÁS SUTIL */
+.image-card img:hover {
+  transform: scale(1.03); /* antes 1.05 */
+  box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+}
+
+
+
 .apartment-list {
   list-style: none;
   padding: 0;
@@ -219,7 +243,7 @@ button:focus-visible {
 }
 
 
-/* Estilos para el formulario CREATE */
+/* ---------------------- Estilos para el formulario CREATE ------------------------*/
 
 /* Fondo semitransparente */
 .create-form-overlay {
@@ -281,7 +305,7 @@ button:focus-visible {
 }
 
 
-/* Botones Formulario  CREATE / EDIT / DELETE Apartment*/
+/* --------------- Botones Formulario  CREATE / EDIT / DELETE Apartment -------------*/
 .form-actions {
   margin-top: 1.5rem;
   display: flex;
@@ -348,7 +372,7 @@ button:focus-visible {
 }
 
 
-/* Login.css */
+/* ----------------------------------- LOGIN CSS ------------------------------------- */
 
 .login-page {
   width: 100%;
@@ -404,16 +428,17 @@ button:focus-visible {
 
 
 
-/* Filter css */
+/* ------------------------------------- FILTER --------------------------------------- */
 
 .filter-container {
   width: 100%;
-  padding: 20px;
+  padding: 10px;
   background: #f5f5f5;
   border-bottom: 2px solid #ddd;
 }
 
 .filter-title {
+  margin-top: -5px;
   margin-bottom: 15px;
 }
 
@@ -426,7 +451,7 @@ button:focus-visible {
   align-items: center;
 }
 
-/* 🔥 GRID PARA FILA 1 */
+/* GRID PARA FILA 1 */
 .grid-row {
   display: grid;
   grid-template-columns: repeat(6, 1fr); /* 6 columnas exactas */
@@ -438,7 +463,7 @@ button:focus-visible {
   display: flex;
   align-items: center;
   gap: 6px;
-  min-width: 0; /* 🔥 clave para que no rompa el grid */
+  min-width: 0; /* clave para que no rompa el grid */
 }
 
 /* LABEL */
@@ -474,7 +499,7 @@ button:focus-visible {
 
 /* SELECT */
 .furnishing {
-  margin-left: auto; /* 🔥 lo manda hacia la derecha */
+  margin-left: auto; /* lo empuja hacia la derecha */
   display: flex;
   align-items: center;
   gap: 6px;
@@ -498,7 +523,7 @@ button:focus-visible {
 
 /* CONTENEDOR DEL BOTÓN */
 .button-container {
-  margin-left: auto; /* 🔥 empuja a la derecha */
+  margin-left: auto; /* lo empuja a la derecha */
 }
 
 
