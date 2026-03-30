@@ -12,6 +12,7 @@ const initialState = {
   totalPages: 0,
   totalElements: 0,
   currentPage: 0,
+  pageSize : 0,
   loading: false,
   error: null,
 };
@@ -22,7 +23,7 @@ const reducer = (state, action) => {
       return { ...state, loading: true, error: null };
     case "FETCH_SUCCESS":
       return {  ...state, apartments: action.payload.apartments, totalPages: action.payload.totalPages, totalElements: action.payload.totalElements, 
-                currentPage: action.payload.currentPage, loading: false};
+                currentPage: action.payload.currentPage, pageSize: action.payload.pageSize, loading: false};
     case "FETCH_ERROR":
       return { ...state, loading: false, error: action.payload };
     case "CREATE_APARTMENT":
@@ -59,6 +60,7 @@ export const useApartments = () => {
             apartments: data.content,
             totalPages: data.totalPages,
             totalElements: data.totalElements,
+            pageSize: data.size, 
             currentPage: data.number
           }
       });
@@ -137,6 +139,7 @@ export const useApartments = () => {
     loading: state.loading,
     error: state.error,
     totalElements: state.totalElements,
+    pageSize: state.pageSize,
     fetchPageApartments,
     filterApartments,
     createApartment,

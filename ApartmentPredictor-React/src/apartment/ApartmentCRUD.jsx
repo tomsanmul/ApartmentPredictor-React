@@ -11,6 +11,7 @@ const ApartmentList = () => {
     totalPages,
     totalElements,
     currentPage,
+    pageSize,
     loading,
     fetchPageApartments,
     filterApartments,
@@ -47,7 +48,8 @@ const ApartmentList = () => {
       totalPages={totalPages}
       totalItems={totalElements}
       currentPage={currentPage}
-      itemsPerPage={40}
+      pageSize={pageSize} 
+      itemsPerPage={pageSize}
       isFiltering={isFiltering}
       loading={loading}
       onPageChange={handlePageChange}

@@ -7,19 +7,20 @@ import Navigation from "../components/NavigationList";
 
 
 
-const ApartmentListView = ({ apartments = [], totalPages, itemsPerPage, totalItems, currentPage, isFiltering, loading, onCreate, onUpdate, onDelete, onPageChange, onFilter}) => {
+const ApartmentListView = ({ apartments = [], totalPages, pageSize, totalItems, currentPage, isFiltering, loading, onCreate, onUpdate, onDelete, onPageChange, onFilter}) => {
 
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [editingApartmentId, setEditingApartmentId] = useState(null);
   const [showDetailForm, setShowDetailForm] = useState(false);
   const [selectedApartment, setSelectedApartment] = useState(null);
-  const ITEMS_PER_PAGE = 40;
-  const start = currentPage * itemsPerPage + 1;
-  const end = Math.min((currentPage + 1) * ITEMS_PER_PAGE, totalItems);
-  console.log(start);
+  
   console.log(currentPage);
-  console.log(ITEMS_PER_PAGE);
+  console.log(pageSize);
   console.log(totalItems);
+  
+  const start = currentPage * pageSize + 1;
+  const end = Math.min((currentPage + 1) * pageSize, totalItems);
+  console.log(start);
   console.log(end);
   
 
