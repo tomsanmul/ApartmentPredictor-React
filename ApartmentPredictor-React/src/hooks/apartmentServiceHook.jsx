@@ -136,6 +136,7 @@ export const useApartments = () => {
     currentPage: state.currentPage,
     loading: state.loading,
     error: state.error,
+    totalElements: state.totalElements,
     fetchPageApartments,
     filterApartments,
     createApartment,

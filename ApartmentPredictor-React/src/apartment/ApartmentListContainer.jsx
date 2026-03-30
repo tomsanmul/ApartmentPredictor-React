@@ -13,8 +13,15 @@ const ApartmentListView = ({ apartments = [], totalPages, itemsPerPage, totalIte
   const [editingApartmentId, setEditingApartmentId] = useState(null);
   const [showDetailForm, setShowDetailForm] = useState(false);
   const [selectedApartment, setSelectedApartment] = useState(null);
+  const ITEMS_PER_PAGE = 40;
   const start = currentPage * itemsPerPage + 1;
-  const end = Math.min((currentPage + 1) * itemsPerPage, totalItems);
+  const end = Math.min((currentPage + 1) * ITEMS_PER_PAGE, totalItems);
+  console.log(start);
+  console.log(currentPage);
+  console.log(ITEMS_PER_PAGE);
+  console.log(totalItems);
+  console.log(end);
+  
 
   const [newApartment, setNewApartment] = useState({
     price: "",
