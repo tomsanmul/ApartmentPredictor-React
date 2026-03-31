@@ -42,6 +42,12 @@ export default function Sidebar({ toggleTheme, mode }) {
           </ListItem>
 
           <ListItem disablePadding>
+            <ListItemButton component={RouterLink} to="/schools">
+              <ListItemText primary="Schools" />
+            </ListItemButton>
+          </ListItem>
+
+          <ListItem disablePadding>
             <ListItemButton component={RouterLink} to="/login">
               <ListItemText primary="Login" />
             </ListItemButton>

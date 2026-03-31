@@ -1,0 +1,6 @@
+import SchoolList from "../school/SchoolCreate.jsx"; 
+
+export default function SchoolsPage() { 
+  return <SchoolList />
+
+}
