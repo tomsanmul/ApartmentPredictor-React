@@ -5,7 +5,7 @@ import SchoolMapView from './SchoolMapView';
 
 const SchoolMap = () => {
   return (
-    <Grid container spacing={2} sx={{ width: '100%' }}>
+    <Grid container spacing={2} sx={{ width: '300%' }}>
       <Grid size={{ xs: 12, md: 6 }}>
         <SchoolCreate />
       </Grid>

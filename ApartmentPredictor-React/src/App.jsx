@@ -25,7 +25,7 @@ export default function App() {
       <ApartmentServiceProvider>
         <Router>
 
-          <Box sx={{ display: "flex" }}> {/* 👈 ESTA LINEA ES LA CLAVE */}
+          <Box sx={{ display: "flex" }}> 
 
             <Sidebar toggleTheme={toggleTheme} mode={mode} />
 
