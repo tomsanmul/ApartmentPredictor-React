@@ -5,8 +5,6 @@ import ApartmentDetail from "./ApartmentDetail";
 import ApartmentsFilter from "./ApartmentsFilter";
 import Navigation from "../components/NavigationList";
 
-
-
 const ApartmentListView = ({ apartments = [], totalPages, pageSize, totalItems, currentPage, isFiltering, loading, onCreate, onUpdate, onDelete, onPageChange, onFilter}) => {
 
   const [showCreateForm, setShowCreateForm] = useState(false);
@@ -23,7 +21,6 @@ const ApartmentListView = ({ apartments = [], totalPages, pageSize, totalItems, 
   console.log(start);
   console.log(end);
   
-
   const [newApartment, setNewApartment] = useState({
     price: "",
     area: "",
@@ -67,7 +64,6 @@ const ApartmentListView = ({ apartments = [], totalPages, pageSize, totalItems, 
     }
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -107,7 +103,6 @@ const ApartmentListView = ({ apartments = [], totalPages, pageSize, totalItems, 
       alert("Error: " + error);
     }
   };
-
 
 
   return (
@@ -176,7 +171,6 @@ const ApartmentListView = ({ apartments = [], totalPages, pageSize, totalItems, 
           </button>
         </div>
       )}
-
 
       {/* PAGINATION */}
       {!isFiltering && (

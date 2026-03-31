@@ -13,6 +13,7 @@ ApartmentPredictor es una aplicació per prediure el preu d'un Apartment, depene
 FEATURES :
     - Implementació d'una nova feature: ApartmentFilter.jsx
     - Implementació d'una barra de navegació inferior.
+    - Es mostra també la etiqueta informació "Showing 1–30 of 644 apartments" que indica on estás de la barra de navegació.
 
 
 #  V. 3.0
