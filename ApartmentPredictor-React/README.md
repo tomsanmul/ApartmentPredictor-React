@@ -1,5 +1,5 @@
 # APARTMENTPREDICTOR  (FRONTEND REACT) 
-# VERSIÓ ACTUAL: V. 3.0 
+# VERSIÓ ACTUAL: V. 5.0 
 
 UBICACIÓN DEL PROJECTE EN GITHUB:  https://github.com/tomsanmul/ApartmentPredictor-React
 
@@ -7,6 +7,11 @@ UBICACIÓN DEL PROJECTE EN GITHUB:  https://github.com/tomsanmul/ApartmentPredic
 DESCRIPCIÓ. ¿QUE ES APARTMENT PREDICTOR? 
 
 ApartmentPredictor es una aplicació per prediure el preu d'un Apartment, depenent d'altres factors i variables típus del mercat.
+
+
+#  V. 5.0
+FEATURES :
+    - Implementació d'Schools (per donar d'alta) + 1 Mapa
 
 
 #  V. 4.0
