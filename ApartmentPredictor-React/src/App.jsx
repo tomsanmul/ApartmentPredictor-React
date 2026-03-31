@@ -7,6 +7,7 @@ import { ApartmentServiceProvider } from "./services/apartmentServiceProvider";
 
 import Home from "./pages/Home";
 import ApartmentsPage from "./pages/ApartmentsPage";
+import SchoolsPage from "./pages/SchoolsPage";
 import Login from "./pages/Login";
 
 export default function App() {
