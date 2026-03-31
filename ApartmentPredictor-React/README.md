@@ -1,5 +1,5 @@
 # APARTMENTPREDICTOR  (FRONTEND REACT) 
-# VERSIÓ ACTUAL: V. 3.0 
+# VERSIÓ ACTUAL: V. 4.0 
 
 UBICACIÓN DEL PROJECTE EN GITHUB:  https://github.com/tomsanmul/ApartmentPredictor-React
 
