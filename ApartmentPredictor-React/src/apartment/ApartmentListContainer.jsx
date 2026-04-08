@@ -109,7 +109,15 @@ const ApartmentListView = ({ apartments = [], totalPages, pageSize, totalItems, 
     <>      
       <ApartmentsFilter onFilter={handleFilter} />
       <p>
-        Showing <b>{start}</b>–<b>{end}</b> of <b>{totalItems}</b> apartments
+        {isFiltering ? (
+          <>
+            Showing <b>{apartments.length}</b> apartments
+          </>
+        ) : (
+          <>
+            Showing <b>{start}</b>–<b>{end}</b> of <b>{totalItems}</b> apartments
+          </>
+        )}
       </p>
 
       {loading && (
