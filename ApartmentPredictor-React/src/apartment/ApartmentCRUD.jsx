@@ -49,7 +49,6 @@ const ApartmentList = () => {
       totalItems={totalElements}
       currentPage={currentPage}
       pageSize={pageSize} 
-      itemsPerPage={pageSize}
       isFiltering={isFiltering}
       loading={loading}
       onPageChange={handlePageChange}
