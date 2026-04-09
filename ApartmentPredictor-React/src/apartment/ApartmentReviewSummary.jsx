@@ -20,7 +20,7 @@ const ApartmentReviewSummary = ({ apartment }) => {
     <div className="apartment-review-summary" onClick={handleClick}>
       <span className="star-icon">⭐</span>
       <span>{averageRating.toFixed(1)} ({totalReviews} review{totalReviews > 1 ? 's' : ''})</span>
-      <a href="#" onClick={(e) => { e.preventDefault(); handleClick(); }}>View all</a>
+      <a href="#" onClick={(e) => { e.preventDefault(); handleClick(); }}>  View all</a>
     </div>
   );
 };

@@ -136,6 +136,21 @@ button:focus-visible {
   margin-bottom: 0.5rem;
 }
 
+.grid-columns {
+  display: flex;
+  gap: 2rem;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.review-row {
+  min-height: 24px; 
+}
+
 .apartment-features {
   display: flex;
   flex-wrap: wrap;
@@ -172,6 +187,13 @@ button:focus-visible {
 .apartment-img:hover {
   transform: scale(1.03);
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.button-group {
+  display: flex;
+  justify-content: center; /* 👈 centra horizontalmente */
+  gap: 0.5rem; /* espacio entre botones */
+  margin-top: 10px;
 }
 
 

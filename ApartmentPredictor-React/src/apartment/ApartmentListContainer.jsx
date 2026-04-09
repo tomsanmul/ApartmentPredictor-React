@@ -143,7 +143,11 @@ const ApartmentListView = ({ apartments = [], totalPages, pageSize, totalItems, 
                 src={`/img/${apartment.id}.jpg`}
                 alt={`Apartment ${apartment.id}`}
                 className="apartment-img"
-                onClick={() => handleDetail(apartment)}
+                onClick={() => handleDetail(apartment)} 
+                onError={(e) => {
+                  e.target.onerror = null; // evita bucle infinito
+                  e.target.src = "/img/notFound.jpg"; // imagen genérica
+                }}
               />
 
               <div className="apartment-header">
@@ -151,21 +155,33 @@ const ApartmentListView = ({ apartments = [], totalPages, pageSize, totalItems, 
               </div>
 
               <div className="apartment-grid">
-                <div><strong>Area:</strong> {apartment.area} sq ft</div>
-                <div><strong>Bedrooms:</strong> {apartment.bedrooms}</div>
-                <div><strong>Bathrooms:</strong> {apartment.bathrooms}</div>
-                <div><strong>Stories:</strong> {apartment.stories}</div>
+                <div className="grid-columns">
+                  <div className="column">
+                    <div><strong>Area:</strong> {apartment.area} sq ft</div>
+                    <div><strong>Stories:</strong> {apartment.stories}</div>
+                </div>
+
+                <div className="column">
+                  <div><strong>Bedrooms:</strong> {apartment.bedrooms}</div>
+                  <div><strong>Bathrooms:</strong> {apartment.bathrooms}</div>
+                </div>
               </div>
 
-              <div className="apartment-button-edit">
+              <div className="review-row">
+                <ApartmentReviewSummary apartment={apartment} />
+              </div>
+
+            </div>
+
+            <div className="button-group">
                 <button className="btn detail-btn" onClick={() => handleDetail(apartment)}>Details</button>
                 <button className="btn edit-btn" onClick={() => handleEdit(apartment)}>Edit</button>
-                <button className="btn delete-btn" onClick={() => handleDelete(apartment.id)}>Delete</button>
+                <button className="btn delete-btn" onClick={() => handleDelete(apartment.id)}>Delete</button>    
               </div>
             </div>
           ))}
 
-          <ApartmentReviewSummary apartment={apartments} />
+          
         </div>
        
       )}
