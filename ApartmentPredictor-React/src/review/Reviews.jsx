@@ -105,6 +105,7 @@ const Reviews = () => {
   const averageRating = apartment.reviews.reduce((sum, review) => sum + review.rating, 0) / totalReviews;
 
   return (
+    
     <div className="reviews-container">
         <button onClick={handleBackClick} className="back-btn">← Back</button>
         <h2>Reviews for Apartment {apartment.id}</h2>
