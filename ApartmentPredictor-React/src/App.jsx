@@ -34,6 +34,7 @@ export default function App() {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/apartments" element={<ApartmentsPage />} />
+                <Route path="/reviews/apartment/:id" element={<Reviews />} />
                 <Route path="/schools" element={<SchoolsPage />} />
                 <Route path="/login" element={<Login />} />
               </Routes>
