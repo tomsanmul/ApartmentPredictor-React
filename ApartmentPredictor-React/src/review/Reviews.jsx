@@ -106,10 +106,8 @@ const Reviews = () => {
 
   return (
     <div className="reviews-container">
-      <div className="reviews-header">
         <button onClick={handleBackClick} className="back-btn">← Back</button>
         <h2>Reviews for Apartment {apartment.id}</h2>
-      </div>
       
       <div className="reviews-summary">
         <div className="summary-card">

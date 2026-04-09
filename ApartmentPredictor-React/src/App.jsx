@@ -4,9 +4,9 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Sidebar from "./components/SideBar";
 import { ApartmentServiceProvider } from "./services/apartmentServiceProvider";
-
 import Home from "./pages/Home";
 import ApartmentsPage from "./pages/ApartmentsPage";
+import Reviews from "./review/Reviews";
 import SchoolsPage from "./pages/SchoolsPage";
 import Login from "./pages/Login";
 
