@@ -3,6 +3,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import ApartmentCreate from "./ApartmentCreate";
 import ApartmentDetail from "./ApartmentDetail";
 import ApartmentsFilter from "./ApartmentsFilter";
+import ApartmentReviewSummary from "./ApartmentReviewSummary";
 import Navigation from "../components/NavigationList";
 
 const ApartmentListView = ({ apartments = [], totalPages, pageSize, totalItems, currentPage, isFiltering, loading, onCreate, onUpdate, onDelete, onPageChange, onFilter}) => {
@@ -163,7 +164,10 @@ const ApartmentListView = ({ apartments = [], totalPages, pageSize, totalItems, 
               </div>
             </div>
           ))}
+
+          <ApartmentReviewSummary apartment={apartments} />
         </div>
+       
       )}
 
       {!showCreateForm && (
