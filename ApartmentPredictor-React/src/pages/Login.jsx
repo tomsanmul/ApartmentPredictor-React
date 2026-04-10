@@ -1,31 +1,37 @@
 import { useState } from "react";
-import { useAuth } from "react-oidc-context";
+import { signIn, signOut } from "aws-amplify/auth";
 
 export default function Login() {
-  const auth = useAuth();
-
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
+  const [logged, setLogged] = useState(false);
+  const [error, setError] = useState("");
 
-  // si ya está logueado
-  if (auth.isAuthenticated) {
-    return (
-      <div className="login-page">
-        <div className="login-card">
-          <h1 className="login-title">Ya estás logueado</h1>
+  const handleLogin = async () => {
+    try {
+      setError("");
 
-          <p>{auth.user?.profile?.email}</p>
+      await signIn({
+        username: user,
+        password: password,
+      });
 
-          <button
-            className="login-button"
-            onClick={() => auth.removeUser()}
-          >
-            Logout
-          </button>
-        </div>
-      </div>
-    );
-  }
+      setLogged(true);
+    } catch (err) {
+      setError(err.message || "Login error");
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      setLogged(false);
+      setUser("");
+      setPassword("");
+    } catch (err) {
+      console.error("Logout error", err);
+    }
+  };
 
   return (
     <div className="login-page">
@@ -33,48 +39,51 @@ export default function Login() {
 
         <h1 className="login-title">Login</h1>
 
-        {/* 🔥 IMPORTANTE: Cognito NO usa user/password aquí */}
-        <p style={{ marginBottom: "10px", color: "#666" }}>
-          Login gestionado por AWS Cognito
-        </p>
+        {logged ? (
+          <>
+            <p>✅ Estás logueado</p>
 
-        <form className="login-form">
+            <button
+              type="button"
+              className="login-button"
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
+          </>
+        ) : (
+          <form className="login-form">
 
-          <div className="login-field">
-            <label>User</label>
-            <input
-              type="text"
-              placeholder="Not used (Cognito handles auth)"
-              value={user}
-              onChange={(e) => setUser(e.target.value)}
-              disabled
-            />
-          </div>
+            <div className="login-field">
+              <label>User</label>
+              <input
+                value={user}
+                onChange={(e) => setUser(e.target.value)}
+                type="text"
+              />
+            </div>
 
-          <div className="login-field">
-            <label>Password</label>
-            <input
-              type="password"
-              placeholder="Not used"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              disabled
-            />
-          </div>
+            <div className="login-field">
+              <label>Password</label>
+              <input
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                type="password"
+              />
+            </div>
 
-          <a href="#" className="login-forgot">Forgot?</a>
-          <a href="#" className="login-register">Register</a>
+            {error && <p style={{ color: "red" }}>{error}</p>}
 
-          {/* 🚀 BOTÓN REAL DE LOGIN */}
-          <button
-            type="button"
-            className="login-button"
-            onClick={() => auth.signinRedirect()}
-          >
-            Login with Cognito
-          </button>
+            <button
+              type="button"
+              className="login-button"
+              onClick={handleLogin}
+            >
+              Login
+            </button>
 
-        </form>
+          </form>
+        )}
 
       </div>
     </div>
