@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { ThemeProvider, createTheme, CssBaseline, Box, Toolbar } from "@mui/material";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 import Sidebar from "./components/SideBar";
 import { ApartmentServiceProvider } from "./services/apartmentServiceProvider";
@@ -31,12 +32,13 @@ export default function App() {
 
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
               <Toolbar />
+
               <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/apartments" element={<ApartmentsPage />} />
-                <Route path="/reviews/apartment/:id" element={<Reviews />} />
-                <Route path="/schools" element={<SchoolsPage />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/apartments" element={<ProtectedRoute> <ApartmentsPage /> </ProtectedRoute> }/>
+                <Route path="/reviews/apartment/:id" element={<ProtectedRoute> <Reviews /> </ProtectedRoute> }/>
+                <Route path="/schools" element={<ProtectedRoute> <SchoolsPage /> </ProtectedRoute> }/>
               </Routes>
             </Box>
 
