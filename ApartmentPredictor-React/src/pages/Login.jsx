@@ -1,37 +1,17 @@
-import { useState } from "react";
-import { signIn, signOut } from "aws-amplify/auth";
+import { useAuth } from "react-oidc-context";
 
 export default function Login() {
-  const [user, setUser] = useState("");
-  const [password, setPassword] = useState("");
-  const [logged, setLogged] = useState(false);
-  const [error, setError] = useState("");
+  const auth = useAuth();
 
-  const handleLogin = async () => {
-    try {
-      setError("");
+  // Loading
+  if (auth.isLoading) {
+    return <p>Cargando...</p>;
+  }
 
-      await signIn({
-        username: user,
-        password: password,
-      });
-
-      setLogged(true);
-    } catch (err) {
-      setError(err.message || "Login error");
-    }
-  };
-
-  const handleLogout = async () => {
-    try {
-      await signOut();
-      setLogged(false);
-      setUser("");
-      setPassword("");
-    } catch (err) {
-      console.error("Logout error", err);
-    }
-  };
+  // Error
+  if (auth.error) {
+    return <p>Error: {auth.error.message}</p>;
+  }
 
   return (
     <div className="login-page">
@@ -39,50 +19,33 @@ export default function Login() {
 
         <h1 className="login-title">Login</h1>
 
-        {logged ? (
+        {/* ✅ SI ESTÁ LOGUEADO */}
+        {auth.isAuthenticated ? (
           <>
-            <p>✅ Estás logueado</p>
+            <p>✔ Logged in</p>
+            <p>{auth.user?.profile?.email}</p>
 
             <button
               type="button"
               className="login-button"
-              onClick={handleLogout}
+              onClick={() => auth.removeUser()}
             >
               Logout
             </button>
           </>
         ) : (
-          <form className="login-form">
+          <>
+            <p>Login con AWS Cognito</p>
 
-            <div className="login-field">
-              <label>User</label>
-              <input
-                value={user}
-                onChange={(e) => setUser(e.target.value)}
-                type="text"
-              />
-            </div>
-
-            <div className="login-field">
-              <label>Password</label>
-              <input
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                type="password"
-              />
-            </div>
-
-            {error && <p style={{ color: "red" }}>{error}</p>}
-
+            {/* 🚀 LOGIN REAL */}
             <button
               type="button"
               className="login-button"
-              onClick={handleLogin}
+              onClick={() => auth.signinRedirect()}
             >
               Login
             </button>
-
-          </form>
+          </>
         )}
 
       </div>
