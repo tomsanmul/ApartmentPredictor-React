@@ -12,6 +12,7 @@ ApartmentPredictor es una aplicació per prediure el preu d'un Apartment, depene
 #  V. 5.0
 FEATURES :
     - Implementació d'Schools (per donar d'alta) + 1 Mapa
+    - Implementació de LOGIN amb AWS Cognito (sense amplify).
 
 
 #  V. 4.0
