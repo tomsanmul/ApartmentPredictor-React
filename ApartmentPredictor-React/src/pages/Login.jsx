@@ -17,11 +17,12 @@ export default function Login() {
     <div className="homepage-container">
       <div className="login-card">
 
-        <h1 className="login-title">Login</h1>
+        
 
         {/* ✅ SI ESTÁ LOGUEADO */}
         {auth.isAuthenticated ? (
           <>
+            <h1 className="login-title">Logout</h1>
             <p>✔ Logged in</p>
             <p>{auth.user?.profile?.email}</p>
 
@@ -35,6 +36,7 @@ export default function Login() {
           </>
         ) : (
           <>
+            <h1 className="login-title">Login</h1>
             <p>Login con AWS Cognito</p>
 
             {/* 🚀 LOGIN REAL */}
