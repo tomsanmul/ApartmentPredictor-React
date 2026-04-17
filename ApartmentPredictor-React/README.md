@@ -12,12 +12,18 @@ ApartmentPredictor es una aplicació per prediure el preu d'un Apartment, depene
 #  V. 6.0
 FEATURES :
     - Creació d'un Orquestrator i 6 Agents que gestionin el projecte:
-        1. Analyzer
-        2. Plan
-        3. Coder
-        4. Review
-        5. Test
-        6. Doc
+
+       Agente               Misión Principal                                                Skill Clave
+       ----------------     ------------------------------------------------------------    ----------------------------------------------
+
+       0. Orchestrator:     Gestionar el ciclo de vida y dar el "visto bueno" final.        Gestión de proyectos y lógica de flujo.
+       1. Analyzer:         Analizar el impacto de los cambios en el código existente.      Lectura de dependencias y arquitectura React.
+       2. Plan:             Desglosar la tarea en micro-pasos técnicos.                     Arquitectura de software.
+       3. Coder:            Escribir código limpio, modular y siguiendo el estilo actual.   React, Hooks, Tailwind/CSS.
+       4. Reviewer:         Hacer de "Senior Developer" crítico.                            Seguridad, Performance y Clean Code.
+       5. Testing:          Garantizar que el componente de predicción es robusto.          Unit Testing y Edge Cases.
+       6. Documentation:    Explicar el "qué" y el "cómo" para humanos.                     Markdown y documentación técnica.
+
 
 
 #  V. 5.0
