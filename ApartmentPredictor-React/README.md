@@ -1,46 +1,18 @@
 # APARTMENTPREDICTOR  (FRONTEND REACT)
-# VERSIO ACTUAL: V. 7.0
+# VERSIO ACTUAL: V. 6.0
 
 UBICACION DEL PROJECTE EN GITHUB:  https://github.com/tomsanmul/ApartmentPredictor-React
 
+ 
 
----
-
-## SISTEMA DE 6 AGENTES DE IA
-
-El proyecto utiliza un **Sistema de Agentes de IA** para gestionar el ciclo de desarrollo.
-Consulte la documentacion completa en: **[./agents/README.md](./agents/README.md)**
-
-| Agente | Fichero | Estado |
-|--------|---------|--------|
-| 00 - Orchestrator | [agents/00-ORCHESTRATOR.md](./agents/00-ORCHESTRATOR.md) | ✅ |
-| 01 - Analyzer | [agents/01-ANALYZER.md](./agents/01-ANALYZER.md) | ✅ |
-| 02 - Plan | [agents/02-PLAN.md](./agents/02-PLAN.md) | ✅ |
-| 03 - Coder | [agents/03-CODER.md](./agents/03-CODER.md) | ⚠️ Pendiente |
-| 04 - Reviewer | [agents/04-REVIEWER.md](./agents/04-REVIEWER.md) | ✅ |
-| 05 - Testing | [agents/05-TESTING.md](./agents/05-TESTING.md) | ✅ |
-| 06 - Documentation | [agents/06-DOCUMENTATION.md](./agents/06-DOCUMENTATION.md) | ✅ |
-
----
-
-
-DESCRIPCIO. QUE ES APARTMENT PREDICTOR? 
-
-ApartmentPredictor es una aplicacio per prediure el preu d'un Apartment, depenent d'altres factors i variables tipus del mercat.
-
-
-#  V. 7.0
+#  V. 6.0  SISTEMA DE 6 AGENTES DE IA
 FEATURES :
-    - Sistema de 6 Agents d'IA + 1 Orquestador documentats a [/agents](./agents/)
+    - Sistema de 6 Agents d'IA + 1 Orquestador per a la gestio intel ligent del projecte. Documentats a [/agents](./agents/)
     - 51 tests unitarios con Vitest en [/src/__tests__/](./src/__tests__/)
-    - Documentacio JSDoc en componentes principales
-    - Guia de prediccion en [/docs/GUIAPrediccion.md](./docs/GUIAPrediccion.md)
-
-#  V. 6.0
-FEATURES :
-    - Sistema de 6 Agents d'IA + 1 Orquestador per a la gestio intel ligent del projecte
     - Nova funcionalitat de PREDICCIO de preus mitjancant ML (Machine Learning)
     - Integracio amb el backend Spring Boot per a predictions en temps real
+    - Documentacio JSDoc en componentes principales
+    - Guia de prediccion en [/docs/GUIAPrediccion.md](./docs/GUIAPrediccion.md)
 
        Agente               Mision Principal                                                Skill Clave
        ----------------     ------------------------------------------------------------    ----------------------------------------------
