@@ -1,92 +1,104 @@
-# APARTMENTPREDICTOR  (FRONTEND REACT) 
-# VERSIÓ ACTUAL: V. 6.0 
+﻿# APARTMENTPREDICTOR  (FRONTEND REACT) 
+# VERSIO ACTUAL: V. 7.0 
 
-UBICACIÓN DEL PROJECTE EN GITHUB:  https://github.com/tomsanmul/ApartmentPredictor-React
+UBICACION DEL PROJECTE EN GITHUB:  https://github.com/tomsanmul/ApartmentPredictor-React
 
 
-DESCRIPCIÓ. ¿QUE ES APARTMENT PREDICTOR? 
+DESCRIPCIO. QUE ES APARTMENT PREDICTOR? 
 
-ApartmentPredictor es una aplicació per prediure el preu d'un Apartment, depenent d'altres factors i variables típus del mercat.
+ApartmentPredictor es una aplicacio per prediure el preu d'un Apartment, depenent d'altres factors i variables tipus del mercat.
 
 
 #  V. 6.0
 FEATURES :
-    - Creació d'un Orquestrator i 6 Agents que gestionin el projecte:
+    - Sistema de 6 Agents d'IA + 1 Orquestador per a la gestio intel ligent del projecte
+    - Nova funcionalitat de PREDICCIO de preus mitjancant ML (Machine Learning)
+    - Integracio amb el backend Spring Boot per a predictions en temps real
 
-       Agente               Misión Principal                                                Skill Clave
+       Agente               Mision Principal                                                Skill Clave
        ----------------     ------------------------------------------------------------    ----------------------------------------------
 
-       0. Orchestrator:     Gestionar el ciclo de vida y dar el "visto bueno" final.        Gestión de proyectos y lógica de flujo.
-       1. Analyzer:         Analizar el impacto de los cambios en el código existente.      Lectura de dependencias y arquitectura React.
-       2. Plan:             Desglosar la tarea en micro-pasos técnicos.                     Arquitectura de software.
-       3. Coder:            Escribir código limpio, modular y siguiendo el estilo actual.   React, Hooks, Tailwind/CSS.
-       4. Reviewer:         Hacer de "Senior Developer" crítico.                            Seguridad, Performance y Clean Code.
-       5. Testing:          Garantizar que el componente de predicción es robusto.          Unit Testing y Edge Cases.
-       6. Documentation:    Explicar el "qué" y el "cómo" para humanos.                     Markdown y documentación técnica.
+       0. Orchestrator:     Gestionar el ciclo de vida y dar el "visto bueno" final.        Gestion de proyectos y logica de flujo.
+       1. Analyzer:         Analizar el impacto de los cambios en el codigo existente.      Lectura de dependencias y arquitectura React.
+       2. Plan:             Desglosar la tarea en micro-pasos tecnicos.                     Arquitectura de software.
+       3. Coder:            Escribir codigo limpio, modular y siguiendo el estilo actual.   React, Hooks, Tailwind/CSS.
+       4. Reviewer:         Hacer de "Senior Developer" critico.                            Seguridad, Performance y Clean Code.
+       5. Testing:          Garantizar que el componente de prediccion es robusto.          Unit Testing y Edge Cases.
+       6. Documentation:    Explicar el "que" y el "como" para humanos.                     Markdown y documentacion tecnica.
+
+    ORQUESTADOR - FUNCIONALITATS:
+    - Coordina i supervisatots els 6 agents
+    - Gestiona el flux de treball de desenvolupament
+    - Aprova o rebutja els canvis proposats
+
+    PREDICCIO - FUNCIONALITATS:
+    - Prediccio de preus d'apartaments basant-se en caracteristiques
+    - Factors considerats: area, habitacions, banys, pisos, etc.
+    - Utilitza models de regressio per a l'estimacio
 
 
 
 #  V. 5.0
 FEATURES :
-    - Implementació d'Schools (per donar d'alta) + 1 Mapa
-    - Implementació de LOGIN amb AWS Cognito (sense amplify).
+    - Implementacio d'Schools (per donar d'alta) + 1 Mapa
+    - Implementacio de LOGIN amb AWS Cognito (sense amplify).
 
 
 #  V. 4.0
 FEATURES :
-    - Implementació d'una nova feature: ApartmentFilter.jsx
-    - Implementació d'una barra de navegació inferior.
-    - Es mostra també la etiqueta informació "Showing 1–30 of 644 apartments" que indica on estás de la barra de navegació.
+    - Implementacio d'una nova feature: ApartmentFilter.jsx
+    - Implementacio d'una barra de navegacio inferior.
+    - Es mostra tambe la etiqueta informacio "Showing 1-30 of 644 apartments" que indica on estas de la barra de navegacio.
 
 
 #  V. 3.0
 FEATURES :
-    - Més desacoplament d'Apartment en:
+    - Mes desacoplament d'Apartment en:
         ApartmentCreate.jsx
         ApartmentCRUD.jsx
         ApartmentDetail.jsx -> Nova feature!!
-        ApartmentListContainer.jsx <- Aquest era l'antic ApartmentListView.jsx . Només l'he renombrat.
-    - Implementació d'un "CircularProgress" from "@mui/material/CircularProgress";    
-    - Implementació d'una SideBar.
-    - Implementació d'una pàgina HOME.
-    - Implementació d'un selector mode clar / oscur
-    - Implementació d'un LOGIN (NO FUNCIONAL, només es un mookup Formulari)
+        ApartmentListContainer.jsx <- Aquest era l'antic ApartmentListView.jsx . Nomas l'he renombrat.
+    - Implementacio dun "CircularProgress" from "@mui/material/CircularProgress";    
+    - Implementacio d'una SideBar.
+    - Implementacio d'una pagina HOME.
+    - Implementacio dun selector mode clar / oscur
+    - Implementacio dun LOGIN (NO FUNCIONAL, nomes es un mookup Formulari)
 
 
 #  V. 2.0
-FEATURES TÈCNIQUES PER MILLORAR ESCALABILITAT I COMPRENSIÓ  (READABLE) DEL PROJECTE.
+FEATURES TECNIQUES PER MILLORAR ESCALABILITAT I COMPRENSIÓ  (READABLE) DEL PROJECTE.
     - Desacoplament d'Apartment en:
         ApartmentList.jsx
         ApartmentListView.jsx
-    - Implementació d'un Service, Context i Provider per gestionar les dades.
-    - Centralització amb 1 HOOK, una versió sense Reducer i un altre amb un useReducer.
+    - Implementacio dun Service, Context i Provider per gestionar les dades.
+    - Centralitzacio amb 1 HOOK, una versio sense Reducer i un altre amb un useReducer.
 
 
 #  V. 1.0
 FEATURES:
-    Implementades les funcions bàsiques d'un CRUD mitjançant API REST.
+    Implementades les funcions basics dun CRUD mitjancant API REST.
         Llistar, Crear, Modificar i Esborrar un apartment.
 
 
 --------------------------------------------------------------------------------------------------------------------------
 
 
-INSTRUCCIONS BÀSIQUES PER FER FUNCIONAR EL  PROJECTE.
+INSTRUCCIONS BASIQUES PER FER FUNCIONAR EL  PROJECTE.
 
-1º: Instalar les dependècies del projecte.
+1: Instalar les dependencies del projecte.
 
     Obrim la terminal. Escribim: 
         cd ApartmentPredictor-React 
     per ubicant.se a: \ApartmentPredictor-React\ApartmentPredictor-React>
     
-    i després escribim: 
+    i despres escribim: 
 
     "npm install"
 
-    Això instarà les dependències.
+    Aixo instara les dependencies.
 
 
-2º: Arrancar el projecte, primer, ens situem a la branca LOCAL desde la terminal escribim:
+2: Arrancar el projecte, primer, ens situem a la branca LOCAL desde la terminal escribim:
 
     "git checkout local"
 
@@ -94,48 +106,49 @@ INSTRUCCIONS BÀSIQUES PER FER FUNCIONAR EL  PROJECTE.
 
     "npm run dev"
 
-    Aixecarà el projecte local, probablement a:   http://localhost:5173/
+    Aixecara el projecte local, probablement a:   http://localhost:5173/
 
     Ja podem obrir el navegador escribint aquesta ruta.
 
 
-3º: ¡¡IMPORTANT!! Ara, hem d'aixecar un SPRING BOOT "ApartmentPredictor" , que es el BACKEND del Projecte.
+3: !!IMPORTANT!! Ara, hem d'aixecar un SPRING BOOT "ApartmentPredictor" , que es el BACKEND del Projecte.
 
 # APARTMENTPREDICTOR  (BACKEND REACT) 
-    UBICACIÓN DEL PROJECTE EN GITHUB:  https://github.com/tomsanmul/ApartmentPredictor
+    UBICACION DEL PROJECTE EN GITHUB:  https://github.com/tomsanmul/ApartmentPredictor
 
     Lo mateix: 
         1. Descarregar el projecte 
         2. Obrir-lo en VsCode 
-        3. Instalar les dependències escribint per la Terminal  "npm run install"  
+        3. Instalar les dependencies escribint per la Terminal  "npm run install"  
         4. Canviar la branca escribint per la Terminal  "git checkout local" 
         5. Exccutar controller/ApartmentRestController
     
-   
 
------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
 
 Llista d'EndPoints que s'utilitzant en el Frontend:
 
-    "/getAll"   -> Mètode GET que retorna el llistat complet d'Apartments. Sútilitza a la HOME.
+    "/getAll"   -> Metode GET que retorna el llistat complet d'Apartments. Sutilitza a la HOME.
 
 
-    "/getById"  -> Mètode GET que retorna un Apartament en concret, pasant-li per paràmetre el seu ID.
+    "/getById"  -> Metode GET que retorna un Apartament en concret, passant-li per parametre el seu ID.
     
-    "/create"   -> Mètode POST que crea un Apartament. 
-                Obligatoriament se li ha de pasar un paràmetre objecte "Apartament" amb totes les dades per ser creat.
+    "/create"   -> Metode POST que crea un Apartament. 
+                Obligatoriament se li ha de pasar un parametre objecte "Apartament" amb totes les dades per ser creat.
 
-    "/update"   -> Mètode POST que modifica un Apartament. 
-                Obligatoriament se li ha de pasar un paràmetre "Apartament" amb totes les dades per ser modificat.
+    "/update"   -> Metode POST que modifica un Apartament. 
+                Obligatoriament se li ha de pasar un parametre "Apartament" amb totes les dades per ser modificat.
 
-    "/deleteById" -> Mètode POST que modifica un Apartament. 
+    "/deleteById" -> Metode POST que modifica un Apartament. 
    
 
-    "/create_apartments" -> Mètode POST que crea una llista d'Apartaments aleatoriament (amb FAKER).
-                Obligatoriament se li ha de pasar un paràemtre integer "quantity" que definirà la quantitat d'apartament a crear.
-                Aquesta funció si existeix en el Backend de Java, però no en Frontend de React. 
-                ¿Dubto si s'hauria d'implementar aqui també??
+    "/create_apartments" -> Metode POST que crea una llista d'Apartaments aleatoriament (amb FAKER).
+                Obligatoriament se li ha de pasar un paramaetre integer "quantity" que definira la quantitat d'apartament a crear.
+                Aquesta funcio si existeix en el Backend de Java, pero no en Frontend de React. 
+                Dubto si shauria dimplementar aqui tambe?? 
 
 
+    "/predict" -> Metode POST que retorna una prediccio de preu dapartament.
+                Utilitza models de Machine Learning per estimar el preu.
+                S'utilitza a la seccio de prediccio de la aplicacio.
 
----------------------------------------------------------------------------------------------------------------------
