@@ -5,6 +5,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 
 import Sidebar from "./components/SideBar";
 import { ApartmentServiceProvider } from "./services/apartmentServiceProvider";
+import { ReviewServiceProvider } from "./services/reviewServiceProvider";
+import { SchoolServiceProvider } from "./services/schoolServiceProvider";
 import Home from "./pages/Home";
 import ApartmentsPage from "./pages/ApartmentsPage";
 import Reviews from "./review/Reviews";
@@ -24,7 +26,9 @@ export default function App() {
       <CssBaseline />
 
       <ApartmentServiceProvider>
-        <Router>
+        <ReviewServiceProvider>
+          <SchoolServiceProvider>
+            <Router>
 
           <Box sx={{ display: "flex" }}> 
 
@@ -45,7 +49,9 @@ export default function App() {
           </Box>
 
         </Router>
-      </ApartmentServiceProvider>
+            </SchoolServiceProvider>
+          </ReviewServiceProvider>
+        </ApartmentServiceProvider>
 
     </ThemeProvider>
   );
